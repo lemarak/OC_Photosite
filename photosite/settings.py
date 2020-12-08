@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'photosite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'photosite',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'db',
