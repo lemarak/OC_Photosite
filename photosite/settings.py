@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third app
+    'crispy_forms',
+
     # local
     'gallery.apps.GalleryConfig',
     'users.apps.UsersConfig',
@@ -58,6 +61,9 @@ ROOT_URLCONF = 'photosite.urls'
 AUTH_USER_MODEL = 'users.CustomUser'  # new
 LOGIN_REDIRECT_URL = 'home'  # new
 LOGOUT_REDIRECT_URL = 'home'  # new
+CRISPY_TEMPLATE_PACK = 'bootstrap4'  # new
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # new
+
 
 TEMPLATES = [
     {
@@ -115,9 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 

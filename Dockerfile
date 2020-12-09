@@ -10,7 +10,7 @@ WORKDIR /PhotoSite
 
 # Install dependencies
 COPY Pipfile Pipfile.lock /PhotoSite/
-RUN pip install pipenv && pipenv install --system
+RUN pip install pipenv && pipenv install --deploy --system
 
 # Copy project
 COPY . /PhotoSite/
