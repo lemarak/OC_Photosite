@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # local
     'gallery.apps.GalleryConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -52,10 +55,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'photosite.urls'
 
+AUTH_USER_MODEL = 'users.CustomUser'  # new
+LOGIN_REDIRECT_URL = 'home'  # new
+LOGOUT_REDIRECT_URL = 'home'  # new
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],  # new
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
