@@ -32,15 +32,15 @@ class Picture(models.Model):
     file_name = models.ImageField(verbose_name="Fichier image")
     description = models.TextField(verbose_name="Desciption de la photo")
     technical = models.TextField(
-        verbose_name="Commentaires techniques", null=True)
+        verbose_name="Commentaires techniques", null=True, blank=True, default="")
     camera = models.CharField(
-        verbose_name="Appareil photo utilisé", max_length=200, null=True)
+        verbose_name="Appareil photo utilisé", max_length=200, null=True, blank=True, default="")
     lens = models.CharField(
-        verbose_name="Objectif utilisé", max_length=200, null=True)
+        verbose_name="Objectif utilisé", max_length=200, null=True, blank=True, default="")
     place = models.CharField(
-        verbose_name="Lieu de prise", max_length=255, null=True)
-    taken_date = models.DateField(verbose_name="Date de prise", null=True)
-    global_score = models.FloatField(verbose_name="Note globale", null=True)
+        verbose_name="Lieu de prise", max_length=255, null=True, blank=True, default="")
+    taken_date = models.DateField(verbose_name="Date de prise", null=True, blank=True, default="")
+    global_score = models.FloatField(verbose_name="Note globale", null=True, blank=True, default="")
     upload_date = models.DateTimeField(
         verbose_name="Date de téléchargement", auto_now_add=True)
     categories = models.ManyToManyField(Category)
@@ -61,7 +61,7 @@ class Contest(models.Model):
     title = models.CharField(
         verbose_name="Titre du concours", max_length=120, help_text='Picture\'s title')
     theme = models.CharField(
-        verbose_name="Thème du concours", max_length=200, null=True)
+        verbose_name="Thème du concours", max_length=200, null=True, default="")
     description = models.TextField(verbose_name="Desciption du concours")
     date_begin_upload = models.DateField(
         verbose_name="Date de début dépot photo")
@@ -85,27 +85,27 @@ class Contest(models.Model):
 class Review(models.Model):
     """Stores a review"""
     score_intention = models.IntegerField(
-        verbose_name="note intention", null=True)
+        verbose_name="note intention", blank=True, default=-1)
     score_technical = models.IntegerField(
-        verbose_name="note technique", null=True)
+        verbose_name="note technique", blank=True, default=-1)
     score_picture = models.IntegerField(
-        verbose_name="note photo", null=True)
+        verbose_name="note photo", blank=True, default=-1)
     score_visual = models.IntegerField(
-        verbose_name="note rendu", null=True)
+        verbose_name="note rendu", blank=True, default=-1)
     score_global = models.IntegerField(
-        verbose_name="note globale", null=True)
+        verbose_name="note globale", blank=True, default=-1)
     comment_intention = models.TextField(
-        verbose_name="Commentaire intention", null=True)
+        verbose_name="Commentaire intention", blank=True, default=-1)
     comment_technical = models.TextField(
-        verbose_name="Commentaire technique", null=True)
+        verbose_name="Commentaire technique", blank=True, default=-1)
     comment_picture = models.TextField(
-        verbose_name="Commentaire photo", null=True)
+        verbose_name="Commentaire photo", blank=True)
     comment_visual = models.TextField(
-        verbose_name="Commentaire rendu", null=True)
+        verbose_name="Commentaire rendu", blank=True)
     comment_global = models.TextField(
-        verbose_name="Commentaire global", null=True)
+        verbose_name="Commentaire global", blank=True)
     calculated_score = models.FloatField(
-        verbose_name="Note calculée", null=True)
+        verbose_name="Note calculée", blank=True)
     review_date = models.DateTimeField(
         verbose_name="Date de la critique", auto_now_add=True)
     picture = models.ForeignKey('Picture', on_delete=models.CASCADE)
@@ -124,7 +124,6 @@ class Review(models.Model):
 class ContestPicture(models.Model):
     class Meta:
         """for primary key."""
-        # unique_together = (('id_picture', 'id_contest'),)
         UniqueConstraint(
             fields=['id_picture', 'id_contest'], name='id_contest_picture')
 
@@ -140,16 +139,14 @@ class ContestPicture(models.Model):
 class Vote(models.Model):
     """Stores a vote"""
     class Meta:
-        # unique_together = (('id_user', 'id_contest', 'id_picture'),)
         UniqueConstraint(fields=['id_contest_picture',
-                                 'id_user'], name='id_contest_picture')
+                                 'id_user'], name='id_contest_picture_user')
     id_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
     id_contest_picture = models.ForeignKey(
         'ContestPicture', on_delete=models.CASCADE)
-    # id_contest = models.ForeignKey('ContestPicture', on_delete=models.CASCADE)
     score = models.IntegerField(
-        verbose_name="Note pour une photo et un concours donné", null=True)
+        verbose_name="Note pour une photo et un concours donné")
     date_score = models.DateTimeField(
         verbose_name="Date de la note", auto_now_add=True)
 

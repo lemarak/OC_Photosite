@@ -1,15 +1,38 @@
 <!-- templates/home.html -->
-{% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Déconnexion</a></p>
-{% else %}
-  <p>Vous n'êtes pas connecté</p>
-  <a href="{% url 'login' %}">Connexion</a> |
-  <a href="{% url 'signup' %}">Inscription</a>
-{% endif %}
+
+
+<main role="main">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h3 class="display-4">Bienvenue {% if user.is_authenticated %}
+        {{ user.username }} {% endif %} sur PhotoSite !<br>  ici vous pouvez...</h3>
+      <h4>Visualiser les photos déposées par les membres</h4>
+      <h4>Proposer une critique constructive</h4>
+      <h4>Participer et voter à des concours</h4>
+      <p><a class="btn btn-secondary btn-sm" href="#" role="button">Learn more &raquo;</a></p>
+      {% if not user.is_authenticated %}
+
+      <p>Vous n'êtes pas connecté</p>
+      <a class="btn btn-secondary btn-sm" href="{% url 'login' %}" role="button">Connexion</a>
+      <a class="btn btn-secondary btn-sm" href="{% url 'signup' %}" role="button">Inscription</a>
+      {% endif %}
+    </div>
+  </div>
+
+{% include 'gallery/gallery.html' %}
+
+</main>
+
+<footer class="container">
+  <p>&copy; Company 2017-2020</p>
+</footer>
 {% endblock %}

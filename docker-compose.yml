@@ -2,11 +2,11 @@ version: '3.8'
 services:
   web:
     build: .
-    command: python /PhotoSite/manage.py runserver 0.0.0.0:8000
+    command: python /PhotoSite/manage.py runserver 0.0.0.0:8001
     volumes:
       - .:/PhotoSite
     ports:
-      - 8000:8000
+      - 8001:8001
     depends_on:
       - db
   db:
