@@ -13,7 +13,7 @@ class SignUpView(CreateView):
     template_name = 'registration/signup.html'
 
 
-class UpdateUserPageView(LoginRequiredMixin, UpdateView):
+class ProfileUserPageView(LoginRequiredMixin, UpdateView):
     """Display update page."""
     model = get_user_model()
     login_url = reverse_lazy('login')
