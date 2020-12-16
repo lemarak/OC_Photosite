@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Dernières photos</a>
+                    <a class="nav-link" href="{% url 'pictures_gallery' %}">Dernières photos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link  href="#" tabindex="-1" >Catégories</a>
@@ -58,7 +58,12 @@
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class = "btn btn-outline-secondary my-2 my-sm-0" href="{% url 'image_upload' %}" role="button">Déposer photo</a>
+                </li>
+                <li>
                     <a class = "btn btn-outline-secondary my-2 my-sm-0" href="{% url 'logout' %}" role="button">Déconnexion</a>
+                </li>
+                <li class="nav-item">
+                    <a class = "btn btn-outline-secondary my-2 my-sm-0" href="{% url 'profile' user.id  %}" role="button">{{ user }}</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
@@ -67,6 +72,7 @@
                 <li class="nav-item">
                     <a class = "btn btn-outline-secondary my-2 my-sm-0" href="{% url 'signup' %}" role="button">Inscription</a>
                 </li>
+
                 {% endif %}
             </ul>
         </div>

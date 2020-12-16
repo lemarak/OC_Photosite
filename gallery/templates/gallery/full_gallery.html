@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h2>Les photos</h2>
+        <p>{{ page_obj.paginator.count }} photos de téléchargés</p>
+    </div>
+</div>
+{% include 'gallery.html' %}
+
+{% endblock %}

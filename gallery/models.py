@@ -56,6 +56,9 @@ class Picture(models.Model):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return "%s (%s)" % (self.title, self.file_name)
 
+    class Meta:
+        ordering = ['-upload_date']
+
 
 class Contest(models.Model):
     """Stores a contest"""

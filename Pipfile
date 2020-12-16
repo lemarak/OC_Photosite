@@ -13,6 +13,7 @@ pillow = "*"
 psycopg2 = "*"
 psycopg2-binary = "*"
 autopep8 = "*"
+pylint-django = "*"
 
 [requires]
 python_version = "3.8"

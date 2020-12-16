@@ -3,20 +3,19 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-<section class="page-section bg-secondary" id="login">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <h2>Profil {{ user.username }} - {{ user.email }}</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button class="btn btn-success" type="submit">Sauver le profil</button>
-                </form>
+<div class="jumbotron bg-secondary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2>Profil {{ user.username }} - {{ user.email }}</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-success" type="submit">Sauver le profil</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+</div>
 
-{% endblock content %} 
+{% endblock content %}
