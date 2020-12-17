@@ -30,7 +30,7 @@ class Picture(models.Model):
     """Stores a picture"""
     title = models.CharField(
         verbose_name="Titre de la photo", max_length=120, help_text=_('Picture\'s title'))
-    file_name = models.ImageField(verbose_name="Fichier image")
+    file_name = models.ImageField(verbose_name="Fichier image", upload_to='images/')
     description = models.TextField(verbose_name="Desciption de la photo")
     technical = models.TextField(
         verbose_name="Commentaires techniques", null=True, blank=True, default="")
