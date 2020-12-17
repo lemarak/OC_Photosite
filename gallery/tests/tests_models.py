@@ -96,6 +96,12 @@ class PictureModelTestCase(BaseModelTestCase):
         """Tests the association of a picture to an user."""
         self.assertEqual(self.user, self.picture.user)
 
+    def test_absolute_url_picture(self):
+        """test the url from a picture """
+        self.assertEqual(self.picture.get_absolute_url(),
+                         '/picture/%s' % self.picture.id
+                         )
+
 class ContestModelTestCase(BaseModelTestCase):
     """Class for testing contest management."""
 

@@ -30,7 +30,7 @@
 
 
   <div class="container">
-    <h4>Les dernières photos</h4>
+    <h4> <a class="nav-link" href="{% url 'pictures_gallery' 'last' %}">Les dernières photos déposées</a></h4>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
@@ -38,7 +38,7 @@
 
   {% if user.is_authenticated %}
   <div class="container">
-    <h4>Vos photos</h4>
+    <h4> <a class="nav-link" href="{% url 'pictures_gallery' 'user' %}">Vos photos</a></h4>
     {% with user_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}

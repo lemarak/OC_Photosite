@@ -15,6 +15,7 @@ def home_view(request):
         context['user_pictures'] = user_pictures
     return render(request, 'home.html', context)
 
+
 def picture_upload_view(request):
     """ view upload picture """
     if request.method == 'POST':
@@ -35,20 +36,54 @@ def upload_success(request):
     return HttpResponse('Téléchargement réussi')
 
 
-def picture_display_view(request):
-    pass
+class PictureDisplayView(DetailView):
+    """Display an individual picture.
+
+    **Context**
+    ''picture''
+        An instance of :model:`gallery.Picture`.
+
+    **Template:**
+        'gallery/picture.html'
+    """
+    model = Picture
+    context_object_name = 'picture'
+    template_name = 'gallery/picture.html'
 
 
 class GalleryListView(ListView):
-    """Display list pictures for a logged user.
+    """Display list pictures.
 
     **Context**
         'pictures', get by Picture.objects.filter,
     **Template:**
-        'products/favorites.html'
+        'gallery/full_gallery.html'
+    **parameter action:**
+        - 'last': last pictures
+        - 'user': user pictures
     """
 
-    model = Picture
     template_name = 'gallery/full_gallery.html'
     context_object_name = 'pictures'
     paginate_by = 6
+
+    def get_queryset(self):
+        """return pictures,
+        Depends on the action parameter"""
+        if self.kwargs['action'] == 'last':
+            pictures = Picture.objects.all()
+
+        elif self.kwargs['action'] == 'user':
+            pictures = Picture.objects.filter(
+                user=self.request.user)
+
+        return pictures
+
+    def get_context_data(self, **kwargs):
+        """add title in global context."""
+        context = super().get_context_data(**kwargs)
+        if self.kwargs['action'] == 'last':
+            context['title'] = 'Les dernières photos déposées'
+        elif self.kwargs['action'] == 'user':
+            context['title'] = 'Photos de %s' %(self.request.user)
+        return context

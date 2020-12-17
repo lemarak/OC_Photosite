@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from users.models import CustomUser
@@ -30,7 +31,8 @@ class Picture(models.Model):
     """Stores a picture"""
     title = models.CharField(
         verbose_name="Titre de la photo", max_length=120, help_text=_('Picture\'s title'))
-    file_name = models.ImageField(verbose_name="Fichier image", upload_to='images/')
+    file_name = models.ImageField(
+        verbose_name="Fichier image", upload_to='images/')
     description = models.TextField(verbose_name="Desciption de la photo")
     technical = models.TextField(
         verbose_name="Commentaires techniques", null=True, blank=True, default="")
@@ -40,17 +42,23 @@ class Picture(models.Model):
         verbose_name="Objectif utilisé", max_length=200, null=True, blank=True, default="")
     place = models.CharField(
         verbose_name="Lieu de prise", max_length=255, null=True, blank=True, default="")
-    taken_date = models.DateField(verbose_name="Date de prise", null=True, blank=True, default="")
-    global_score = models.FloatField(verbose_name="Note globale", null=True, blank=True, default=0)
+    taken_date = models.DateField(
+        verbose_name="Date de prise", null=True, blank=True, default="")
+    global_score = models.FloatField(
+        verbose_name="Note globale", null=True, blank=True, default=0)
     upload_date = models.DateTimeField(
         verbose_name="Date de téléchargement", auto_now_add=True)
-    categories = models.ManyToManyField(Category, null=True, blank=True, default="")
+    categories = models.ManyToManyField(
+        Category, null=True, blank=True, default="")
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular instance of MyModelName."""
-        pass
+        """get url page from a picture."""
+        return reverse(
+            'picture_detail',
+            args=[self.id]
+        )
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
@@ -76,7 +84,8 @@ class Contest(models.Model):
         verbose_name="Concours archivé", default=False)
     date_creation = models.DateTimeField(
         verbose_name="Date de création du concours", auto_now_add=True)
-    contest_image = models.ImageField(verbose_name="Image du concours", default="#", upload_to='images/')
+    contest_image = models.ImageField(
+        verbose_name="Image du concours", default="#", upload_to='images/')
 
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""

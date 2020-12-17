@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
                 <div class="item">
-                    <a href="#">
+                    <a href="{{ picture.get_absolute_url }}" alt="{{ picture.title }}">
                         <img class="card-img-top rounded mx-auto picture-gallery" alt="photo" src="{{ picture.file_name.url }}"
                             data-holder-rendered="true">
                         <!-- <img src="#" class="img-responsive"
