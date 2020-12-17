@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.views.generic import DetailView, ListView
 
-from .forms import PictureForm
+from .forms import PictureForm, ReviewForm
 from .models import Picture, Category
 
 
@@ -14,26 +14,6 @@ def home_view(request):
         user_pictures = Picture.objects.filter(user=request.user)[:6]
         context['user_pictures'] = user_pictures
     return render(request, 'home.html', context)
-
-
-def picture_upload_view(request):
-    """ view upload picture """
-    if request.method == 'POST':
-        form = PictureForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return redirect('upload_success')
-    else:
-        if request.user.is_authenticated:
-            form = PictureForm(initial={'user': request.user})
-        else:
-            return redirect('login')
-    return render(request, 'gallery/form_upload_picture.html', {'form': form})
-
-
-def upload_success(request):
-    return HttpResponse('Téléchargement réussi')
 
 
 class PictureDisplayView(DetailView):
@@ -87,3 +67,41 @@ class GalleryListView(ListView):
         elif self.kwargs['action'] == 'user':
             context['title'] = 'Photos de %s' %(self.request.user)
         return context
+
+# Forms
+def picture_upload_view(request):
+    """ view upload picture """
+    if request.method == 'POST':
+        form = PictureForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('upload_success')
+    else:
+        if request.user.is_authenticated:
+            form = PictureForm(initial={'user': request.user})
+        else:
+            return redirect('login')
+    return render(request, 'gallery/form_upload_picture.html', {'form': form})
+
+
+def upload_success(request):
+    return HttpResponse('Téléchargement réussi')
+
+
+def picture_review_form(request):
+    """ view upload picture """
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('upload_success')
+    else:
+        if request.user.is_authenticated:
+            form = ReviewForm(initial={'user': request.user})
+        else:
+            return redirect('login')
+    return render(request, 'gallery/form_upload_picture.html', {'form': form})
+
+
