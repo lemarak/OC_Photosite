@@ -1,5 +1,11 @@
 .picture-gallery {
-    max-height: 200px;
+    height: auto;
+    width: auto;
+    display: block;
+}
+
+.picture-detail {
+    max-height: 500px;
     height: auto;
     width: auto;
     display: block;

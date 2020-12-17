@@ -1,5 +1,42 @@
-<div class="col-md-4">
-    {{ picture.title }}
-    <img src="{{ picture.file_name.url }}" class="img-responsive"
-        style="width: 100%; float: left; margin-right: 10px;" />
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h2>{{ picture.title }}</h2>
+    </div>
 </div>
+
+<div class="container">
+    <div class="row">
+        <div class="card box-shadow mx-auto">
+            <div class="item">
+                <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
+                    data-holder-rendered="true">
+                <!-- <img src="#" class="img-responsive"
+                    style="width: 100%; float: left; margin-right: 10px;" /> -->
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h5>{{ picture.title }}</h5>
+                    </div>
+                    <div class="col-md-5">
+                        <h6 class="text-right">par {{ picture.user }}</h6>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
+                </div>
+                <div class="row mb-2">
+                    <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

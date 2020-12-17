@@ -2,17 +2,15 @@
     <div class="row">
         {% for picture in pictures %}
         <div class="col-md-2">
-            <div class="card mb-4 box-shadow">
+            <div class="card">
+                
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}" alt="{{ picture.title }}">
-                        <img class="card-img-top rounded mx-auto picture-gallery" alt="photo" src="{{ picture.file_name.url }}"
+                        <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
                             data-holder-rendered="true">
                         <!-- <img src="#" class="img-responsive"
                             style="width: 100%; float: left; margin-right: 10px;" /> -->
                     </a>
-                </div>
-                <div class="card-body">
-                    <p class="card-title">{{ picture.title }}</p>
                 </div>
             </div>
         </div>

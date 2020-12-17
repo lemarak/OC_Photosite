@@ -4,17 +4,25 @@
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
                 <div class="item">
-                    <a href="{{ picture.get_absolute_url }}" alt="{{ picture.title }}">
-                        <img class="card-img-top rounded mx-auto picture-gallery" alt="photo" src="{{ picture.file_name.url }}"
-                            data-holder-rendered="true">
+                    <a href="{{ picture.get_absolute_url }}" >
+                        <img class="card-img-top rounded mx-auto" alt="{{ picture.title }}"
+                            src="{{ picture.file_name.url }}" data-holder-rendered="true">
                         <!-- <img src="#" class="img-responsive"
                             style="width: 100%; float: left; margin-right: 10px;" /> -->
                     </a>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">{{ picture.title }}</h3>
-                    <p class="card-text">{{ picture.description }} </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h6>{{ picture.title|truncatechars:18 }}</h6>
+                        </div>
+                        <div class="col-md-5">
+                            <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
+                        </div>
+                    </div>
+                    <p class="card-text">{{ picture.description|truncatewords:15 }} </p>
+                    <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
+                            photo &raquo;</a></p>
                 </div>
             </div>
         </div>

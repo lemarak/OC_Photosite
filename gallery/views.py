@@ -48,7 +48,7 @@ class PictureDisplayView(DetailView):
     """
     model = Picture
     context_object_name = 'picture'
-    template_name = 'gallery/picture.html'
+    template_name = 'gallery/display_picture.html'
 
 
 class GalleryListView(ListView):
