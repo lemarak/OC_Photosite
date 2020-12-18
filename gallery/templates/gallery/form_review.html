@@ -11,42 +11,43 @@
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="card box-shadow mx-auto">
-            <div class="item">
-                <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
-                    data-holder-rendered="true">
-                <!-- <img src="#" class="img-responsive"
+    <div class="row mb-2">
+        <!-- picture -->
+        <div class="col-md-7">
+            <div class="card box-shadow mx-auto">
+                <div class="item">
+                    <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
+                        data-holder-rendered="true">
+                    <!-- <img src="#" class="img-responsive"
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
-            </div>
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-md-5">
-                        <h5>{{ picture.title }}</h5>
-                    </div>
-                    <div class="col-md-5">
-                        <h6 class="text-right">par {{ picture.user }}</h6>
-                    </div>
                 </div>
-                <div class="row mb-2">
-                    <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
-                </div>
-                <div class="row mb-2">
-                    <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-5">
+                            <h5>{{ picture.title }}</h5>
+                        </div>
+                        <div class="col-md-5">
+                            <h6 class="text-right">par {{ picture.user }}</h6>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
+                    </div>
+                    <div class="row mb-2">
+                        <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button class="btn-secondary btn-sm" type="submit">Envoyer...</button>
-        </form>
+        <!-- Form -->
+        <div class="col-md-5">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-secondary btn-sm" type="submit">Envoyer...</button>
+            </form>
+        </div>
     </div>
-</div>
 
-{% endblock %}
+    {% endblock %}

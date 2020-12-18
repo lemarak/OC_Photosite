@@ -98,16 +98,23 @@ class Contest(models.Model):
 
 class Review(models.Model):
     """Stores a review"""
+    SCORE = (
+        (1, '1 - pas terrible'),
+        (2, '2 - peut mieux faire'),
+        (3, '3 - pas mal'),
+        (4, '4 - bien'),
+        (5, '5 - excellent')
+    )
     score_intention = models.IntegerField(
-        verbose_name="note intention", blank=True, default=-1)
+        verbose_name="note intention", blank=True, default=0, choices=SCORE)
     score_technical = models.IntegerField(
-        verbose_name="note technique", blank=True, default=-1)
+        verbose_name="note technique", blank=True, default=0, choices=SCORE)
     score_picture = models.IntegerField(
-        verbose_name="note photo", blank=True, default=-1)
+        verbose_name="note photo", blank=True, default=0, choices=SCORE)
     score_visual = models.IntegerField(
-        verbose_name="note rendu", blank=True, default=-1)
+        verbose_name="note rendu", blank=True, default=0, choices=SCORE)
     score_global = models.IntegerField(
-        verbose_name="note globale", blank=True, default=-1)
+        verbose_name="note globale", blank=True, default=0, choices=SCORE)
     comment_intention = models.TextField(
         verbose_name="Commentaire intention", blank=True)
     comment_technical = models.TextField(
@@ -119,7 +126,7 @@ class Review(models.Model):
     comment_global = models.TextField(
         verbose_name="Commentaire global", blank=True)
     calculated_score = models.FloatField(
-        verbose_name="Note calculée", blank=True)
+        verbose_name="Note calculée", blank=True,  default=0)
     review_date = models.DateTimeField(
         verbose_name="Date de la critique", auto_now_add=True)
     picture = models.ForeignKey('Picture', on_delete=models.CASCADE)

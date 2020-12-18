@@ -90,18 +90,21 @@
         </div>
     </nav>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+    {% block content %}
+    {% endblock %}
 </body>
 
 
-<footer class="container">
+<!-- <footer class="container jumbotron bg-dark">
     <div class="row">
-        <p>&copy; Stéphane Dauguet 2020</p>
+       
     </div>
-</footer>
+</footer> -->
 
+<div id="footer" class="container-fluid bg-dark">
+    <div class="row">
+        <p class="text-light">&copy; Stéphane Dauguet 2020</p>
+    </div>
+</div>
 
 </html>

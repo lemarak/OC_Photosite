@@ -106,7 +106,7 @@ def upload_success(request):
 
 class ReviewCreate(LoginRequiredMixin, CreateView):
     model = Review
-    fields = '__all__'
+    form_class = ReviewForm
     template_name = 'gallery/form_review.html'
 
     def form_valid(self, form):
@@ -115,6 +115,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         review.user = user
         picture = get_object_or_404(Picture, pk=self.kwargs['pk'])
         review.picture = picture
+        review.calculated_score = 0
         review.save()
         return HttpResponseRedirect(reverse('review', args=[review.id]))
 
@@ -122,6 +123,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         context = super(ReviewCreate, self).get_context_data(**kwargs)
         context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk'])
         return context
+
 
 # def picture_review_form(request, pk):
 #     """ view upload picture """
