@@ -25,7 +25,7 @@
                         <h5>{{ picture.title }}</h5>
                     </div>
                     <div class="col-md-2">
-                        <a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Critiquer &raquo;</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'review_create' picture.id %}" role="button">Critiquer &raquo;</a>
                     </div>
                     <div class="col-md-5">
                         <h6 class="text-right">par {{ picture.user }}</h6>

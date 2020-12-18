@@ -109,9 +109,9 @@ class Review(models.Model):
     score_global = models.IntegerField(
         verbose_name="note globale", blank=True, default=-1)
     comment_intention = models.TextField(
-        verbose_name="Commentaire intention", blank=True, default=-1)
+        verbose_name="Commentaire intention", blank=True)
     comment_technical = models.TextField(
-        verbose_name="Commentaire technique", blank=True, default=-1)
+        verbose_name="Commentaire technique", blank=True)
     comment_picture = models.TextField(
         verbose_name="Commentaire photo", blank=True)
     comment_visual = models.TextField(
@@ -128,7 +128,10 @@ class Review(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
-        pass
+        return reverse(
+            'review',
+            args=[self.id]
+        )
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""

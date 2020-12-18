@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.paginator import Paginator
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import PictureForm, ReviewForm
-from .models import Picture, Category
+from .models import Picture, Category, Review
 
 
 def home_view(request):
@@ -65,8 +67,21 @@ class GalleryListView(ListView):
         if self.kwargs['action'] == 'last':
             context['title'] = 'Les dernières photos déposées'
         elif self.kwargs['action'] == 'user':
-            context['title'] = 'Photos de %s' %(self.request.user)
+            context['title'] = 'Photos de %s' % (self.request.user)
         return context
+
+
+class ReviewDetail(DetailView):
+    model = Review
+    template_name = 'gallery/review.html'
+    context_object_name = 'review'
+
+    def get_context_data(self, **kwargs):
+        context = super(ReviewDetail, self).get_context_data(**kwargs)
+        pk_picture = context['review'].picture.id
+        context['picture'] = get_object_or_404(Picture, pk=pk_picture)
+        return context
+
 
 # Forms
 def picture_upload_view(request):
@@ -89,19 +104,38 @@ def upload_success(request):
     return HttpResponse('Téléchargement réussi')
 
 
-def picture_review_form(request):
-    """ view upload picture """
-    if request.method == 'POST':
-        form = ReviewForm(request.POST, request.FILES)
+class ReviewCreate(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = '__all__'
+    template_name = 'gallery/form_review.html'
 
-        if form.is_valid():
-            form.save()
-            return redirect('upload_success')
-    else:
-        if request.user.is_authenticated:
-            form = ReviewForm(initial={'user': request.user})
-        else:
-            return redirect('login')
-    return render(request, 'gallery/form_upload_picture.html', {'form': form})
+    def form_valid(self, form):
+        review = form.save(commit=False)
+        user = self.request.user
+        review.user = user
+        picture = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        review.picture = picture
+        review.save()
+        return HttpResponseRedirect(reverse('review', args=[review.id]))
 
+    def get_context_data(self, **kwargs):
+        context = super(ReviewCreate, self).get_context_data(**kwargs)
+        context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        return context
 
+# def picture_review_form(request, pk):
+#     """ view upload picture """
+#     picture = get_object_or_404(Picture, pk = pk)
+#     context = {'picture': picture}
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST, request.FILES)
+
+#         if form.is_valid():
+#             form.save()
+#             return redirect('upload_success')
+#     else:
+#         if request.user.is_authenticated:
+#             form = ReviewForm(initial={'user': request.user, 'picture': picture})
+#         else:
+#             return redirect('login')
+#     return render(request, 'gallery/form_review.html', {'form': form}, context=context)
