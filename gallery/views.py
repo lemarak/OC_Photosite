@@ -104,6 +104,7 @@ def upload_success(request):
     return HttpResponse('Téléchargement réussi')
 
 
+# Review
 class ReviewCreate(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
@@ -115,8 +116,12 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         review.user = user
         picture = get_object_or_404(Picture, pk=self.kwargs['pk'])
         review.picture = picture
-        review.calculated_score = 0
+        # calculate note
+        review.calculated_score = Review.objects.calculate_note_review(review)
         review.save()
+        picture.global_score = Picture.objects.update_note_reviews(
+            picture, review.calculated_score)
+        picture.save()
         return HttpResponseRedirect(reverse('review', args=[review.id]))
 
     def get_context_data(self, **kwargs):

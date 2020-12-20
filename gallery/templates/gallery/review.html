@@ -11,31 +11,53 @@
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="card box-shadow mx-auto">
-            <div class="item">
-                <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
-                    data-holder-rendered="true">
-                <!-- <img src="#" class="img-responsive"
+    <div class="row mb-2">
+        <!-- picture -->
+        <div class="col-md-7">
+            <div class="card box-shadow mx-auto">
+                <div class="item">
+                    <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
+                        data-holder-rendered="true">
+                    <!-- <img src="#" class="img-responsive"
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
-            </div>
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-md-5">
-                        <h5>{{ picture.title }}</h5>
-                    </div>
-                    <div class="col-md-5">
-                        <h6 class="text-right">par {{ picture.user }}</h6>
-                    </div>
                 </div>
-                <div class="row mb-2">
-                    <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
-                </div>
-                <div class="row mb-2">
-                    <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-8">
+                            <h5 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }})</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class=" card-text text-right">par {{ picture.user }}</h6>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
+                    </div>
+                    <div class="row mb-2">
+                        <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-5">
+            <div class="row">
+                <p><strong>Note calculée : {{ review.calculated_score }}</strong></p>
+            </div>
+            <div class="row">
+                <p>Note intention : {{ review.score_intention }} <br> {{ review.comment_intention }}</p>
+            </div>
+            <div class="row">
+                <p>Note technique : {{ review.score_technical }} <br> {{ review.comment_technical }}</p>
+            </div>
+            <div class="row">
+                <p>Note rendu image : {{ review.score_picture }} <br> {{ review.comment_picture }}</p>
+            </div>
+            <div class="row">
+                <p>Note globale : {{ review.score_global }} <br> {{ review.comment_global }}</p>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}
