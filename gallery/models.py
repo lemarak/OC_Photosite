@@ -18,9 +18,6 @@ class Category(models.Model):
     order_menu = models.IntegerField(
         verbose_name="Ordre d'apparition dans menu", default=0)
 
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of MyModelName."""
-        pass
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
@@ -169,6 +166,9 @@ class Review(models.Model):
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return "%s - %s" % (self.picture, self.user)
+
+    class Meta:
+        ordering = ['-review_date']
 
 
 class ContestPicture(models.Model):

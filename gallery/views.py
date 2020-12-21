@@ -10,10 +10,10 @@ from .models import Picture, Category, Review
 
 
 def home_view(request):
-    last_pictures = Picture.objects.all()[:6]
-    context = {'last_pictures': last_pictures}
-    last_reviews = Review.objects.all()[:6]
-    context['last_reviews'] = last_reviews
+    # last_pictures = Picture.objects.all()[:6]
+    context = {'last_pictures': Picture.objects.all()[:6]}
+    # last_reviews = Review.objects.all()[:6]
+    context['last_reviews'] = Review.objects.all()[:6]
     if request.user.is_authenticated:
         user_pictures = Picture.objects.filter(user=request.user)[:6]
         context['user_pictures'] = user_pictures
@@ -37,9 +37,9 @@ class PictureDisplayView(DetailView):
     def get_context_data(self, **kwargs):
         """add reviews in global context."""
         context = super().get_context_data(**kwargs)
-        id_picture = context['picture'].id
-        picture = Picture.objects.get(pk=id_picture)
-        reviews = Review.objects.filter(picture=picture)
+        # id_picture = context['picture'].id
+        # picture = Picture.objects.get(pk=id_picture)
+        reviews = Review.objects.filter(picture=context['picture'])
         context['reviews'] = reviews
         return context
 
@@ -65,11 +65,12 @@ class GalleryListView(ListView):
         Depends on the action parameter"""
         if self.kwargs['action'] == 'last':
             pictures = Picture.objects.all()
-
         elif self.kwargs['action'] == 'user':
             pictures = Picture.objects.filter(
                 user=self.request.user)
-
+        elif self.kwargs['action'] == 'category':
+            pictures = Picture.objects.filter(
+                categories=Category.objects.get(pk=self.kwargs['pk']))
         return pictures
 
     def get_context_data(self, **kwargs):
@@ -79,34 +80,40 @@ class GalleryListView(ListView):
             context['title'] = 'Les dernières photos déposées'
         elif self.kwargs['action'] == 'user':
             context['title'] = 'Photos de %s' % (self.request.user)
+        else:
+            context['title'] = 'Photos de %s' % (Category.objects.get(pk=self.kwargs['pk']))
         return context
 
 
 class ReviewDetail(DetailView):
-    model = Review
-    template_name = 'gallery/review.html'
-    context_object_name = 'review'
+    model=Review
+    template_name='gallery/review.html'
+    context_object_name='review'
 
     def get_context_data(self, **kwargs):
-        context = super(ReviewDetail, self).get_context_data(**kwargs)
-        pk_picture = context['review'].picture.id
-        context['picture'] = get_object_or_404(Picture, pk=pk_picture)
+        context=super(ReviewDetail, self).get_context_data(**kwargs)
+        pk_picture=context['review'].picture.id
+        context['picture']=get_object_or_404(Picture, pk = pk_picture)
         return context
 
+class CategoryListView(ListView):
+    model=Category
+    template_name='gallery/categories.html'
+    context_object_name='categories'
 
 # Forms
 def picture_upload_view(request):
     """ view upload picture """
     if request.method == 'POST':
-        form = PictureForm(request.POST, request.FILES)
+        form=PictureForm(request.POST, request.FILES)
 
         if form.is_valid():
-            picture = form.save(commit=False)
+            picture=form.save(commit = False)
             form.save()
             return redirect(reverse('picture_detail', args=[picture.id]))
     else:
         if request.user.is_authenticated:
-            form = PictureForm(initial={'user': request.user})
+            form=PictureForm(initial = {'user': request.user})
         else:
             return redirect('login')
     return render(request, 'gallery/form_upload_picture.html', {'form': form})
@@ -118,27 +125,27 @@ def picture_upload_view(request):
 
 # Review
 class ReviewCreate(LoginRequiredMixin, CreateView):
-    model = Review
-    form_class = ReviewForm
-    template_name = 'gallery/form_review.html'
+    model=Review
+    form_class=ReviewForm
+    template_name='gallery/form_review.html'
 
     def form_valid(self, form):
-        review = form.save(commit=False)
-        user = self.request.user
-        review.user = user
-        picture = get_object_or_404(Picture, pk=self.kwargs['pk'])
-        review.picture = picture
+        review=form.save(commit = False)
+        user=self.request.user
+        review.user=user
+        picture=get_object_or_404(Picture, pk = self.kwargs['pk'])
+        review.picture=picture
         # calculate note
-        review.calculated_score = Review.objects.calculate_note_review(review)
+        review.calculated_score=Review.objects.calculate_note_review(review)
         review.save()
-        picture.global_score = Picture.objects.update_note_reviews(
+        picture.global_score=Picture.objects.update_note_reviews(
             picture, review.calculated_score)
         picture.save()
         return HttpResponseRedirect(reverse('review', args=[review.id]))
 
     def get_context_data(self, **kwargs):
-        context = super(ReviewCreate, self).get_context_data(**kwargs)
-        context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        context=super(ReviewCreate, self).get_context_data(**kwargs)
+        context['picture']=get_object_or_404(Picture, pk = self.kwargs['pk'])
         return context
 
 

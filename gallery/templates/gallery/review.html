@@ -6,7 +6,10 @@
 {% block content %}
 <div class="jumbotron">
     <div class="container">
-        <h2>{{ picture.title }}</h2>
+        <h2>{{ picture.title }} par {{ picture.user }}</h2>
+
+        <h4>Revue de {{ review.user }}</h4>
+
     </div>
 </div>
 
@@ -16,14 +19,14 @@
         <div class="col-md-7">
             <div class="card box-shadow mx-auto">
                 <div class="item">
-                    <a href="{{ picture.get_absolute_url }}"><img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
-                        data-holder-rendered="true"></a>
+                    <a href="{{ picture.get_absolute_url }}"><img class="card-img-top rounded mx-auto" alt="photo"
+                            src="{{ picture.file_name.url }}" data-holder-rendered="true"></a>
                     <!-- <img src="#" class="img-responsive"
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-8">
+                        <div class="col-md-8 text_left">
                             <h5 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }})</h5>
                         </div>
                         <div class="col-md-4">
@@ -31,24 +34,27 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
+                        <p class="card-text"><strong>Description : </strong>{{ picture.description }} </p>
                     </div>
                     <div class="row mb-2">
-                        <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                        <p class="card-text"><strong>Technique : </strong>{{ picture.description }} </p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-5">
+
             <div class="row">
-                <p><strong>Note calculée : {{ review.calculated_score }}</strong></p>
+                <p><strong>Note moyenne de la revue : {{ review.calculated_score }}</strong></p>
             </div>
             <div class="row">
-                <p><strong>Note intention : {{ review.score_intention }}</strong> <br> {{ review.comment_intention }}</p>
+                <p><strong>Note intention : {{ review.score_intention }}</strong> <br> {{ review.comment_intention }}
+                </p>
             </div>
             <div class="row">
-                <p><strong>Note technique : {{ review.score_technical }}</strong> <br> {{ review.comment_technical }}</p>
+                <p><strong>Note technique : {{ review.score_technical }}</strong> <br> {{ review.comment_technical }}
+                </p>
             </div>
             <div class="row">
                 <p><strong>Note rendu image : {{ review.score_picture }}</strong> <br> {{ review.comment_picture }}</p>
