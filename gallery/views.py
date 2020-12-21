@@ -12,6 +12,8 @@ from .models import Picture, Category, Review
 def home_view(request):
     last_pictures = Picture.objects.all()[:6]
     context = {'last_pictures': last_pictures}
+    last_reviews = Review.objects.all()[:6]
+    context['last_reviews'] = last_reviews
     if request.user.is_authenticated:
         user_pictures = Picture.objects.filter(user=request.user)[:6]
         context['user_pictures'] = user_pictures
@@ -31,6 +33,15 @@ class PictureDisplayView(DetailView):
     model = Picture
     context_object_name = 'picture'
     template_name = 'gallery/display_picture.html'
+
+    def get_context_data(self, **kwargs):
+        """add reviews in global context."""
+        context = super().get_context_data(**kwargs)
+        id_picture = context['picture'].id
+        picture = Picture.objects.get(pk=id_picture)
+        reviews = Review.objects.filter(picture=picture)
+        context['reviews'] = reviews
+        return context
 
 
 class GalleryListView(ListView):
@@ -90,7 +101,7 @@ def picture_upload_view(request):
         form = PictureForm(request.POST, request.FILES)
 
         if form.is_valid():
-            picture=form.save(commit=False)
+            picture = form.save(commit=False)
             form.save()
             return redirect(reverse('picture_detail', args=[picture.id]))
     else:

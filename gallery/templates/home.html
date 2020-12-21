@@ -27,23 +27,51 @@
     </div>
   </div>
 
-
+  <!-- Dernières photos -->
   <div class="container">
     <h4> <a class="nav-link" href="{% url 'pictures_gallery' 'last' %}">Les dernières photos déposées</a></h4>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
   </div>
+
   <hr>
+
+  <!-- Vos photos -->
   {% if user.is_authenticated %}
   <div class="container">
     <h4> <a class="nav-link" href="{% url 'pictures_gallery' 'user' %}">Vos photos</a></h4>
+    {% if user_pictures %}
     {% with user_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
+    {% else %}
+    <p>Vous n'avez déposé aucune photo, rdv <a href="{% url 'image_upload' %}">ici </a> pour votre premier dépot.</p>
+    {% endif %}
+    <br>
   </div>
   {% endif %}
 
+  <!-- Dernières critiques -->
+  <div class="container">
+    <h4> <a class="nav-link" href="#">Dernières critiques</a></h4>
+    <div class="row">
+      {% for review in last_reviews %}
+      <div class="col-md-2">
+        <div class="card">
+          <div class="item">
+            coucou
+            <a href="{{ review.get_absolute_url }}" alt="{{ review.picture.title }}">
+              <img class="card-img-top rounded mx-auto" alt="photo" src="{{ review.picture.file_name.url }}"
+                data-holder-rendered="true">
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <hr>
 
   <div class="jumbotron">
     <div class="container">

@@ -29,15 +29,14 @@ class Category(models.Model):
 
 # Picture
 class PictureManager(models.Manager):
-    """Methods associated with the Review model (calculate note)"""
+    """Methods associated with the Picture model (calculate note)"""
 
     def update_note_reviews(self, picture, score):
-        count_reviews = Review.objects.filter(
-            picture=picture).count()
+        count_reviews = float(Review.objects.filter(
+            picture=picture).count())
         if count_reviews > 0:
             sum_score_reviews = Review.objects.filter(
                 picture=picture).aggregate(models.Sum('score_global'))
-            print('******', sum_score_reviews)
             return sum_score_reviews['score_global__sum'] / count_reviews
         return 0
 

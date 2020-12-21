@@ -20,23 +20,35 @@
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
             </div>
             <div class="card-body">
-                <div class="row mb-2">
+                <div class="row mb-4">
                     <div class="col-md-5">
-                        <h6>{{ picture.global_score|floatformat:2 }}</h6>
+                        <h6>
+                            {% if picture.global_score > 0 %}
+                            {{ picture.global_score|floatformat:2 }}
+                            {% else %}
+                            Pas de note actuellement
+                            {% endif %}
+                        </h6>
                     </div>
                     <div class="col-md-2">
-                        <a class="btn btn-secondary btn-sm" href="{% url 'review_create' picture.id %}" role="button">Critiquer &raquo;</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'review_create' picture.id %}"
+                            role="button">Critiquer &raquo;</a>
                     </div>
                     <div class="col-md-5">
                         <h6 class="text-right">par {{ picture.user }}</h6>
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
+                    <p class="card-text"><strong>Description: </strong><br>{{ picture.description }} </p>
                 </div>
-                <div class="row mb-2">
-                    <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                <div class="row mb-4">
+                    <p class="card-text"><strong>Technique: </strong><br>{{ picture.description }} </p>
                 </div>
+                {% if reviews %}
+                <div class="row mb-4">
+                    {% include 'reviews_list.html' %}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
