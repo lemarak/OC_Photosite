@@ -21,12 +21,12 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-b4f-!px5s1yz9^(8@cadc7^)1u^e2qxinrx@bj$b1m1to%4vj'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -90,12 +90,12 @@ WSGI_APPLICATION = 'photosite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'photosite',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
@@ -143,9 +143,9 @@ MEDIA_URL = '/media/'
 
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 
-# STATICFILES_FINDERS = [
-#     "django.contrib.staticfiles.finders.FileSystemFinder",
-#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-# ]
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

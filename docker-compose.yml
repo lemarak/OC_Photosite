@@ -1,20 +1,51 @@
 version: '3.8'
 services:
+
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: NGINXDOCKERNAME
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./src:/src
+  #     - ./config/nginx:/etc/nginx/conf.d
+  #     - /static:/static
+  #     - /media:/media
+  #   depends_on:
+  #     - web
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
   web:
     build: .
-    command: python /PhotoSite/manage.py runserver 0.0.0.0:8000
+    # command: python /PhotoSite/manage.py runserver 0.0.0.0:8000
+    command: gunicorn photosite.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/PhotoSite
+      - /static:/static
+      - /media:/media
     ports:
       - 8000:8000
+    # expose:
+    #   - 8000
     depends_on:
       - db
+    env_file:
+      - ./.env.dev
+
   db:
     image: postgres:12
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=photosite
 
 volumes:
   postgres_data:

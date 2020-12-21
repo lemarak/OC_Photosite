@@ -90,8 +90,9 @@ def picture_upload_view(request):
         form = PictureForm(request.POST, request.FILES)
 
         if form.is_valid():
+            picture=form.save(commit=False)
             form.save()
-            return redirect('upload_success')
+            return redirect(reverse('picture_detail', args=[picture.id]))
     else:
         if request.user.is_authenticated:
             form = PictureForm(initial={'user': request.user})
@@ -100,8 +101,8 @@ def picture_upload_view(request):
     return render(request, 'gallery/form_upload_picture.html', {'form': form})
 
 
-def upload_success(request):
-    return HttpResponse('Téléchargement réussi')
+# def upload_success(request):
+#     return HttpResponse('Téléchargement réussi')
 
 
 # Review
