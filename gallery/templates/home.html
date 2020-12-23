@@ -13,8 +13,8 @@
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
-      <h3 class="display-4">Bienvenue {% if user.is_authenticated %}
-        {{ user.username }} {% endif %} sur PhotoSite ! Ici vous pouvez...</h3>
+      <h2 >Bienvenue {% if user.is_authenticated %}
+        <strong>{{ user.username }}</strong> {% endif %} sur PhotoSite ! Ici vous pouvez...</h2>
       <h4>Visualiser les photos déposées par les membres</h4>
       <h4>Proposer une critique constructive</h4>
       <h4>Participer et voter à des concours</h4>
@@ -29,18 +29,16 @@
 
   <!-- Dernières photos -->
   <div class="container">
-    <h4> <a class="nav-link" href="{% url 'pictures_gallery' 'last' %}">Dernières photos</a></h4>
+    <h5> <a class="nav-link" href="{% url 'pictures_gallery' 'last' %}">Dernières photos</a></h5>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
   </div>
 
-  <hr>
-
   <!-- Vos photos -->
   {% if user.is_authenticated %}
   <div class="container">
-    <h4> <a class="nav-link" href="{% url 'pictures_gallery' 'user' %}">Vos photos</a></h4>
+    <h5> <a class="nav-link" href="{% url 'pictures_gallery' 'user' %}">Vos photos</a></h5>
     {% if user_pictures %}
     {% with user_pictures as pictures %}
     {% include 'little_gallery.html' %}
@@ -52,11 +50,9 @@
   </div>
   {% endif %}
 
-  <hr>
-
   <!-- Dernières critiques -->
   <div class="container">
-    <h4> <a class="nav-link" href="#">Dernières critiques</a></h4>
+    <h5> <a class="nav-link" href="#">Dernières critiques</a></h5>
     <div class="row">
       {% for review in last_reviews %}
       <div class="col-md-2">

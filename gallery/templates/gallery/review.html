@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row mb-2">
         <!-- picture -->
-        <div class="col-md-7">
+        <div class="col-md-8">
             <div class="card box-shadow mx-auto">
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}"><img class="card-img-top rounded mx-auto" alt="photo"
@@ -25,7 +25,7 @@
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
                 </div>
                 <div class="card-body">
-                    <div class="row mb-2">
+                    <div class="row mb-4">
                         <div class="col-md-8 text_left">
                             <h5 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }})</h5>
                         </div>
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
 
             <div class="row">
                 <p><strong>Note moyenne de la revue : {{ review.calculated_score }}</strong></p>
