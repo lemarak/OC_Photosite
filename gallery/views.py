@@ -5,8 +5,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import PictureForm, ReviewForm
-from .models import Picture, Category, Review
+from .forms import PictureForm
+from .models import Picture, Category
+from review.models import Review
 
 
 def home_view(request):
@@ -85,16 +86,6 @@ class GalleryListView(ListView):
         return context
 
 
-class ReviewDetail(DetailView):
-    model=Review
-    template_name='gallery/review.html'
-    context_object_name='review'
-
-    def get_context_data(self, **kwargs):
-        context=super(ReviewDetail, self).get_context_data(**kwargs)
-        pk_picture=context['review'].picture.id
-        context['picture']=get_object_or_404(Picture, pk = pk_picture)
-        return context
 
 class CategoryListView(ListView):
     model=Category
@@ -119,49 +110,3 @@ def picture_upload_view(request):
     return render(request, 'gallery/form_upload_picture.html', {'form': form})
 
 
-# def upload_success(request):
-#     return HttpResponse('Téléchargement réussi')
-
-
-# Review
-class ReviewCreate(LoginRequiredMixin, CreateView):
-    model=Review
-    form_class=ReviewForm
-    template_name='gallery/form_review.html'
-
-    def form_valid(self, form):
-        review=form.save(commit = False)
-        user=self.request.user
-        review.user=user
-        picture=get_object_or_404(Picture, pk = self.kwargs['pk'])
-        review.picture=picture
-        # calculate note
-        review.calculated_score=Review.objects.calculate_note_review(review)
-        review.save()
-        picture.global_score=Picture.objects.update_note_reviews(
-            picture, review.calculated_score)
-        picture.save()
-        return HttpResponseRedirect(reverse('review', args=[review.id]))
-
-    def get_context_data(self, **kwargs):
-        context=super(ReviewCreate, self).get_context_data(**kwargs)
-        context['picture']=get_object_or_404(Picture, pk = self.kwargs['pk'])
-        return context
-
-
-# def picture_review_form(request, pk):
-#     """ view upload picture """
-#     picture = get_object_or_404(Picture, pk = pk)
-#     context = {'picture': picture}
-#     if request.method == 'POST':
-#         form = ReviewForm(request.POST, request.FILES)
-
-#         if form.is_valid():
-#             form.save()
-#             return redirect('upload_success')
-#     else:
-#         if request.user.is_authenticated:
-#             form = ReviewForm(initial={'user': request.user, 'picture': picture})
-#         else:
-#             return redirect('login')
-#     return render(request, 'gallery/form_review.html', {'form': form}, context=context)

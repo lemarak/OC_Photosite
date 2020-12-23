@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     # local
     'gallery.apps.GalleryConfig',
     'users.apps.UsersConfig',
+    'review.apps.ReviewConfig',
+    'contest.apps.ContestConfig',
 ]
 
 MIDDLEWARE = [
