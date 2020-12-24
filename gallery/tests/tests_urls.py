@@ -8,12 +8,12 @@ class GalleryUrlTests(SimpleTestCase):
     def test_url_gallery_with_one_parameter(self):
         """test the gallery url."""
         url = reverse('gallery:pictures_list', args=['action'])
-        self.assertEqual(url, '/pictures-gallery/action')
+        self.assertEqual(url, '/pictures/action')
 
     def test_url_gallery_with_two_parametes(self):
         """test the gallery url."""
         url = reverse('gallery:pictures_list', args=['action', 1234])
-        self.assertEqual(url, '/pictures-gallery/action/1234')
+        self.assertEqual(url, '/pictures/action/1234')
 
     def test_url_picture_display(self):
         """test picture display url """

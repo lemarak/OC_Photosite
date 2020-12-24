@@ -7,12 +7,12 @@ class ReviewUrlTests(SimpleTestCase):
 
     def test_url_one_review(self):
         """test the review picture url."""
-        url = reverse('review', args=[1234])
+        url = reverse('review:detail', args=[1234])
         self.assertEqual(url, '/review/detail/1234')
 
     def test_url_create_review_form(self):
         """test the create review form url."""
-        url = reverse('review_create', args=[1234])
+        url = reverse('review:review_create', args=[1234])
         self.assertEqual(url, '/review/create/1234')
 
     # def test_url_update_review_form(self):
