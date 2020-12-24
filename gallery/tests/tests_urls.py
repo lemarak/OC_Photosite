@@ -24,7 +24,7 @@ class GalleryUrlTests(SimpleTestCase):
         """test categories url """
         url = reverse('gallery:categories')
         self.assertEqual(url, '/categories')
-    
+
     def test_url_images_upload_form(self):
         """test image upload form url """
         url = reverse('gallery:image_upload')

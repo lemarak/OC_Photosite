@@ -1,0 +1,8 @@
+[MASTER]
+init-hook='import sys; sys.path.append("/photosite_project")'
+ignore=migrations
+disable=
+    too-few-public-methods,
+    lost-exception,
+    too-many-ancestors,
+    no-member

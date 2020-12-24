@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect, reverse
+# from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.paginator import Paginator
-from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.http import  HttpResponseRedirect
+# from django.core.paginator import Paginator
+# from django.contrib.auth.mixins import LoginRequiredMixin
 
+from review.models import Review
 from .forms import PictureForm
 from .models import Picture, Category
-from review.models import Review
 
 
 def home_view(request):
@@ -82,31 +82,31 @@ class GalleryListView(ListView):
         elif self.kwargs['action'] == 'user':
             context['title'] = 'Photos de %s' % (self.request.user)
         else:
-            context['title'] = 'Photos de %s' % (Category.objects.get(pk=self.kwargs['pk']))
+            context['title'] = 'Photos de %s' % (
+                Category.objects.get(pk=self.kwargs['pk']))
         return context
 
 
-
 class CategoryListView(ListView):
-    model=Category
-    template_name='gallery/categories.html'
-    context_object_name='categories'
+    model = Category
+    template_name = 'gallery/categories.html'
+    context_object_name = 'categories'
 
 # Forms
+
+
 def picture_upload_view(request):
     """ view upload picture """
     if request.method == 'POST':
-        form=PictureForm(request.POST, request.FILES)
+        form = PictureForm(request.POST, request.FILES)
 
         if form.is_valid():
-            picture=form.save(commit = False)
+            picture = form.save(commit=False)
             form.save()
             return redirect(reverse('gallery:picture_detail', args=[picture.id]))
     else:
         if request.user.is_authenticated:
-            form=PictureForm(initial = {'user': request.user})
+            form = PictureForm(initial={'user': request.user})
         else:
             return redirect('login')
     return render(request, 'gallery/form_upload_picture.html', {'form': form})
-
-

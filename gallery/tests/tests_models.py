@@ -1,11 +1,13 @@
+from datetime import datetime, date
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from datetime import datetime, date
-from django.core.files import temp as tempfile
-from django.core.files.base import File
 
-from PIL import Image
-from io import StringIO
+# from django.core.files import temp as tempfile
+# from django.core.files.base import File
+
+# from PIL import Image
+# from io import StringIO
 
 from gallery.models import Category, Picture
 
@@ -33,13 +35,6 @@ class BaseModelTestCase(TestCase):
         )
         cls.category.save()
 
-        # create picture
-        # size = (20, 20)
-        # color = (255, 0, 0, 0)
-        # img = Image.new("RGBA", size, color)
-        # tempfile_io = StringIO()
-        # img.save(tempfile_io, format='JPEG')
-        # image_file = InMemoryUploadedFile(tempfile_io, None, 'test.jpg','image',tempfile_io.len, None)
         cls.picture = Picture(
             title='test_title',
             # file_name=image_file,
