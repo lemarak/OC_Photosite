@@ -6,7 +6,10 @@ from .views import (
     ReviewCreate,
 )
 
+app_name = 'review'
+
 urlpatterns = [
-    path('<int:pk>', ReviewDetail.as_view(), name='review'),
+    path('', ReviewDetail.as_view(), name=''), # to update
+    path('detail/<int:pk>', ReviewDetail.as_view(), name='detail'),
     path('create/<int:pk>', ReviewCreate.as_view(), name='review_create'),
 ]

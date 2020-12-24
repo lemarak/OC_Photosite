@@ -29,7 +29,7 @@
 
   <!-- Dernières photos -->
   <div class="container">
-    <h5> <a class="nav-link" href="{% url 'pictures_gallery' 'last' %}">Dernières photos</a></h5>
+    <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Dernières photos</a></h5>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
@@ -38,13 +38,13 @@
   <!-- Vos photos -->
   {% if user.is_authenticated %}
   <div class="container">
-    <h5> <a class="nav-link" href="{% url 'pictures_gallery' 'user' %}">Vos photos</a></h5>
+    <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'user' %}">Vos photos</a></h5>
     {% if user_pictures %}
     {% with user_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
     {% else %}
-    <p>Vous n'avez déposé aucune photo, rdv <a href="{% url 'image_upload' %}">ici </a> pour votre premier dépot.</p>
+    <p>Vous n'avez déposé aucune photo, rdv <a href="{% url 'gallery:image_upload' %}">ici </a> pour votre premier dépot.</p>
     {% endif %}
     <br>
   </div>

@@ -38,7 +38,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         picture.global_score = Review.objects.update_note_reviews(
             picture, review.calculated_score)
         picture.save()
-        return HttpResponseRedirect(reverse('review', args=[review.id]))
+        return HttpResponseRedirect(reverse('review:detail', args=[review.id]))
 
     def get_context_data(self, **kwargs):
         context = super(ReviewCreate, self).get_context_data(**kwargs)

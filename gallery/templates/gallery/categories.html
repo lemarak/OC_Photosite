@@ -15,7 +15,7 @@
 <div class="container">
     {% for category in categories %}
     <div class="row">
-        <a href="{% url 'pictures_gallery' action='category' pk=category.id %}"><h5>{{ category }}</h5></a>
+        <a href="{% url 'gallery:pictures_list' action='category' pk=category.id %}"><h5>{{ category }}</h5></a>
     </div>
     {% endfor %}
 </div>

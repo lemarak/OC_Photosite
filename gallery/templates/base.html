@@ -31,7 +31,7 @@
 <body>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{% url 'home' %}">Photosite</a>
+        <a class="navbar-brand" href="{% url 'gallery:home' %}">Photosite</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -40,10 +40,10 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'pictures_gallery' 'last' %}">Dernières photos</a>
+                    <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Dernières photos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'categories' %}">Catégories</a>
+                    <a class="nav-link"  href="{% url 'gallery:categories' %}">Catégories</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
@@ -64,7 +64,7 @@
             <ul class="navbar-nav mr-auto pull-right">
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'image_upload' %}"
+                    <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'gallery:image_upload' %}"
                         role="button">Déposer photo</a>
                 </li>
                 <li>

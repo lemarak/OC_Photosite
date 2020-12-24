@@ -7,7 +7,7 @@ from django.core.files.base import File
 from PIL import Image
 from io import StringIO
 
-from gallery.models import Category, Picture, Contest, Review, Vote
+from gallery.models import Category, Picture
 
 
 class BaseModelTestCase(TestCase):
@@ -32,18 +32,6 @@ class BaseModelTestCase(TestCase):
             order_menu=1
         )
         cls.category.save()
-
-        # create contest
-        cls.contest = Contest(
-            title="Concours test",
-            theme="Concours de test",
-            description="Description test",
-            date_begin_upload=date(2020, 12, 1),
-            date_end_upload=date(2020, 12, 31),
-            date_begin_vote=date(2021, 1, 1),
-            date_end_vote=date(2021, 1, 31),
-            date_creation=datetime.now(),
-        )
 
         # create picture
         # size = (20, 20)
@@ -91,7 +79,7 @@ class PictureModelTestCase(BaseModelTestCase):
     def test_picture_category(self):
         """Tests the association of a picture to a category."""
         self.assertTrue(self.category in self.picture.categories.all())
-    
+
     def test_picture_user(self):
         """Tests the association of a picture to an user."""
         self.assertEqual(self.user, self.picture.user)
@@ -101,28 +89,3 @@ class PictureModelTestCase(BaseModelTestCase):
         self.assertEqual(self.picture.get_absolute_url(),
                          '/picture/%s' % self.picture.id
                          )
-
-class ContestModelTestCase(BaseModelTestCase):
-    """Class for testing contest management."""
-
-    def test_create_contest(self):
-        """test the creation of contest."""
-        max_length = self.contest._meta.get_field('title').max_length
-        str_format_date = "%Y-%m-%d"
-        self.assertEqual(self.contest.title, 'Concours test')
-        self.assertEqual(self.contest.description, 'Description test')
-        self.assertEqual(self.contest.date_begin_upload, date(2020, 12, 1))
-        self.assertFalse(self.contest.archived)
-        self.assertEqual(self.contest.date_creation.strftime(
-            str_format_date), datetime.now().strftime(str_format_date))
-        self.assertEqual(max_length, 120)
-
-
-class ReviewModelTestCase(BaseModelTestCase):
-    """Class to test the creation of reviews."""
-    pass
-
-
-class VoteModelTestCase(BaseModelTestCase):
-    """Class to test the creation of votes."""
-    pass

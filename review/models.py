@@ -61,7 +61,7 @@ class Review(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
         return reverse(
-            'review',
+            'review:detail',
             args=[self.id]
         )
 

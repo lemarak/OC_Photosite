@@ -101,7 +101,7 @@ def picture_upload_view(request):
         if form.is_valid():
             picture=form.save(commit = False)
             form.save()
-            return redirect(reverse('picture_detail', args=[picture.id]))
+            return redirect(reverse('gallery:picture_detail', args=[picture.id]))
     else:
         if request.user.is_authenticated:
             form=PictureForm(initial = {'user': request.user})

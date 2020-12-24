@@ -8,13 +8,14 @@ from .views import (home_view,
                      CategoryListView,
                     )
 
+app_name = 'gallery'
 
 urlpatterns = [
     path('', home_view, name='home'),
-    path('pictures-gallery/<str:action>/<int:pk>',
-         GalleryListView.as_view(), name='pictures_gallery'),
-    path('pictures-gallery/<str:action>',
-         GalleryListView.as_view(), name='pictures_gallery'),
+    path('pictures/<str:action>/<int:pk>',
+         GalleryListView.as_view(), name='pictures_list'),
+    path('pictures/<str:action>',
+         GalleryListView.as_view(), name='pictures_list'),
     path('picture/<int:pk>', PictureDisplayView.as_view(), name='picture_detail'),
     path('image-upload', picture_upload_view, name='image_upload'),
     path('categories', CategoryListView.as_view(), name='categories'),

@@ -52,7 +52,7 @@ class Picture(models.Model):
     def get_absolute_url(self):
         """get url page from a picture."""
         return reverse(
-            'picture_detail',
+            'gallery:picture_detail',
             args=[self.id]
         )
 
