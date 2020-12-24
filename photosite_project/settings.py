@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'photosite.urls'
+ROOT_URLCONF = 'photosite_project.urls'
 
 AUTH_USER_MODEL = 'users.CustomUser'  # new
 LOGIN_REDIRECT_URL = 'home'  # new
@@ -82,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'photosite.wsgi.application'
+WSGI_APPLICATION = 'photosite_project.wsgi.application'
 
 
 # Database
