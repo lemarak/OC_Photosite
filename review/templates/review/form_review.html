@@ -29,7 +29,9 @@
                             <h5>{{ picture.title }}</h5>
                         </div>
                         <div class="col-md-5">
-                            <h6 class="text-right">par {{ picture.user }}</h6>
+                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
+                            </a>
                         </div>
                     </div>
                     <div class="row mb-2">

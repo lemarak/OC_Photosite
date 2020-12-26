@@ -30,7 +30,9 @@
                             <h5 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }})</h5>
                         </div>
                         <div class="col-md-4">
-                            <h6 class=" card-text text-right">par {{ picture.user }}</h6>
+                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                <h6 class="text-right">par {{ picture.user }}</h6>
+                            </a>
                         </div>
                     </div>
                     <div class="row mb-2">

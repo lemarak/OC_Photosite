@@ -64,7 +64,7 @@ class ProfilePageTests(TestCase):
             email='test2@example.com',
             password='123test'
         )
-        cls.client_login = Client(HTTP_REFERER=reverse('home'))
+        cls.client_login = Client(HTTP_REFERER=reverse('gallery:home'))
         cls.logged_in = cls.client_login.login(
             username='test2', password='123test')
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 # from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
+from django.contrib.auth import get_user_model
 # from django.http import  HttpResponseRedirect
 # from django.core.paginator import Paginator
 # from django.contrib.auth.mixins import LoginRequiredMixin
@@ -67,8 +68,13 @@ class GalleryListView(ListView):
         if self.kwargs['action'] == 'last':
             pictures = Picture.objects.all()
         elif self.kwargs['action'] == 'user':
-            pictures = Picture.objects.filter(
-                user=self.request.user)
+            if 'pk' in self.kwargs:
+                user = get_user_model()
+                pictures = Picture.objects.filter(
+                    user=user.objects.get(pk=self.kwargs['pk']))
+            else:
+                pictures = Picture.objects.filter(
+                    user=self.request.user)
         elif self.kwargs['action'] == 'category':
             pictures = Picture.objects.filter(
                 categories=Category.objects.get(pk=self.kwargs['pk']))
@@ -80,7 +86,11 @@ class GalleryListView(ListView):
         if self.kwargs['action'] == 'last':
             context['title'] = 'Les dernières photos déposées'
         elif self.kwargs['action'] == 'user':
-            context['title'] = 'Photos de %s' % (self.request.user)
+            if 'pk' in self.kwargs:
+                user = get_user_model()
+                context['title'] = 'Photos de %s' % (user.objects.get(pk=self.kwargs['pk']))
+            else:
+                context['title'] = 'Photos de %s' % (self.request.user)
         else:
             context['title'] = 'Photos de %s' % (
                 Category.objects.get(pk=self.kwargs['pk']))

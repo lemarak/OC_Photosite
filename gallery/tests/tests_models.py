@@ -2,6 +2,7 @@ from datetime import datetime, date
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # from django.core.files import temp as tempfile
 # from django.core.files.base import File
@@ -35,9 +36,18 @@ class BaseModelTestCase(TestCase):
         )
         cls.category.save()
 
+        # create pictures
+        cls.pictures = []
+        small_gif = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
+            b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
+            b'\x02\x4c\x01\x00\x3b'
+        )
         cls.picture = Picture(
             title='test_title',
-            # file_name=image_file,
+            file_name=SimpleUploadedFile(name='small.gif',
+                                         content=small_gif,
+                                         content_type='image/gif'),
             description='test_description',
             technical='test_technical',
             camera='test_camera',
