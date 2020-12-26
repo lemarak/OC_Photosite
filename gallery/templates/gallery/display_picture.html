@@ -31,8 +31,14 @@
                         </h6>
                     </div>
                     <div class="col-md-2">
-                        <a class="btn btn-secondary btn-sm" href="{% url 'review:review_create' picture.id %}"
-                            role="button">Noter &raquo;</a>
+                        {% if noted_by_user %}
+                        <button class="btn btn-secondary btn-sm" disabled>Vous avez déjà noté cette photo</a>
+                            {% elif picture.user == user %}
+                            <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
+                                {% else %}
+                                <a class="btn btn-secondary btn-sm" href="{% url 'review:review_create' picture.id %}"
+                                    role="button">Noter &raquo;</a>
+                                {% endif %}
                     </div>
                     <div class="col-md-5">
                         <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">

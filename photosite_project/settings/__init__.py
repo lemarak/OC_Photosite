@@ -62,8 +62,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'photosite_project.urls'
 
 AUTH_USER_MODEL = 'users.CustomUser'  # new
-LOGIN_REDIRECT_URL = 'home'  # new
-LOGOUT_REDIRECT_URL = 'home'  # new
+LOGIN_REDIRECT_URL = 'gallery:home'  # new
+LOGOUT_REDIRECT_URL = 'gallery:home'  # new
 CRISPY_TEMPLATE_PACK = 'bootstrap4'  # new
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # new
 

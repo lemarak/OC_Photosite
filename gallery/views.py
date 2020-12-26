@@ -39,10 +39,12 @@ class PictureDisplayView(DetailView):
     def get_context_data(self, **kwargs):
         """add reviews in global context."""
         context = super().get_context_data(**kwargs)
-        # id_picture = context['picture'].id
-        # picture = Picture.objects.get(pk=id_picture)
         reviews = Review.objects.filter(picture=context['picture'])
         context['reviews'] = reviews
+        context['noted_by_user'] = reviews.filter(
+             user=self.request.user)
+        # context['noted_by_user'] = Review.objects.filter(
+        #     picture=context['picture'], user=self.request.user)
         return context
 
 
@@ -88,7 +90,8 @@ class GalleryListView(ListView):
         elif self.kwargs['action'] == 'user':
             if 'pk' in self.kwargs:
                 user = get_user_model()
-                context['title'] = 'Photos de %s' % (user.objects.get(pk=self.kwargs['pk']))
+                context['title'] = 'Photos de %s' % (
+                    user.objects.get(pk=self.kwargs['pk']))
             else:
                 context['title'] = 'Photos de %s' % (self.request.user)
         else:

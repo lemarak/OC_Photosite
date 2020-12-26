@@ -3,8 +3,7 @@
 
 from datetime import datetime, date
 
-from PIL import Image
-from django.contrib.auth import get_user_model, get_user
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -150,3 +149,11 @@ class GalleryViewTestCase(BaseViewTestCase):
         self.assertTrue('is_paginated' in response.context)
         self.assertTrue(len(response.context['pictures']) == 1)
         self.assertInHTML("Photos de category_test_1", html)
+
+    def test_display_picture(self):
+        """ test display one picture """
+        url = reverse('gallery:picture_detail', args=[1])
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("test_title_1", html)
