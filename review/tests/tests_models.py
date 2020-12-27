@@ -1,14 +1,16 @@
-from django.test import TestCase
-from django.contrib.auth import get_user_model
+""" models for app review """
+
 from datetime import datetime, date
 
+from django.test import TestCase
+from django.contrib.auth import get_user_model
 
 from review.models import Review
 from gallery.models import Picture
 
 
 class BaseModelTestCase(TestCase):
-
+    """ class SetUp """
     @classmethod
     def setUpClass(cls):
         """Method called to prepare the test fixture."""
@@ -51,7 +53,8 @@ class BaseModelTestCase(TestCase):
         cls.review.calculated_score = Review.objects.calculate_note_review(
             cls.review)
         cls.review.save()
-        cls.picture.global_score = Review.objects.update_note_reviews(cls.picture)
+        cls.picture.global_score = Review.objects.update_note_reviews(
+            cls.picture)
         cls.picture.save()
 
 

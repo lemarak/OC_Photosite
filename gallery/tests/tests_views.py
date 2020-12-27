@@ -12,15 +12,14 @@ from gallery.models import Category, Picture
 
 
 class BaseViewTestCase(TestCase):
-
+    """ class SetUp """
     @classmethod
     def setUpClass(cls):
         """Method called to prepare the test fixture."""
         super(BaseViewTestCase, cls).setUpClass()
 
         # create user
-        User = get_user_model()
-        cls.user = User.objects.create(
+        cls.user =  get_user_model().objects.create(
             username='test',
             email='test@example.com'
         )

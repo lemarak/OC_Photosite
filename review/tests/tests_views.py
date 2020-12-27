@@ -7,8 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-from gallery.models import Category, Picture
-from review.models import Review
+from gallery.models import Picture
 
 
 class BaseViewTestCase(TestCase):
@@ -19,8 +18,7 @@ class BaseViewTestCase(TestCase):
         super(BaseViewTestCase, cls).setUpClass()
 
         # create user
-        User = get_user_model()
-        cls.user = User.objects.create(
+        cls.user = get_user_model().objects.create(
             username='test',
             email='test@example.com'
         )

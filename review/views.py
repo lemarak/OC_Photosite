@@ -1,14 +1,19 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse
+"""  views for app review """
+
+
+from django.shortcuts import get_object_or_404, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import DetailView, ListView
+from django.http import HttpResponseRedirect
+from django.views.generic.edit import CreateView
+from django.views.generic import DetailView
 
 from gallery.models import Picture
 from .models import Review
 from .forms import ReviewForm
 
+
 class ReviewDetail(DetailView):
+    """ view for review detail """
     model = Review
     template_name = 'review/review.html'
     context_object_name = 'review'

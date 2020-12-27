@@ -1,3 +1,5 @@
+""" test models for app gallery """
+
 from datetime import datetime, date
 
 from django.test import TestCase
@@ -14,7 +16,7 @@ from gallery.models import Category, Picture
 
 
 class BaseModelTestCase(TestCase):
-
+    """ class SetUp """
     @classmethod
     def setUpClass(cls):
         """Method called to prepare the test fixture."""
@@ -79,6 +81,7 @@ class PictureModelTestCase(BaseModelTestCase):
     """Class to test the creation of pictures."""
 
     def test_create_picture(self):
+        """ test the default global score """
         self.assertEqual(self.picture.global_score, 0)
 
     def test_picture_category(self):

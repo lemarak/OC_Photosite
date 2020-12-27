@@ -1,10 +1,8 @@
+"""  views for app gallery """
+
 from django.shortcuts import render, redirect, reverse
-# from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.contrib.auth import get_user_model
-# from django.http import  HttpResponseRedirect
-# from django.core.paginator import Paginator
-# from django.contrib.auth.mixins import LoginRequiredMixin
 
 from review.models import Review
 from .forms import PictureForm
@@ -12,9 +10,8 @@ from .models import Picture, Category
 
 
 def home_view(request):
-    # last_pictures = Picture.objects.all()[:6]
+    """  Home Page view """
     context = {'last_pictures': Picture.objects.all()[:6]}
-    # last_reviews = Review.objects.all()[:6]
     context['last_reviews'] = Review.objects.all()[:6]
     if request.user.is_authenticated:
         user_pictures = Picture.objects.filter(user=request.user)[:6]
@@ -42,7 +39,7 @@ class PictureDisplayView(DetailView):
         reviews = Review.objects.filter(picture=context['picture'])
         context['reviews'] = reviews
         context['noted_by_user'] = reviews.filter(
-             user=self.request.user)
+            user=self.request.user)
         # context['noted_by_user'] = Review.objects.filter(
         #     picture=context['picture'], user=self.request.user)
         return context
@@ -101,13 +98,13 @@ class GalleryListView(ListView):
 
 
 class CategoryListView(ListView):
+    """  the view for displaying the list of categories """
     model = Category
     template_name = 'gallery/categories.html'
     context_object_name = 'categories'
 
+
 # Forms
-
-
 def picture_upload_view(request):
     """ view upload picture """
     if request.method == 'POST':
