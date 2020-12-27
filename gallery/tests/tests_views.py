@@ -9,12 +9,6 @@ from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from gallery.models import Category, Picture
-from gallery.views import (
-    home_view,
-    PictureDisplayView,
-    GalleryListView,
-    CategoryListView,
-)
 
 
 class BaseViewTestCase(TestCase):

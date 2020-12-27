@@ -8,17 +8,19 @@ class ReviewManager(models.Manager):
     """Methods associated with the Review model (calculate note)"""
 
     def calculate_note_review(self, review):
+        """ calculate the average score for a review """
         note_review = (review.score_intention + review.score_technical +
                        review.score_picture + review.score_global) / 4
         return note_review
 
-    def update_note_reviews(self, picture, score):
+    def update_note_reviews(self, picture):
+        """ calculate the average review score for a picture """
         count_reviews = float(Review.objects.filter(
             picture=picture).count())
         if count_reviews > 0:
-            sum_score_reviews = Review.objects.filter(
-                picture=picture).aggregate(models.Sum('score_global'))
-            return sum_score_reviews['score_global__sum'] / count_reviews
+            avg_score_reviews = Review.objects.filter(
+                picture=picture).aggregate(models.Avg('calculated_score'))
+            return avg_score_reviews['calculated_score__avg']
         return 0
 
 
@@ -70,4 +72,5 @@ class Review(models.Model):
         return "%s - %s" % (self.picture, self.user)
 
     class Meta:
+        """ Meta for ordering """
         ordering = ['-review_date']

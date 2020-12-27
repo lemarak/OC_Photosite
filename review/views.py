@@ -22,6 +22,7 @@ class ReviewDetail(DetailView):
 
 # Create review
 class ReviewCreate(LoginRequiredMixin, CreateView):
+    """ review creation form """
     model = Review
     form_class = ReviewForm
     template_name = 'review/form_review.html'
@@ -36,7 +37,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         review.calculated_score = Review.objects.calculate_note_review(review)
         review.save()
         picture.global_score = Review.objects.update_note_reviews(
-            picture, review.calculated_score)
+            picture)
         picture.save()
         return HttpResponseRedirect(reverse('review:detail', args=[review.id]))
 
