@@ -26,12 +26,12 @@ services:
     command: gunicorn photosite_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/PhotoSite
-      - /static:/static
-      - /media:/media
+      # - /static:/photosite_project/static
+      # - /media:/media
     ports:
       - 8000:8000
-    # expose:
-    #   - 8000
+    expose:
+      - 8000
     depends_on:
       - db
     env_file:

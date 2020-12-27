@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Les concours {% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h2>Liste des concours</h2>
+    </div>
+</div>
+
+<!-- Concours avec dépot de photos -->
+<div class="container">
+    <h5> Concours ouvert au dépot de photo</a></h5>
+    {% with contest_deposit as contests %}
+    {% for contest in contests %}
+    <a href="{{ contest.get_absolute_url }}" alt="{{ contest }}"><h5>{{ contest }}</h5></a>
+    
+    {% endfor %}
+    {% endwith %}
+</div>
+
+<!-- Concours avec dépot de photos -->
+<div class="container">
+    <h5> Concours ouvert au dépot de photo</a></h5>
+    {% with contest_vote as contests %}
+    {% for contest in contests %}
+    <a href="{{ contest.get_absolute_url }}" alt="{{ contest }}"><h5>{{ contest }}</h5></a>
+    {% endfor %}
+    {% endwith %}
+</div>
+
+<!-- Concours avec dépot de photos -->
+<div class="container">
+    <h5> Concours archivés</a></h5>
+    {% with contest_archived as contests %}
+    {% for contest in contests %}
+    <a href="{{ contest.get_absolute_url }}" alt="{{ contest }}"><h5>{{ contest }}</h5></a>
+    {% endfor %}
+    {% endwith %}
+</div>
+
+{% endblock %}

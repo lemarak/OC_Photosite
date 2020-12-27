@@ -24,3 +24,4 @@ class ReviewUrlTests(SimpleTestCase):
     #     """test the update review form url."""
     #     url = reverse('review_delete', args=[1234])
     #     self.assertEqual(url, '/review/delete/1234')
+    

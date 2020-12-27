@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 from django.db.models import UniqueConstraint
 
 
@@ -24,14 +25,18 @@ class Contest(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
-        pass
+        return reverse(
+            'contest:detail',
+            args=[self.id]
+        )
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
-        return self.title
+        return str(self.title)
 
 
 class ContestPicture(models.Model):
+    """ picture uploaded for a contest """
     class Meta:
         """for primary key."""
         UniqueConstraint(
