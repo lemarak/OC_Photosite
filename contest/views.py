@@ -37,11 +37,12 @@ def contest_detail_view(request, pk_contest):
     # get context
     contest = get_object_or_404(Contest, pk=pk_contest)
     context = {'contest': contest}
-    pictures = contest.pictures.all()
-    context['pictures'] = pictures
+    # pictures = contest.pictures.all()
+    contest_pictures = ContestPicture.objects.filter(contest=contest)
+    context['contest_pictures'] = contest_pictures
 
     # pagination
-    paginator = Paginator(pictures, 6)
+    paginator = Paginator(contest_pictures, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context['paginator'] = paginator
@@ -50,16 +51,20 @@ def contest_detail_view(request, pk_contest):
     return render(request, 'contest/contest_detail.html', context)
 
 
-def user_vote(request, pk_contest, pk_picture):
+def user_vote(request, pk_contest_picture):
     """ User vote for a picture """
     if request.user.is_authenticated:
-
-        Vote.objects.get_or_create(
+        contest_picture = ContestPicture.objects.get(pk=pk_contest_picture)
+        # picture = Picture.objects.get(pk=pk_picture)
+        new_vote, created = Vote.objects.get_or_create(
             user=request.user,
-            contest=Contest.objects.get(pk=pk_contest),
-            picture=Picture.objects.get(pk=pk_picture),
+            contest_picture=contest_picture,
+            # picture=picture,
             score=1
         )
+        if created:
+            contest_picture.score_contest += 1
+            contest_picture.save()
 
         return redirect(request.META.get('HTTP_REFERER'))
 

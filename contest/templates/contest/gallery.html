@@ -1,6 +1,7 @@
 <div class="container">
     <div class="row">
-        {% for picture in pictures %}
+        {% for contest_picture in contest_pictures %}
+        {% with picture=contest_picture.picture %}
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
                 <div class="item">
@@ -25,10 +26,18 @@
                     <p class="card-text">{{ picture.description|truncatewords:15 }} </p>
 
                     {% if contest.vote_open %}
+                    {{ contest_picture.vote_set.all }}
+                    {% if user in contest_picture.vote_set.user.all %}
                     <p><a class="btn btn-secondary btn-sm"
-                            href="{% url 'contest:user_vote' pk_contest=contest.id pk_picture=picture.id %}"
-                            role="button">Voter
+                            href="{% url 'contest:user_vote' contest_picture.id  %}"
+                            role="button">Vous avez déjà voté
                             &raquo;</a></p>
+                    {% else %}
+                    <p><a class="btn btn-secondary btn-sm"
+                        href="{% url 'contest:user_vote' contest_picture.id  %}"
+                        role="button">Voter
+                        &raquo;</a></p>
+                    {% endif %}
                     {% else %}
                     <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
                             photo &raquo;</a></p>
@@ -36,6 +45,7 @@
                 </div>
             </div>
         </div>
+        {% endwith %}
         {% endfor %}
     </div>
     <div class="row">

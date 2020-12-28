@@ -54,6 +54,8 @@ class ContestPicture(models.Model):
     contest = models.ForeignKey('Contest', on_delete=models.CASCADE)
     date_upload = models.DateTimeField(
         verbose_name="Date de dépot photo", auto_now_add=True)
+    score_contest = models.IntegerField(
+        verbose_name="Score concours", null=True, blank=True, default=0)
 
     def __str__(self):
         return "%s - %s" % (self.picture, self.contest)
@@ -68,10 +70,10 @@ class Vote(models.Model):
                                  'picture'], name='contest_picture_user')
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
-    contest = models.ForeignKey(
-        'Contest', on_delete=models.CASCADE)
-    picture = models.ForeignKey(
-        'gallery.Picture', on_delete=models.CASCADE)
+    contest_picture = models.ForeignKey(
+        'ContestPicture', on_delete=models.CASCADE)
+    # picture = models.ForeignKey(
+    #     'gallery.Picture', on_delete=models.CASCADE)
     score = models.IntegerField(
         verbose_name="Note pour une photo et un concours donné")
     date_score = models.DateTimeField(
@@ -79,4 +81,5 @@ class Vote(models.Model):
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
-        return "%s - %s - %s" % (self.user, self.contest, self.picture)
+        return "%s - %s" % (self.user, self.contest_picture)
+
