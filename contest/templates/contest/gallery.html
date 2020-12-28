@@ -4,6 +4,19 @@
         {% with picture=contest_picture.picture %}
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>{{ picture.title|truncatechars:18 }}</h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}">
                         <img class="card-img-top rounded mx-auto" alt="{{ picture.title }}"
@@ -14,34 +27,27 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-7">
-                            <h6>{{ picture.title|truncatechars:18 }}</h6>
-                        </div>
-                        <div class="col-md-5">
-                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
-                            </a>
-                        </div>
+                        <h6>{{ contest_picture.score_contest }} votes</h6>
                     </div>
-                    <p class="card-text">{{ picture.description|truncatewords:15 }} </p>
+                    <p class="card-text">{{ picture.description|truncatewords:12 }} </p>
 
                     {% if contest.vote_open %}
-                    {{ contest_picture.vote_set.all }}
-                    {% if user in contest_picture.vote_set.user.all %}
-                    <p><a class="btn btn-secondary btn-sm"
-                            href="{% url 'contest:user_vote' contest_picture.id  %}"
+                    <!-- {{ contest_picture.vote_set.all }} -->
+                    {% if user in contest_picture.vote_set.all %}
+                    <p><a class="btn btn-secondary btn-sm" href="{% url 'contest:user_vote' contest_picture.id  %}"
                             role="button">Vous avez déjà voté
                             &raquo;</a></p>
-                    {% else %}
-                    <p><a class="btn btn-secondary btn-sm"
-                        href="{% url 'contest:user_vote' contest_picture.id  %}"
-                        role="button">Voter
-                        &raquo;</a></p>
-                    {% endif %}
-                    {% else %}
-                    <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
-                            photo &raquo;</a></p>
-                    {% endif %}
+                    {% elif picture.user == user %}
+                    <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
+                        {% else %}
+                        <p><a class="btn btn-secondary btn-sm" href="{% url 'contest:user_vote' contest_picture.id  %}"
+                                role="button">Voter
+                                &raquo;</a></p>
+                        {% endif %}
+                        {% else %}
+                        <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
+                                photo &raquo;</a></p>
+                        {% endif %}
                 </div>
             </div>
         </div>

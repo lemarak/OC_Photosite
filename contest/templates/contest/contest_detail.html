@@ -48,6 +48,7 @@
 <div class="container">
     {% if contest.deposit %}
     <h5> Photos déjà déposées pour ce concours... </h5>
+    <h6><a href="{% url 'gallery:pictures_list' 'user' %}">Pour participer, choisissez une photo dans votre galerie</a></h6>
     {% elif contest.vote_open %}
     <h5>Vous pouvez voter pour les photos qui vous plaisent...</h5>  
     {% endif %}

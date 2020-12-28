@@ -72,8 +72,6 @@ class Vote(models.Model):
                              on_delete=models.CASCADE)
     contest_picture = models.ForeignKey(
         'ContestPicture', on_delete=models.CASCADE)
-    # picture = models.ForeignKey(
-    #     'gallery.Picture', on_delete=models.CASCADE)
     score = models.IntegerField(
         verbose_name="Note pour une photo et un concours donné")
     date_score = models.DateTimeField(

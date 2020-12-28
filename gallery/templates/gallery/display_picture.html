@@ -24,7 +24,7 @@
                     <div class="col-md-5">
                         <h6>
                             {% if picture.global_score > 0 %}
-                            {{ picture.global_score|floatformat:2 }}
+                            note moyenne: {{ picture.global_score|floatformat:2 }}
                             {% else %}
                             Pas de note actuellement
                             {% endif %}
