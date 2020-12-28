@@ -19,7 +19,7 @@ class Category(models.Model):
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
-        return self.name
+        return str(self.name)
 
 
 # Picture
@@ -45,7 +45,7 @@ class Picture(models.Model):
     upload_date = models.DateTimeField(
         verbose_name="Date de téléchargement", auto_now_add=True)
     categories = models.ManyToManyField(
-        Category, null=True, blank=True, default="")
+        Category)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
 

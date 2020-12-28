@@ -1,15 +1,14 @@
 """ views for app contest """
 
-from datetime import date, datetime
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView
+from django.core.paginator import Paginator
 
-from django.shortcuts import render
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, ListView
-
-
-from .models import Contest
+from gallery.models import Picture
+from .models import Contest, ContestPicture, Vote
 
 # Create your views here.
+
 
 class ContestList(ListView):
     """ list all contests """
@@ -20,23 +19,48 @@ class ContestList(ListView):
     def get_context_data(self, **kwargs):
         """add title in global context."""
         context = super().get_context_data(**kwargs)
-        today = date.today()
-        context['contest_deposit']=Contest.objects.filter(
-            date_begin_upload__lte=today,
-            date_end_upload__gte=today,
-            )
-        context['contest_vote']=Contest.objects.filter(
-            date_begin_vote__lte=today,
-            date_end_vote__gte=today,
-            )
-        context['contest_archived']=Contest.objects.filter(
-            date_end_vote__lte=today,
-            ).order_by('-date_end_vote')
-        print('*** context ***', context)
+        context['contest_deposit'] = Contest.objects.filter(
+            deposit=True
+        )
+        context['contest_vote'] = Contest.objects.filter(
+            vote_open=True
+        )
+        context['contest_archived'] = Contest.objects.filter(
+            archived=True,
+        ).order_by('-date_end_vote')
         return context
 
 
-class ContestDetail(DetailView):
-    model = Contest
-    template_name = 'contest/contest_detail.html'
-    context_object_name = 'contest'
+def contest_detail_view(request, pk_contest):
+    """ get the detail page of a contest
+    with its pictures gallery """
+    # get context
+    contest = get_object_or_404(Contest, pk=pk_contest)
+    context = {'contest': contest}
+    pictures = contest.pictures.all()
+    context['pictures'] = pictures
+
+    # pagination
+    paginator = Paginator(pictures, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context['paginator'] = paginator
+    context['page_obj'] = page_obj
+
+    return render(request, 'contest/contest_detail.html', context)
+
+
+def user_vote(request, pk_contest, pk_picture):
+    """ User vote for a picture """
+    if request.user.is_authenticated:
+
+        Vote.objects.get_or_create(
+            user=request.user,
+            contest=Contest.objects.get(pk=pk_contest),
+            picture=Picture.objects.get(pk=pk_picture),
+            score=1
+        )
+
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    return redirect('login')

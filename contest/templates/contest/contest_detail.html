@@ -6,9 +6,52 @@
 {% block content %}
 <div class="jumbotron">
     <div class="container">
-        <h2>{{ contest }}</h2>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <h2 class="d-flex">{{ contest }}</h2>
+                <h4 class="d-flex">{{ contest.theme }}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card">
+
+                    <div class="item">
+
+                        <img class="card-img-top rounded mx-auto" alt="photo" src="{{ contest.contest_image.url }}"
+                            data-holder-rendered="true">
+                        <!-- <img src="#" class="img-responsive"
+                                style="width: 100%; float: left; margin-right: 10px;" /> -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+
+                <h5>{{ contest.description }}</h5>
+                <br>
+                {% if contest.deposit %}
+                <h5> Concours ouvert au dépot de photo<br>
+                    du {{ contest.date_begin_upload }} au {{ contest.date_end_upload }}.<br><br>
+                    Les votes seront ouverts à partir du {{ contest.date_begin_vote }}</h5>
+
+                {% elif contest.vote_open %}
+                <h5> Concours ouvert vote<br>
+                    du {{ contest.date_begin_vote }} au {{ contest.date_end_vote }}.</h5>                
+                {% endif %}
+            </div>
+
+        </div>
     </div>
 </div>
-
+<div class="container">
+    {% if contest.deposit %}
+    <h5> Photos déjà déposées pour ce concours... </h5>
+    {% elif contest.vote_open %}
+    <h5>Vous pouvez voter pour les photos qui vous plaisent...</h5>  
+    {% endif %}
+    <br>
+</div>
+{% include 'gallery.html' %}
 {% endblock %}
-

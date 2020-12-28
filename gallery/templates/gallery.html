@@ -25,6 +25,10 @@
                     <p class="card-text">{{ picture.description|truncatewords:15 }} </p>
                     <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
                             photo &raquo;</a></p>
+                    {% if contest.vote_open %}
+                    <p><a class="btn btn-secondary btn-sm" href="{% url 'contest:user_vote' pk_contest=contest.id pk_picture=picture.id %}" role="button">Voter
+                            &raquo;</a></p>
+                    {% endif %}
                 </div>
             </div>
         </div>
