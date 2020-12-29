@@ -3,8 +3,10 @@
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import DetailView, ListView
 from django.contrib.auth import get_user_model
+from django.db.models import Exists, OuterRef
 
 from review.models import Review
+from contest.models import ContestPicture
 from .forms import PictureForm
 from .models import Picture, Category
 
@@ -55,6 +57,7 @@ class GalleryListView(ListView):
     **parameter action:**
         - 'last': last pictures
         - 'user': user pictures
+        - 'category' : pictures of one category
     """
 
     template_name = 'gallery/full_gallery.html'
@@ -68,10 +71,12 @@ class GalleryListView(ListView):
             pictures = Picture.objects.all()
         elif self.kwargs['action'] == 'user':
             if 'pk' in self.kwargs:
+                # if other user
                 user = get_user_model()
                 pictures = Picture.objects.filter(
                     user=user.objects.get(pk=self.kwargs['pk']))
             else:
+                # if connected user
                 pictures = Picture.objects.filter(
                     user=self.request.user)
         elif self.kwargs['action'] == 'category':
@@ -91,6 +96,13 @@ class GalleryListView(ListView):
                     user.objects.get(pk=self.kwargs['pk']))
             else:
                 context['title'] = 'Photos de %s' % (self.request.user)
+            # for depot in contest
+            context['contest'] = self.request.GET.get('for_contest', False)
+            if context['contest']:
+                contest_picture = ContestPicture.objects.filter(
+                    picture=OuterRef('pk'), contest=context['contest'])
+                context['pictures'] = context['pictures'].annotate(
+                    contest_picture=Exists(contest_picture))
         else:
             context['title'] = 'Photos de %s' % (
                 Category.objects.get(pk=self.kwargs['pk']))

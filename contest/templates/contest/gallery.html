@@ -26,28 +26,34 @@
                     </a>
                 </div>
                 <div class="card-body">
+                    {% if contest.vote_open %}
                     <div class="row">
-                        <h6>{{ contest_picture.score_contest }} votes</h6>
+                        <h6>
+                            {% if contest_picture.score_contest > 0 %}
+                            {{ contest_picture.score_contest }} vote{{ contest_picture.score_contest|pluralize }}
+                            {% else %}
+                            <i>aucun vote</i>
+                            {% endif %}
+                        </h6>
                     </div>
+                    {% endif %}
                     <p class="card-text">{{ picture.description|truncatewords:12 }} </p>
 
                     {% if contest.vote_open %}
-
-                    {% if user.id in contest_picture.vote_set.all %}
-                    <p><a class="btn btn-secondary btn-sm" href="{% url 'contest:user_vote' contest_picture.id  %}"
-                            role="button">Vous avez déjà voté
-                            &raquo;</a></p>
-                    {% elif picture.user == user %}
-                    <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
-                        {% else %}
-                        <p><a class="btn btn-secondary btn-sm" href="{% url 'contest:user_vote' contest_picture.id  %}"
-                                role="button">Voter
-                                &raquo;</a></p>
-                        {% endif %}
-                        {% else %}
-                        <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
-                                photo &raquo;</a></p>
-                        {% endif %}
+                    {% if contest_picture.vote_user %}
+                    <button class="btn btn-secondary btn-sm" disabled>Déjà voté</a>
+                        {% elif picture.user == user %}
+                        <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
+                            {% else %}
+                            <p><a class="btn btn-secondary btn-sm"
+                                    href="{% url 'contest:user_vote' contest_picture.id  %}" role="button">Voter
+                                    &raquo;</a></p>
+                            {% endif %}
+                            {% else %}
+                            <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}"
+                                    role="button">Voir
+                                    photo &raquo;</a></p>
+                            {% endif %}
                 </div>
             </div>
         </div>

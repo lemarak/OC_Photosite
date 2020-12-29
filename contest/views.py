@@ -3,6 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from django.core.paginator import Paginator
+from django.db.models import Exists, OuterRef
 
 from gallery.models import Picture
 from .models import Contest, ContestPicture, Vote
@@ -37,9 +38,15 @@ def contest_detail_view(request, pk_contest):
     # get context
     contest = get_object_or_404(Contest, pk=pk_contest)
     context = {'contest': contest}
-    # pictures = contest.pictures.all()
+
+    # subquery: add vote_user = True
+    # if the user has already voted for the picture
+    vote_user = Vote.objects.filter(
+        contest_picture=OuterRef('pk'), user=request.user)
+
     contest_pictures = ContestPicture.objects.filter(contest=contest)
-    context['contest_pictures'] = contest_pictures
+    context['contest_pictures'] = contest_pictures.annotate(
+        vote_user=Exists(vote_user))
 
     # pagination
     paginator = Paginator(contest_pictures, 6)
@@ -58,7 +65,7 @@ def user_vote(request, pk_contest_picture):
         # picture = Picture.objects.get(pk=pk_picture)
         new_vote, created = Vote.objects.get_or_create(
             user=request.user,
-            contest_picture=contest_picture,
+            contest_picture_id=pk_contest_picture,
             # picture=picture,
             score=1
         )
@@ -66,6 +73,18 @@ def user_vote(request, pk_contest_picture):
             contest_picture.score_contest += 1
             contest_picture.save()
 
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    return redirect('login')
+
+def add_picture_to_contest(request, pk_contest, pk_picture):
+    """ user add a picture to contest """
+    if request.user.is_authenticated:
+        new_depot = ContestPicture.objects.get_or_create(
+            picture_id=pk_picture,
+            contest_id=pk_contest,
+            score_contest=0
+        )
         return redirect(request.META.get('HTTP_REFERER'))
 
     return redirect('login')

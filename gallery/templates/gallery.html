@@ -1,4 +1,10 @@
 <div class="container">
+
+    {% if contest %}
+    <div class="row mb-4">
+        <h5><a href="{% url 'contest:detail' pk_contest=contest %}">Retour au concours</a></h5>
+    </div>
+    {% endif %}
     <div class="row">
         {% for picture in pictures %}
         <div class="col-md-4">
@@ -24,11 +30,15 @@
                     </div>
                     <p class="card-text">{{ picture.description|truncatewords:15 }} </p>
 
-                    {% if contest.vote_open %}
-                    <p><a class="btn btn-secondary btn-sm"
-                            href="{% url 'contest:user_vote' pk_contest=contest.id pk_picture=picture.id %}"
-                            role="button">Voter
-                            &raquo;</a></p>
+
+                    {% if contest %}
+                        {% if picture.contest_picture %}
+                            <button class="btn btn-secondary btn-sm" disabled>Déjà déposé</a>
+                        {% else %}
+                            <p><a class="btn btn-secondary btn-sm"
+                                    href="{% url 'contest:add_picture_to_contest' pk_contest=contest pk_picture=picture.id %}"
+                                    role="button">Déposer photo &raquo;</a></p>
+                        {% endif %}
                     {% else %}
                     <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
                             photo &raquo;</a></p>
