@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from gallery.models import Picture
 from .models import Review
@@ -25,6 +25,14 @@ class ReviewDetail(DetailView):
         return context
 
 
+class ReviewList(ListView):
+    """list reviews """
+    model = Review
+    template_name = "review/gallery_reviews.html"
+    context_object_name = 'reviews'
+    paginate_by = 6
+
+    
 # Create review
 class ReviewCreate(LoginRequiredMixin, CreateView):
     """ review creation form """

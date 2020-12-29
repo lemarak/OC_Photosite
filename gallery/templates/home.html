@@ -13,8 +13,9 @@
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
-      <h2 >Bienvenue {% if user.is_authenticated %}
-        <strong>{{ user.username }}</strong> {% endif %} sur PhotoSite ! Ici vous pouvez...</h2>
+      <h2>Bienvenue {% if user.is_authenticated %}
+        <strong>{{ user.username }}</strong> {% endif %} sur PhotoSite ! Ici vous pouvez...
+      </h2>
       <h4>Visualiser les photos déposées par les membres</h4>
       <h4>Proposer une critique constructive</h4>
       <h4>Participer et voter à des concours</h4>
@@ -44,7 +45,8 @@
     {% include 'little_gallery.html' %}
     {% endwith %}
     {% else %}
-    <p>Vous n'avez déposé aucune photo, rdv <a href="{% url 'gallery:image_upload' %}">ici </a> pour votre premier dépot.</p>
+    <p>Vous n'avez déposé aucune photo, rdv <a href="{% url 'gallery:image_upload' %}">ici </a> pour votre premier
+      dépot.</p>
     {% endif %}
     <br>
   </div>
@@ -52,7 +54,7 @@
 
   <!-- Dernières critiques -->
   <div class="container">
-    <h5> <a class="nav-link" href="#">Dernières critiques</a></h5>
+    <h5> <a class="nav-link" href="{%  url 'review:list' %}">Dernières critiques</a></h5>
     <div class="row">
       {% for review in last_reviews %}
       <div class="col-md-2">

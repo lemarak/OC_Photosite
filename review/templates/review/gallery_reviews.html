@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Galerie {% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h2>Les critiques ({{ page_obj.paginator.count }} déposées)</h2>
+    </div>
+</div>
+
+
+<div class="container">
+
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="item">
+                    <a href="{{ review.picture.get_absolute_url }}">
+                        <img class="card-img-top rounded mx-auto" alt="{{ review.picture.title }}"
+                            src="{{ review.picture.file_name.url }}" data-holder-rendered="true">
+                        <!-- <img src="#" class="img-responsive"
+                            style="width: 100%; float: left; margin-right: 10px;" /> -->
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h6>{{ review.picture.title|truncatechars:18 }}</h6>
+                        </div>
+                    </div>
+
+                    <p><a class="btn btn-secondary btn-sm" href="{{ review.get_absolute_url }}" role="button">Voir
+                            critique &raquo;</a></p>
+                    <div class="row">
+                        <p>score revue: {{ review.calculated_score }}</p>
+                    </div>
+                    <div class="row">
+                        <p>le {{ review.review_date }}</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p>intention: {{ review.score_intention }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p>technique: {{ review.score_technical }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p>rendu: {{ review.score_picture }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p>global: {{ review.score_global }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {% include 'pagination.html' %}
+    </div>
+
+
+</div> <!-- /container -->
+
+{% endblock %}

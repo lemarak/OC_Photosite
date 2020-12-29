@@ -68,8 +68,10 @@ class GalleryListView(ListView):
         """return pictures,
         Depends on the action parameter"""
         if self.kwargs['action'] == 'last':
+            # last pictures
             pictures = Picture.objects.all()
         elif self.kwargs['action'] == 'user':
+            # user
             if 'pk' in self.kwargs:
                 # if other user
                 user = get_user_model()
@@ -80,6 +82,7 @@ class GalleryListView(ListView):
                 pictures = Picture.objects.filter(
                     user=self.request.user)
         elif self.kwargs['action'] == 'category':
+            # category
             pictures = Picture.objects.filter(
                 categories=Category.objects.get(pk=self.kwargs['pk']))
         return pictures
@@ -103,7 +106,7 @@ class GalleryListView(ListView):
                     picture=OuterRef('pk'), contest=context['contest'])
                 context['pictures'] = context['pictures'].annotate(
                     contest_picture=Exists(contest_picture))
-        else:
+        elif self.kwargs['action'] == 'category':
             context['title'] = 'Photos de %s' % (
                 Category.objects.get(pk=self.kwargs['pk']))
         return context
