@@ -12,11 +12,11 @@ WORKDIR /PhotoSite
 COPY Pipfile Pipfile.lock /PhotoSite/
 RUN pip install pipenv && pipenv install --deploy --system
 
-# # copy entrypoint.sh
-# COPY ./entrypoint.sh .
+# copy entrypoint.sh
+COPY ./entrypoint.sh .
 
 # Copy project
 COPY . /PhotoSite/
 
 # # run entrypoint.sh
-# ENTRYPOINT ["./entrypoint.sh"]
+# ENTRYPOINT ["/PhotoSite/entrypoint.sh"]

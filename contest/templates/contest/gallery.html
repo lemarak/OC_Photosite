@@ -32,8 +32,8 @@
                     <p class="card-text">{{ picture.description|truncatewords:12 }} </p>
 
                     {% if contest.vote_open %}
-                    <!-- {{ contest_picture.vote_set.all }} -->
-                    {% if user in contest_picture.vote_set.all %}
+
+                    {% if user.id in contest_picture.vote_set.all %}
                     <p><a class="btn btn-secondary btn-sm" href="{% url 'contest:user_vote' contest_picture.id  %}"
                             role="button">Vous avez déjà voté
                             &raquo;</a></p>
