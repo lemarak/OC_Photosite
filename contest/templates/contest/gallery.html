@@ -61,7 +61,15 @@
         {% endfor %}
     </div>
     <div class="row">
-        {% include 'pagination.html' %}
+    {% if request.GET.order_by %}
+        {% with "&order_by="|add:request.GET.order_by as order_by %}
+            {% include 'pagination.html' %}
+        {% endwith %}
+    {% else %}
+        {% with "" as order_by %}
+            {% include 'pagination.html' %}
+        {% endwith %}
+    {% endif %}
     </div>
 
 

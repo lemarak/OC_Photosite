@@ -8,11 +8,11 @@
                 <!-- <span class="step-links"> -->
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link text-white bg-secondary" href="?page=1">&laquo; première</a>
+                    <a class="page-link text-white bg-secondary" href="?page=1{{ order_by }}">&laquo; première</a>
                 </li>
                 <li class="page-item">
                     <a class="page-link text-white bg-secondary"
-                        href="?page={{ page_obj.previous_page_number }}">précédent</a>
+                        href="?page={{ page_obj.previous_page_number }}{{ order_by }}">précédent</a>
                 </li>
                 {% endif %}
 
@@ -24,9 +24,9 @@
 
                 {% if page_obj.has_next %}
                 <li class="page-item"><a class="page-link text-white bg-secondary"
-                        href="?page={{ page_obj.next_page_number }}">suivant</a></li>
+                        href="?page={{ page_obj.next_page_number }}{{ order_by }}">suivant</a></li>
                 <li class="page-item"><a class="page-link text-white bg-secondary"
-                        href="?page={{ page_obj.paginator.num_pages }}">dernière
+                        href="?page={{ page_obj.paginator.num_pages }}{{ order_by }}">dernière
                         &raquo;</a>
                 </li>
                 {% endif %}

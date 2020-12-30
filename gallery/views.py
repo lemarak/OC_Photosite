@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Exists, OuterRef
 
 from review.models import Review
-from contest.models import ContestPicture
+from contest.models import ContestPicture, Contest
 from .forms import PictureForm
 from .models import Picture, Category
 
@@ -18,6 +18,7 @@ def home_view(request):
     if request.user.is_authenticated:
         user_pictures = Picture.objects.filter(user=request.user)[:6]
         context['user_pictures'] = user_pictures
+    context['contests'] = Contest.objects.all().order_by('-date_creation')[:3]
     return render(request, 'home.html', context)
 
 
@@ -41,7 +42,7 @@ class PictureDisplayView(DetailView):
         picture = context['picture']
         reviews = Review.objects.filter(picture=picture)
         # pour corriger bug si delete review (score ne se met pas à jour)
-        # trouver solution
+        # trouver autre solution
         picture.global_score = Review.objects.update_note_reviews(
             picture)
         picture.save()
@@ -74,16 +75,19 @@ class GalleryListView(ListView):
     def get_queryset(self):
         """return pictures,
         Depends on the action parameter"""
+        order_by = self.request.GET.get('order_by', '-upload_date')
         if self.kwargs['action'] == 'last':
             # last pictures
-            pictures = Picture.objects.all()
+            pictures = Picture.objects.all().order_by(order_by)
+
         elif self.kwargs['action'] == 'user':
             # user
             if 'pk' in self.kwargs:
                 # if other user
                 user = get_user_model()
                 pictures = Picture.objects.filter(
-                    user=user.objects.get(pk=self.kwargs['pk']))
+                    user=user.objects.get(pk=self.kwargs['pk'])
+                ).order_by(order_by)
             elif self.request.user.is_authenticated:
                 # if connected user
                 pictures = Picture.objects.filter(
@@ -91,21 +95,26 @@ class GalleryListView(ListView):
         elif self.kwargs['action'] == 'category':
             # category
             pictures = Picture.objects.filter(
-                categories=Category.objects.get(pk=self.kwargs['pk']))
+                categories=Category.objects.get(pk=self.kwargs['pk'])
+            ).order_by(order_by)
         return pictures
 
     def get_context_data(self, **kwargs):
         """add title in global context."""
         context = super().get_context_data(**kwargs)
+        context['action'] = self.kwargs['action']
         if self.kwargs['action'] == 'last':
             context['title'] = 'Les dernières photos déposées'
+
         elif self.kwargs['action'] == 'user':
             if 'pk' in self.kwargs:
                 user = get_user_model()
-                context['title'] = 'Photos de %s' % (
-                    user.objects.get(pk=self.kwargs['pk']))
+                user_request = user.objects.get(pk=self.kwargs['pk'])
+                context['title'] = 'Photos de %s' % (user_request)
+                context['user_id'] = user_request.id
             else:
                 context['title'] = 'Photos de %s' % (self.request.user)
+                context['user_id'] = self.request.user.id
             # for depot in contest
             context['contest'] = self.request.GET.get('for_contest', False)
             if context['contest']:
@@ -116,6 +125,7 @@ class GalleryListView(ListView):
         elif self.kwargs['action'] == 'category':
             context['title'] = 'Photos de %s' % (
                 Category.objects.get(pk=self.kwargs['pk']))
+            context['category_id'] = self.kwargs['pk']
         return context
 
 

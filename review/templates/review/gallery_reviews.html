@@ -27,31 +27,34 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col">
                             <h6>{{ review.picture.title|truncatechars:18 }}</h6>
                         </div>
+                        <div class="col">
+                            <span class="badge badge-secondary">score : {{ review.calculated_score }}</span>
+                        </div>
                     </div>
+                    <div class="row text-center">
+                        <p><a class="btn btn-secondary btn-sm" href="{{ review.get_absolute_url }}" role="button">Voir
+                                critique &raquo;</a></p>
 
-                    <p><a class="btn btn-secondary btn-sm" href="{{ review.get_absolute_url }}" role="button">Voir
-                            critique &raquo;</a></p>
-                    <div class="row">
-                        <p>score revue: {{ review.calculated_score }}</p>
+
                     </div>
                     <div class="row">
-                        <p>le {{ review.review_date }}</p>
+                        <p>le {{ review.review_date|date:"d-m-Y" }}</p>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <p>intention: {{ review.score_intention }}</p>
+                            <span class="badge badge-info">int: {{ review.score_intention }}</span>
                         </div>
                         <div class="col-md-3">
-                            <p>technique: {{ review.score_technical }}</p>
+                            <span class="badge badge-info">tec: {{ review.score_technical }}</span>
                         </div>
                         <div class="col-md-3">
-                            <p>rendu: {{ review.score_picture }}</p>
+                            <span class="badge badge-info">ren: {{ review.score_picture }}</span>
                         </div>
                         <div class="col-md-3">
-                            <p>global: {{ review.score_global }}</p>
+                            <span class="badge badge-info">glo: {{ review.score_global }}</span>
                         </div>
                     </div>
                 </div>
@@ -60,7 +63,15 @@
         {% endfor %}
     </div>
     <div class="row">
-        {% include 'pagination.html' %}
+    {% if request.GET.order_by %}
+        {% with "&order_by="|add:request.GET.order_by as order_by %}
+            {% include 'pagination.html' %}
+        {% endwith %}
+    {% else %}
+        {% with "" as order_by %}
+            {% include 'pagination.html' %}
+        {% endwith %}
+    {% endif %}
     </div>
 
 

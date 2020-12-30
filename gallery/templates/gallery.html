@@ -2,9 +2,30 @@
 
     {% if contest %}
     <div class="row mb-4">
-        <h5><a href="{% url 'contest:detail' pk_contest=contest %}">Retour au concours</a></h5>
+        <div class="col-8">
+            <h5><a href="{% url 'contest:detail' pk_contest=contest %}">Retour au concours</a></h5>
+        </div>
     </div>
     {% endif %}
+
+    <!-- Order by -->
+    <div class="row mb-4">
+        <div class="col-8"></div>
+        <div class="col-4">
+            <ul class="list-inline">
+                {% if action == 'last' %}
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}" alt="par date">par date</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}?order_by=-global_score" alt="par note">par note</a></li>
+                {% elif action == 'user' %}
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}" alt="par date">par date</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}?order_by=-global_score" alt="par note">par note</a></li>
+                {% elif action == 'category' %}
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action category_id %}" alt="par date">par date</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action category_id %}?order_by=-global_score" alt="par note">par note</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
     <div class="row">
         {% for picture in pictures %}
         <div class="col-md-4">
@@ -19,10 +40,13 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <h6>{{ picture.title|truncatechars:18 }}</h6>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-2">
+                            <span class="badge badge-secondary">{{ picture.global_score }}</span>
+                        </div>
+                        <div class="col-md-4">
                             <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
                                 <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
                             </a>
@@ -32,24 +56,33 @@
 
 
                     {% if contest %}
-                        {% if picture.contest_picture %}
-                            <button class="btn btn-secondary btn-sm" disabled>Déjà déposé</a>
+                    {% if picture.contest_picture %}
+                    <button class="btn btn-secondary btn-sm" disabled>Déjà déposé</a>
                         {% else %}
-                            <p><a class="btn btn-secondary btn-sm"
-                                    href="{% url 'contest:add_picture_to_contest' pk_contest=contest pk_picture=picture.id %}"
-                                    role="button">Déposer photo &raquo;</a></p>
+                        <p><a class="btn btn-secondary btn-sm"
+                                href="{% url 'contest:add_picture_to_contest' pk_contest=contest pk_picture=picture.id %}"
+                                role="button">Déposer photo &raquo;</a></p>
                         {% endif %}
-                    {% else %}
-                    <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
-                            photo &raquo;</a></p>
-                    {% endif %}
+                        {% else %}
+                        <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
+                                photo &raquo;</a></p>
+                        {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     <div class="row">
+        {% if request.GET.order_by %}
+        {% with "&order_by="|add:request.GET.order_by as order_by %}
         {% include 'pagination.html' %}
+        {% endwith %}
+        {% else %}
+        {% with "" as order_by %}
+        {% include 'pagination.html' %}
+        {% endwith %}
+        {% endif %}
+
     </div>
 
 

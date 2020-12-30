@@ -30,7 +30,7 @@
 
   <!-- Dernières photos -->
   <div class="container">
-    <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Dernières photos</a></h5>
+    <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Photos les plus récentes</a></h5>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
@@ -61,13 +61,13 @@
         <div class="card">
           <div class="item">
             <a href="{{ review.get_absolute_url }}" alt="{{ review.picture.title }}">
-              <img class="card-img-top rounded mx-auto" alt="photo" src="{{ review.picture.file_name.url }}"
+              <img class="card-img-top mx-auto" alt="photo" src="{{ review.picture.file_name.url }}"
                 data-holder-rendered="true">
             </a>
           </div>
-          <div class="item">
-            <p>{{ review.calculated_score }} par {{ review.user }}</p>
-            <p></p>
+
+          <div class="item text-center">
+            <span class="badge badge-secondary">{{ review.calculated_score }} par {{ review.user }}</span>
           </div>
         </div>
       </div>
@@ -76,11 +76,18 @@
   </div>
   <hr>
 
-  <div class="jumbotron">
-    <div class="container">
-      <h4>Concours</h4>
-    </div>
+  <!-- Derniers concours -->
+
+  <div class="container">
+    <h5>Concours récents</h5>
+    <ul>
+      {% for contest in contests %}
+      <li><a href ="{% url 'contest:detail' contest.id %}">{{ contest }}</a> <span class="badge badge-secondary">{{contest.pictures.all|length }} photos</span></li>
+      {% endfor %}
+      <li><a href ="{% url 'contest:list' %}">autres...</a></li>
+    </ul>
   </div>
+
 
 </main>
 
