@@ -13,7 +13,10 @@
         <div class="col-8"></div>
         <div class="col-4">
             <ul class="list-inline">
-                {% if action == 'last' %}
+                {% if contest %}
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}?for_contest={{ contest }}" alt="par date">par date</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}?order_by=-global_score&for_contest={{ contest }}" alt="par note">par note</a></li>
+                {% elif action == 'last' %}
                 <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}" alt="par date">par date</a></li>
                 <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}?order_by=-global_score" alt="par note">par note</a></li>
                 {% elif action == 'user' %}
@@ -32,7 +35,7 @@
             <div class="card mb-4 box-shadow">
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}">
-                        <img class="card-img-top rounded mx-auto" alt="{{ picture.title }}"
+                        <img class="card-img-top mx-auto" alt="{{ picture.title }}"
                             src="{{ picture.file_name.url }}" data-holder-rendered="true">
                         <!-- <img src="#" class="img-responsive"
                             style="width: 100%; float: left; margin-right: 10px;" /> -->

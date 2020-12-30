@@ -35,6 +35,9 @@ class ContestList(ListView):
 def contest_detail_view(request, pk_contest):
     """ get the detail page of a contest
     with its pictures gallery """
+
+    # get param order_by
+    order_by = request.GET.get('order_by', '-date_upload')
     # get context
     contest = get_object_or_404(Contest, pk=pk_contest)
     context = {'contest': contest}
@@ -48,10 +51,10 @@ def contest_detail_view(request, pk_contest):
 
         
         context['contest_pictures'] = contest_pictures.annotate(
-            vote_user=Exists(vote_user))
+            vote_user=Exists(vote_user)).order_by(order_by)
     else:
         context['contest_pictures'] = ContestPicture.objects.filter(
-            contest=contest)
+            contest=contest).order_by(order_by)
 
     # pagination
     paginator = Paginator(contest_pictures, 6)

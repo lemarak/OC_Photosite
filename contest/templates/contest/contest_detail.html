@@ -19,7 +19,7 @@
 
                     <div class="item">
 
-                        <img class="card-img-top rounded mx-auto" alt="photo" src="{{ contest.contest_image.url }}"
+                        <img class="card-img-top mx-auto" alt="photo" src="{{ contest.contest_image.url }}"
                             data-holder-rendered="true">
                         <!-- <img src="#" class="img-responsive"
                                 style="width: 100%; float: left; margin-right: 10px;" /> -->
@@ -38,7 +38,7 @@
 
                 {% elif contest.vote_open %}
                 <h5> Concours ouvert vote<br>
-                    du {{ contest.date_begin_vote }} au {{ contest.date_end_vote }}.</h5>                
+                    du {{ contest.date_begin_vote }} au {{ contest.date_end_vote }}.</h5>
                 {% endif %}
             </div>
 
@@ -48,14 +48,28 @@
 <div class="container">
     {% if contest.deposit %}
     {% if user.is_authenticated %}
-    <h6><a href="{% url 'gallery:pictures_list' 'user' %}?for_contest={{contest.id}}">Pour participer, choisissez une photo dans votre galerie</a></h6>
+    <h6><a href="{% url 'gallery:pictures_list' 'user' %}?for_contest={{contest.id}}">Pour participer, choisissez une
+            photo dans votre galerie</a></h6>
     {% endif %}
-    <h5> Photos déjà déposées pour ce concours... </h5>
-    
+    <div class="row">
+        <div class="col-8">
+            <h5> Photos déjà déposées pour ce concours... </h5>
+        </div>
+    </div>
     {% elif contest.vote_open %}
 
-    <h5>Vous pouvez voter pour les photos qui vous plaisent...</h5>  
-    
+    <div class="row">
+        <div class="col-8">
+            <h5>Vous pouvez voter pour les photos qui vous plaisent...</h5>
+        </div>
+        <div class="col-4">
+            <li class="list-inline-item"><a href="{{ contest.get_absolute_url }}"
+                    alt="par date">par date</a></li>
+            <li class="list-inline-item"><a
+                    href="{{ contest.get_absolute_url }}?order_by=-score_contest"
+                    alt="par note">par vote</a></li>
+        </div>
+    </div>
     {% endif %}
     <br>
 </div>
