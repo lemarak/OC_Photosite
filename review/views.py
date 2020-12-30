@@ -1,10 +1,11 @@
 """  views for app review """
 
-
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, reverse
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 
 from gallery.models import Picture
@@ -32,13 +33,20 @@ class ReviewList(ListView):
     context_object_name = 'reviews'
     paginate_by = 6
 
-    
+
 # Create review
 class ReviewCreate(LoginRequiredMixin, CreateView):
     """ review creation form """
     model = Review
     form_class = ReviewForm
     template_name = 'review/form_review.html'
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.accepts('text/html'):
+            return response
+        else:
+            return JsonResponse(form.errors, status=400)
 
     def form_valid(self, form):
         review = form.save(commit=False)
@@ -52,9 +60,49 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         picture.global_score = Review.objects.update_note_reviews(
             picture)
         picture.save()
-        return HttpResponseRedirect(reverse('review:detail', args=[review.id]))
+        comment = "La critique est bien enregistrée."
+        url = "%s?comment=%s" % (
+            reverse('review:detail', args=[review.id]), comment)
+        return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):
         context = super(ReviewCreate, self).get_context_data(**kwargs)
         context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk'])
         return context
+
+
+class ReviewUpdate(LoginRequiredMixin, UpdateView):
+    """ review creation form """
+    model = Review
+    form_class = ReviewForm
+    template_name = 'review/form_review.html'
+    context_object_name = 'review'
+
+    def form_valid(self, form):
+        # calculate note
+        review = form.save(commit=False)
+        review.calculated_score = Review.objects.calculate_note_review(review)
+        review.save()
+        review.picture.global_score = Review.objects.update_note_reviews(
+            review.picture)
+        review.picture.save()
+        comment = "La critique est bien enregistrée."
+        url = "%s?comment=%s" % (
+            reverse('review:detail', args=[review.id]), comment)
+        return HttpResponseRedirect(url)
+
+    def get_context_data(self, **kwargs):
+        context = super(ReviewUpdate, self).get_context_data(**kwargs)
+        context['picture'] = context['review'].picture
+        return context
+
+
+class ReviewDelete(LoginRequiredMixin, DeleteView):
+    """ delete a review """
+    model = Review
+
+    def get_success_url(self):
+        """ succes url """
+        picture = self.object.picture
+        return reverse_lazy('gallery:picture_detail', args=[picture.id])
+

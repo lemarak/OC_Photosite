@@ -23,16 +23,13 @@ class ReviewForm(forms.ModelForm):
             # 'score_intention': forms.RadioSelect(),
             'comment_intention': forms.Textarea(attrs={
                 'rows': '2',
-                'placeholder': """La compréhension de l\'intention du photographe
-                        (objective et subjective)..."""}),
+                'placeholder': """La compréhension de l\'intention du photographe (objective et subjective)..."""}),
             'comment_technical': forms.Textarea(attrs={
                 'rows': '2',
-                'placeholder': """Maitrise technique (cadrage, choix Iso, ouverture, traitement N&B,
-                            gestion des couleurs...). Subjectif..."""}),
+                'placeholder': """Maitrise technique (cadrage, choix Iso, ouverture, traitement N&B, gestion des couleurs...). Subjectif..."""}),
             'comment_picture': forms.Textarea(attrs={
                 'rows': '2',
-                'placeholder': """Principalement la composition et le cadrage.
-                        L\'appréciation est à la fois objective et subjective..."""}),
+                'placeholder': """Principalement la composition et le cadrage. L\'appréciation est à la fois objective et subjective..."""}),
             'comment_global': forms.Textarea(attrs={
                 'rows': '2',
                 'placeholder': 'Impression générale...'})

@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} {{ picture.title }} {% endblock %}
+{% block title %} Critique de {{ picture.title }} {% endblock %}
 
 {% block content %}
 <div class="jumbotron">
     <div class="container">
         <h2>{{ picture.title }} par {{ picture.user }}</h2>
 
-        <h4>Revue de {{ review.user }}</h4>
+        <h4>Critique de {{ review.user }}</h4>
+        {{ request.GET.comment }}
 
     </div>
 </div>
@@ -27,12 +28,15 @@
                 <div class="card-body">
                     <div class="row mb-4">
                         <div class="col-md-8 text_left">
-                            <h5 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }})</h5>
+                            <h6 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }}) (par
+                                <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                    {{ picture.user }}</a>)
+                            </h6>
                         </div>
                         <div class="col-md-4">
-                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                <h6 class="text-right">par {{ picture.user }}</h6>
-                            </a>
+
+                            <h6 class="text-right">Critique de {{ review.user }}</h6>
+
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -50,6 +54,8 @@
             <div class="row">
                 <p><strong>Note moyenne de la revue : {{ review.calculated_score }}</strong></p>
             </div>
+
+            
             <div class="row">
                 <p><strong>Note intention : {{ review.score_intention }}</strong> <br> {{ review.comment_intention }}
                 </p>
@@ -64,6 +70,16 @@
             <div class="row">
                 <p><strong>Note globale : {{ review.score_global }}</strong> <br> {{ review.comment_global }}</p>
             </div>
+            {% if review.user == user %}
+            <div class="row">
+                <p><a class="btn btn-secondary btn-sm" href="{% url 'review:review_update' pk=review.pk %}" role="button">Modifier
+                        critique &raquo;</a></p>
+            </div>
+            <div class="row">
+                <p><a class="btn btn-secondary btn-sm" href="{% url 'review:review_delete' pk=review.pk %}" role="button">Supprimer
+                        critique &raquo;</a></p>
+            </div>
+            {% endif %}
         </div>
 
     </div>

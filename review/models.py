@@ -35,13 +35,13 @@ class Review(models.Model):
         (5, '5 - excellent')
     )
     score_intention = models.IntegerField(
-        verbose_name="note intention", blank=True, default=0, choices=SCORE)
+        verbose_name="note intention",  choices=SCORE)
     score_technical = models.IntegerField(
-        verbose_name="note technique", blank=True, default=0, choices=SCORE)
+        verbose_name="note technique",  choices=SCORE)
     score_picture = models.IntegerField(
-        verbose_name="note rendu image", blank=True, default=0, choices=SCORE)
+        verbose_name="note rendu image", choices=SCORE)
     score_global = models.IntegerField(
-        verbose_name="note globale", blank=True, default=0, choices=SCORE)
+        verbose_name="note globale", choices=SCORE)
     comment_intention = models.TextField(
         verbose_name="Commentaire intention", blank=True)
     comment_technical = models.TextField(

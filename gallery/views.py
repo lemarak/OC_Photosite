@@ -38,7 +38,14 @@ class PictureDisplayView(DetailView):
     def get_context_data(self, **kwargs):
         """add reviews in global context."""
         context = super().get_context_data(**kwargs)
-        reviews = Review.objects.filter(picture=context['picture'])
+        picture = context['picture']
+        reviews = Review.objects.filter(picture=picture)
+        # pour corriger bug si delete review (score ne se met pas à jour)
+        # trouver solution
+        picture.global_score = Review.objects.update_note_reviews(
+            picture)
+        picture.save()
+        
         context['reviews'] = reviews
         context['noted_by_user'] = reviews.filter(
             user=self.request.user)

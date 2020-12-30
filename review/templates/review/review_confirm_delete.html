@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Suppression de la critique {% endblock %}
+
+{% block content %}
+
+
+<div class="jumbotron">
+    <div class="container">
+        <h2>Supprimer critique</h2>
+    </div>
+</div>
+
+<div class="container">
+    <p>Etes vous sur de vouloir supprimer la critique ?</p>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" action="" value="Oui, supprimer." />
+    </form>
+    <br>
+</div>
+{% endblock %}
