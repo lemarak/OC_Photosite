@@ -47,8 +47,9 @@
 </div>
 <div class="container">
     {% if contest.deposit %}
-
+    {% if user.is_authenticated %}
     <h6><a href="{% url 'gallery:pictures_list' 'user' %}?for_contest={{contest.id}}">Pour participer, choisissez une photo dans votre galerie</a></h6>
+    {% endif %}
     <h5> Photos déjà déposées pour ce concours... </h5>
     
     {% elif contest.vote_open %}

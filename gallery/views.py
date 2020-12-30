@@ -45,12 +45,12 @@ class PictureDisplayView(DetailView):
         picture.global_score = Review.objects.update_note_reviews(
             picture)
         picture.save()
-        
+
         context['reviews'] = reviews
-        context['noted_by_user'] = reviews.filter(
-            user=self.request.user)
-        # context['noted_by_user'] = Review.objects.filter(
-        #     picture=context['picture'], user=self.request.user)
+        if self.request.user.is_authenticated:
+            context['noted_by_user'] = reviews.filter(
+                user=self.request.user)
+
         return context
 
 
@@ -84,7 +84,7 @@ class GalleryListView(ListView):
                 user = get_user_model()
                 pictures = Picture.objects.filter(
                     user=user.objects.get(pk=self.kwargs['pk']))
-            else:
+            elif self.request.user.is_authenticated:
                 # if connected user
                 pictures = Picture.objects.filter(
                     user=self.request.user)

@@ -41,12 +41,17 @@ def contest_detail_view(request, pk_contest):
 
     # subquery: add vote_user = True
     # if the user has already voted for the picture
-    vote_user = Vote.objects.filter(
-        contest_picture=OuterRef('pk'), user=request.user)
-
     contest_pictures = ContestPicture.objects.filter(contest=contest)
-    context['contest_pictures'] = contest_pictures.annotate(
-        vote_user=Exists(vote_user))
+    if request.user.is_authenticated:
+        vote_user = Vote.objects.filter(
+            contest_picture=OuterRef('pk'), user=request.user)
+
+        
+        context['contest_pictures'] = contest_pictures.annotate(
+            vote_user=Exists(vote_user))
+    else:
+        context['contest_pictures'] = ContestPicture.objects.filter(
+            contest=contest)
 
     # pagination
     paginator = Paginator(contest_pictures, 6)
@@ -76,6 +81,7 @@ def user_vote(request, pk_contest_picture):
         return redirect(request.META.get('HTTP_REFERER'))
 
     return redirect('login')
+
 
 def add_picture_to_contest(request, pk_contest, pk_picture):
     """ user add a picture to contest """

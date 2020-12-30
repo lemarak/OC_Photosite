@@ -32,7 +32,8 @@
                     </div>
                     <div class="col-md-2">
                         {% if noted_by_user %}
-                        <button class="btn btn-secondary btn-sm" disabled>Vous avez déjà noté cette photo</a>
+                            <a class="btn btn-secondary btn-sm" href="{% url 'review:review_update' pk=noted_by_user.0.id %}"
+                                    role="button">Modifier votre critique &raquo;</a>
                             {% elif picture.user == user %}
                             <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
                                 {% else %}
