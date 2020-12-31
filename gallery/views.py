@@ -104,7 +104,7 @@ class GalleryListView(ListView):
         context = super().get_context_data(**kwargs)
         context['action'] = self.kwargs['action']
         if self.kwargs['action'] == 'last':
-            context['title'] = 'Les dernières photos déposées'
+            context['title'] = 'Galerie photo'
 
         elif self.kwargs['action'] == 'user':
             if 'pk' in self.kwargs:

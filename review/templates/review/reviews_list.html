@@ -1,8 +1,5 @@
 <div class="container">
     <div class="row">
-        <h4>Critiques</h4>
-    </div>
-    <div class="row">
         <ul class="list-group-flush">
         {% for review in reviews %}
         <li class="list-group-item"><strong>Critique de {{ review.user }} : note ( {{ review.calculated_score }})</strong>

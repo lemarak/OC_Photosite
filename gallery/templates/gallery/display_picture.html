@@ -53,13 +53,15 @@
                 <div class="row mb-4">
                     <p class="card-text"><strong>Technique: </strong><br>{{ picture.description }} </p>
                 </div>
-                {% if reviews %}
-                <div class="row mb-4">
-                    {% include 'review/reviews_list.html' %}
-                </div>
-                {% endif %}
+
             </div>
+
         </div>
+        {% if reviews %}
+
+        {% include 'review/reviews_list.html' %}
+
+    {% endif %}
     </div>
 </div>
 {% endblock %}

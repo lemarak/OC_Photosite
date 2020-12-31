@@ -22,7 +22,7 @@ class CreateReviewFormTests(SimpleTestCase):
         })
 
         self.assertEqual(
-            form.errors['score_global'][0], "Sélectionnez un choix valide. 0 n’en fait pas partie."
+            form.errors['score_global'][0], "Ce champ est obligatoire."
         )
 
     def test_review_forms_all_score(self):
