@@ -1,22 +1,14 @@
 version: '3.8'
 services:
 
-  # nginx:
-  #   image: nginx:latest
-  #   container_name: NGINXDOCKERNAME
-  #   ports:
-  #     - "8000:8000"
-  #   volumes:
-  #     - ./src:/src
-  #     - ./config/nginx:/etc/nginx/conf.d
-  #     - /static:/static
-  #     - /media:/media
-  #   depends_on:
-  #     - web
   nginx:
     build: ./nginx
     ports:
       - 1337:80
+    volumes:
+      - .:/PhotoSite
+      - /static:/photosite_project/static
+      - /media:/photosite_project/media
     depends_on:
       - web
 
@@ -28,8 +20,8 @@ services:
       - .:/PhotoSite
       - /static:/photosite_project/static
       - /media:/photosite_project/media
-    ports:
-      - 8000:8000
+    # ports:
+    #   - 8000:8000
     expose:
       - 8000
     depends_on:
@@ -48,3 +40,5 @@ services:
 
 volumes:
   postgres_data:
+  static:
+  media:

@@ -1,5 +1,5 @@
 # Pull base image
-FROM python:3.8
+FROM python:3.8.3
 
 # Set work directory
 WORKDIR /PhotoSite
