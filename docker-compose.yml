@@ -28,8 +28,8 @@ services:
       - .:/PhotoSite
       - /static:/photosite_project/static
       - /media:/photosite_project/media
-    ports:
-      - 8000:8000
+    # ports:
+    #   - 8000:8000
     expose:
       - 8000
     depends_on:
