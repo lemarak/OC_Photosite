@@ -9,7 +9,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'photosite',
         'USER': 'stephaned',
-        'PASSWORD': 'SD059693do',
+        'PASSWORD': 'SD059693',
         'HOST': '',
         'PORT': '5432',
     }
