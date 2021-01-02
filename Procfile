@@ -1,0 +1,1 @@
+web: gunicorn photosite_project.wsgi --log-file -

@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
+import django_heroku
 
 
 load_dotenv()
@@ -28,9 +30,14 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.getenv("DEBUG", default=0))
+# SECURITY WARNING: don't run with debug turned on in production!
+if os.environ.get("ENV", "development") == "production":
+    DEBUG = False
+    django_heroku.settings(locals())
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['oc-photosite.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
