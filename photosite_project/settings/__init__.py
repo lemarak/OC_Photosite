@@ -84,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'photosite.wsgi.application'
+WSGI_APPLICATION = 'photosite_project.wsgi.application'
 
 
 # Database
