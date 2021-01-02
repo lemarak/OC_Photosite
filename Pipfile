@@ -17,6 +17,7 @@ pylint-django = "*"
 django-coverage = "*"
 django-coverage-plugin = "*"
 gunicorn = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"
