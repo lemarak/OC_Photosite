@@ -37,7 +37,7 @@ if os.environ.get("ENV", "development") == "production":
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ['oc-photosite.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['167.99.46.208', 'localhost', '127.0.0.1']
 
 
 # Application definition
