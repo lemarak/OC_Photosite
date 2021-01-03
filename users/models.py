@@ -11,4 +11,4 @@ class CustomUser(AbstractUser):
         verbose_name=_("biographie"), blank=True)
 
     def __str__(self):
-        return self.username
+        return str(self.username)

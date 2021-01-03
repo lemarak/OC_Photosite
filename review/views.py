@@ -60,9 +60,9 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         picture.global_score = Review.objects.update_note_reviews(
             picture)
         picture.save()
-        comment = "La critique est bien enregistrée."
-        url = "%s?comment=%s" % (
-            reverse('review:detail', args=[review.id]), comment)
+        ok = "save"
+        url = "%s?ok=%s" % (
+            reverse('review:detail', args=[review.id]), ok)
         return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):
@@ -86,9 +86,9 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
         review.picture.global_score = Review.objects.update_note_reviews(
             review.picture)
         review.picture.save()
-        comment = "La critique est bien enregistrée."
-        url = "%s?comment=%s" % (
-            reverse('review:detail', args=[review.id]), comment)
+        ok = "save"
+        url = "%s?ok=%s" % (
+            reverse('review:detail', args=[review.id]), ok)
         return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):

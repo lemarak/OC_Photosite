@@ -10,6 +10,11 @@ class ReviewUrlTests(SimpleTestCase):
         url = reverse('review:detail', args=[1234])
         self.assertEqual(url, '/review/detail/1234')
 
+    def test_url_list_reviews(self):
+        """test the reviews list url."""
+        url = reverse('review:list')
+        self.assertEqual(url, '/review/list')
+
     def test_url_create_review_form(self):
         """test the create review form url."""
         url = reverse('review:review_create', args=[1234])

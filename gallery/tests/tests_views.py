@@ -9,6 +9,7 @@ from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from gallery.models import Category, Picture
+from users.models import CustomUser
 
 
 class BaseViewTestCase(TestCase):
@@ -19,8 +20,8 @@ class BaseViewTestCase(TestCase):
         super(BaseViewTestCase, cls).setUpClass()
 
         # create user
-        User = get_user_model()
-        cls.user =  User.objects.create(
+        cls.User = get_user_model()
+        cls.user = cls.User.objects.create(
             username='test',
             email='test@example.com'
         )
@@ -78,6 +79,26 @@ class GalleryViewTestCase(BaseViewTestCase):
         self.assertTrue(len(response.context['categories']) == 5)
         self.assertInHTML("category_test_1", html)
 
+    def test_gallery_user(self):
+        """ test gallery user pictures """
+        id_user = self.user.id
+        url = reverse('gallery:pictures_list', args=['user', id_user])
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(len(response.context['pictures']) == 6)
+        self.assertInHTML("Photos de test", html)
+
+    def test_gallery_all_pictures_user(self):
+        """ test gallery user pictures, page 2 """
+        id_user = self.user.id
+        url = reverse('gallery:pictures_list', args=['user', id_user])
+        response = self.client.get(url+'?page=2')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(len(response.context['pictures']) == 2)
+
     def test_gallery_logged_in_user(self):
         """ test gallery logged in user pictures """
         url = reverse('gallery:pictures_list', args=['user'])
@@ -98,24 +119,6 @@ class GalleryViewTestCase(BaseViewTestCase):
         self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['pictures']) == 2)
 
-    def test_gallery_user(self):
-        """ test gallery user pictures """
-        url = reverse('gallery:pictures_list', args=['user', 1])
-        response = self.client.get(url)
-        html = response.content.decode('utf8')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(len(response.context['pictures']) == 6)
-        self.assertInHTML("Photos de test", html)
-
-    def test_gallery_all_pictures_user(self):
-        """ test gallery user pictures, page 2 """
-        url = reverse('gallery:pictures_list', args=['user', 1])
-        response = self.client.get(url+'?page=2')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(len(response.context['pictures']) == 2)
-
     def test_gallery_last(self):
         """ test gallery last pictures """
         url = reverse('gallery:pictures_list', args=['last'])
@@ -124,7 +127,7 @@ class GalleryViewTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
         self.assertTrue(len(response.context['pictures']) == 6)
-        self.assertInHTML("Les dernières photos déposées", html)
+        self.assertInHTML("Galerie photo", html)
 
     def test_gallery_all_pictures_last(self):
         """ test gallery last pictures, page 2 """
@@ -136,7 +139,8 @@ class GalleryViewTestCase(BaseViewTestCase):
 
     def test_gallery_categories(self):
         """ test gallery categories pictures """
-        url = reverse('gallery:pictures_list', args=['category', 1])
+        id_category = Category.objects.get(name='category_test_1').id
+        url = reverse('gallery:pictures_list', args=['category', id_category])
         response = self.client.get(url)
         html = response.content.decode('utf8')
         self.assertEqual(response.status_code, 200)

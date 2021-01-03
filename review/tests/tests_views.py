@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+from review.models import Review
 from gallery.models import Picture
 
 
@@ -48,6 +49,16 @@ class BaseViewTestCase(TestCase):
         cls.picture.save()
         cls.pictures.append(cls.picture)
 
+        cls.review = Review(
+            score_intention=4,
+            score_technical=4,
+            score_picture=4,
+            score_global=4,
+            picture=cls.picture,
+            user=cls.user
+        )
+        cls.review.save()
+
         cls.client_login = Client(HTTP_REFERER=reverse('gallery:home'))
         cls.logged_in = cls.client_login.login(
             username='test', password='123test')
@@ -68,46 +79,57 @@ class BaseViewTestCase(TestCase):
 #             "test_title (4,00)", html)
 
 
-class CreateReviewViewTests(BaseViewTestCase):
-    """  Test create review """
+class ReviewViewTests(BaseViewTestCase):
+    """  Test form review """
 
-    def test_get(self):
+    def test_display_review(self):
         """ test form review """
-        response = self.client_login.get("/review/create/1")
+        id_review = self.review.id
+        url = reverse('review:detail', args=[id_review])
+        response = self.client_login.get(url)
 
         self.assertEqual(response.status_code, 200)
         html = response.content.decode('utf8')
-        self.assertInHTML(
-            "Note intention", html)
+        self.assertInHTML("Note intention : 4", html)
+
+    def test_reviews_list(self):
+        """ test display categories """
+
+        url = reverse('review:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.context['reviews']) == 1)
 
     def test_post_success(self):
         """ test form review validation """
+        id_picture = self.picture.id
+        url = reverse('review:review_create', args=[id_picture])
         response = self.client_login.post(
-            "/review/create/1", data={
+            url, data={
                 "score_intention": 4,
                 "score_technical": 4,
                 "score_picture": 4,
                 "score_global": 4
             }
         )
-
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["Location"], "/review/detail/1")
+        self.assertEqual(response["Location"], "/review/detail/3?ok=save")
 
     def test_post_success_score_review_ok(self):
         """ test calculated score review after validation """
+        id_picture = self.picture.id
+        url = reverse('review:review_create', args=[id_picture])
         response = self.client_login.post(
-            "/review/create/1", data={
+            url, data={
                 "score_intention": 4,
                 "score_technical": 4,
                 "score_picture": 4,
                 "score_global": 4
             }
         )
-        url = reverse('review:detail', args=[2])
+        url = reverse('review:detail', args=[4])
         response = self.client.get(url)
         html = response.content.decode('utf8')
-        self.assertInHTML(
-            "Note moyenne de la revue : 4,0", html)
-        self.assertInHTML(
-            "test_title (4,00)", html)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("Note moyenne de la revue : 4,0", html)

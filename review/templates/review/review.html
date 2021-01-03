@@ -9,8 +9,9 @@
         <h2>{{ picture.title }} par {{ picture.user }}</h2>
 
         <h4>Critique de {{ review.user }}</h4>
-        {{ request.GET.comment }}
-
+        {% if request.GET.ok %}
+            <h6>La critique est bien enregistrée</h6>
+        {% endif %}
     </div>
 </div>
 
