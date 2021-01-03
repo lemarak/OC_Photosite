@@ -1,6 +1,6 @@
 """Test the View module for gallery."""
 
-
+import os
 from datetime import datetime, date
 
 from django.contrib.auth import get_user_model
@@ -9,7 +9,6 @@ from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from gallery.models import Category, Picture
-from users.models import CustomUser
 
 
 class BaseViewTestCase(TestCase):
@@ -30,16 +29,17 @@ class BaseViewTestCase(TestCase):
 
         # create pictures
         cls.pictures = []
-        small_gif = (
+        cls.small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
             b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
             b'\x02\x4c\x01\x00\x3b'
         )
+        cls.file_picture = SimpleUploadedFile(
+            name='small.gif', content=cls.small_gif, content_type='image/gif')
         for indice in range(1, 9):
             cls.picture = Picture(
                 title='test_title_%s' % indice,
-                file_name=SimpleUploadedFile(
-                    name='small.gif', content=small_gif, content_type='image/gif'),
+                file_name=cls.file_picture,
                 description='test_description',
                 technical='test_technical',
                 camera='test_camera',
@@ -68,6 +68,22 @@ class BaseViewTestCase(TestCase):
 
 class GalleryViewTestCase(BaseViewTestCase):
     """Class to test the display of categories."""
+
+    def test_home_not_connected(self):
+        """ test home page with user not connected """
+        url = reverse('gallery:home')
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("<p>Vous n'êtes pas connecté</p>", html)
+
+    def test_home_user_connected(self):
+        """ test home page with user connected """
+        url = reverse('gallery:home')
+        response = self.client_login.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("<strong>test</strong>", html)
 
     def test_categories_list(self):
         """ test display categories """
@@ -148,10 +164,39 @@ class GalleryViewTestCase(BaseViewTestCase):
         self.assertTrue(len(response.context['pictures']) == 1)
         self.assertInHTML("Photos de category_test_1", html)
 
-    # def test_display_picture(self):
-    #     """ test display one picture """
-    #     url = reverse('gallery:picture_detail', args=[1])
-    #     response = self.client.get(url)
-    #     html = response.content.decode('utf8')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertInHTML("test_title_1", html)
+    def test_display_picture(self):
+        """ test display one picture """
+        id_picture = Picture.objects.get(title='test_title_1').id
+        url = reverse('gallery:picture_detail', args=[id_picture])
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("test_title_1", html)
+
+    def test_post_success_picture_upload_ok(self):
+        """ test picture upload ok """
+        url = reverse('gallery:image_upload')
+        category = Category.objects.all()[0].id
+
+        response = self.client_login.post(
+            url, data={
+                "title": 'test_upload',
+                "file_name":self.file_picture,
+                "description": 'description_upload',
+                "camera": 'camera',
+                "lens": 'lens',
+                "place": 'ici',
+                "taken_date": date(2021, 1, 1),
+                "user": self.user,
+                "categories": category,
+                "upload_date": datetime.now(),
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        # id_picture = Picture.objects.get(title='test_upload').id
+        # url = reverse('gallery:picture_detail', args=[id_picture])
+        # response = self.client.get(url)
+        # html = response.content.decode('utf8')
+
+        # self.assertEqual(response.status_code, 200)
+        # self.assertInHTML("Pas de nate actuellement", html)

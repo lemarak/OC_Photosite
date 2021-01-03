@@ -4,6 +4,12 @@ from django.urls import reverse
 
 
 class GalleryUrlTests(SimpleTestCase):
+    """  tests urls from app gallery """
+
+    def test_url_home(self):
+        """ test home url """
+        url = reverse('gallery:home')
+        self.assertEqual(url, '/')
 
     def test_url_gallery_with_one_parameter(self):
         """test the gallery url."""

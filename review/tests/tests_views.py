@@ -27,7 +27,6 @@ class BaseViewTestCase(TestCase):
         cls.user.save()
 
         # create pictures
-        cls.pictures = []
         small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
             b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
@@ -47,7 +46,6 @@ class BaseViewTestCase(TestCase):
             upload_date=datetime.now(),
         )
         cls.picture.save()
-        cls.pictures.append(cls.picture)
 
         cls.review = Review(
             score_intention=4,
@@ -64,21 +62,6 @@ class BaseViewTestCase(TestCase):
             username='test', password='123test')
 
 
-# class DisplayReviewViewTests(BaseViewTestCase):
-#     """  Test display review """
-
-#     def test_display_review(self):
-#         """ test display one review """
-#         url = reverse('review:detail', args=[4])
-#         response = self.client.get(url)
-#         html = response.content.decode('utf8')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertInHTML(
-#             "Note moyenne de la revue : 4,0", html)
-#         self.assertInHTML(
-#             "test_title (4,00)", html)
-
-
 class ReviewViewTests(BaseViewTestCase):
     """  Test form review """
 
@@ -93,7 +76,7 @@ class ReviewViewTests(BaseViewTestCase):
         self.assertInHTML("Note intention : 4", html)
 
     def test_reviews_list(self):
-        """ test display categories """
+        """ test list reviews """
 
         url = reverse('review:list')
         response = self.client.get(url)
@@ -109,11 +92,13 @@ class ReviewViewTests(BaseViewTestCase):
                 "score_intention": 4,
                 "score_technical": 4,
                 "score_picture": 4,
-                "score_global": 4
+                "score_global": 4,
+                "comment_intention":"test_create_1"
             }
         )
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["Location"], "/review/detail/3?ok=save")
+        id_review = Review.objects.get(comment_intention='test_create_1').id
+        self.assertEqual(response["Location"], "/review/detail/%s?ok=save" % id_review)
 
     def test_post_success_score_review_ok(self):
         """ test calculated score review after validation """
@@ -123,13 +108,15 @@ class ReviewViewTests(BaseViewTestCase):
             url, data={
                 "score_intention": 4,
                 "score_technical": 4,
-                "score_picture": 4,
-                "score_global": 4
+                "score_picture": 2,
+                "score_global": 2,
+                "comment_intention":"test_create_2"
             }
         )
-        url = reverse('review:detail', args=[4])
+        id_review = Review.objects.get(comment_intention='test_create_2').id
+        url = reverse('review:detail', args=[id_review])
         response = self.client.get(url)
         html = response.content.decode('utf8')
 
         self.assertEqual(response.status_code, 200)
-        self.assertInHTML("Note moyenne de la revue : 4,0", html)
+        self.assertInHTML("Note moyenne de la revue : 3,0", html)
