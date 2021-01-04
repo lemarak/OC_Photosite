@@ -35,7 +35,7 @@ p,i
 }
 
 a {
-    color:darkslategrey;
+    color:rgb(15, 142, 192);
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -47,8 +47,12 @@ h1,h2,h3,h4,h5,h6 {
 {
     color:darkred;
 }
-
-card
-{
-    border-color:white;
+.little {
+    font-size:0.9em;
 }
+
+.grand {
+    font-size:1.1em;
+}
+
+

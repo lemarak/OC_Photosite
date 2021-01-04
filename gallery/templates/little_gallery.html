@@ -1,8 +1,10 @@
     <div class="row">
         {% for picture in pictures %}
         <div class="col-md-2">
-            <div class="card">
-                
+            <div class="card border-0">
+                <div class="title">
+                    <span>{{ picture.title|truncatechars:15 }}</span>
+                </div>
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}" alt="{{ picture.title }}">
                         <img class="card-img-top mx-auto" alt="photo" src="{{ picture.file_name.url }}"
