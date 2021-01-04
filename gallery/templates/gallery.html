@@ -8,68 +8,95 @@
     </div>
     {% endif %}
 
-    <!-- Order by -->
+    <!-- Links Order by -->
     <div class="row mb-4">
         <div class="col-8"></div>
         <div class="col-4">
             <ul class="list-inline">
                 {% if contest %}
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}?for_contest={{ contest }}" alt="par date">par date</a></li>
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}?order_by=-global_score&for_contest={{ contest }}" alt="par note">par note</a></li>
+                <li class="list-inline-item"><a
+                        href="{% url 'gallery:pictures_list' action user_id %}?for_contest={{ contest }}"
+                        alt="par date">par date</a></li>
+                <li class="list-inline-item"><a
+                        href="{% url 'gallery:pictures_list' action user_id %}?order_by=-global_score&for_contest={{ contest }}"
+                        alt="par note">par note</a></li>
                 {% elif action == 'last' %}
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}" alt="par date">par date</a></li>
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}?order_by=-global_score" alt="par note">par note</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}" alt="par date">par
+                        date</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action %}?order_by=-global_score"
+                        alt="par note">par note</a></li>
                 {% elif action == 'user' %}
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}" alt="par date">par date</a></li>
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}?order_by=-global_score" alt="par note">par note</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action user_id %}"
+                        alt="par date">par date</a></li>
+                <li class="list-inline-item"><a
+                        href="{% url 'gallery:pictures_list' action user_id %}?order_by=-global_score"
+                        alt="par note">par note</a></li>
                 {% elif action == 'category' %}
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action category_id %}" alt="par date">par date</a></li>
-                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action category_id %}?order_by=-global_score" alt="par note">par note</a></li>
+                <li class="list-inline-item"><a href="{% url 'gallery:pictures_list' action category_id %}"
+                        alt="par date">par date</a></li>
+                <li class="list-inline-item"><a
+                        href="{% url 'gallery:pictures_list' action category_id %}?order_by=-global_score"
+                        alt="par note">par note</a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-2">
         {% for picture in pictures %}
         <div class="col-md-4">
-            <div class="card mb-4 box-shadow">
+            <div class="card mb-4 border-0">
+                <div class="title">
+                    <div class="row">
+                        <div class="col">
+                            <p class=" rouge-fonce"><strong>{{ picture.title }}, postée par <a
+                                        href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                        {{ picture.user }}</a>
+                                </strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}">
-                        <img class="card-img-top mx-auto" alt="{{ picture.title }}"
-                            src="{{ picture.file_name.url }}" data-holder-rendered="true">
+                        <img class="card-img-top mx-auto" alt="{{ picture.title }}" src="{{ picture.file_name.url }}"
+                            data-holder-rendered="true">
                         <!-- <img src="#" class="img-responsive"
                             style="width: 100%; float: left; margin-right: 10px;" /> -->
                     </a>
                 </div>
-                <div class="card-body">
+                <div class="item">
                     <div class="row">
-                        <div class="col-md-6">
-                            <h6>{{ picture.title|truncatechars:18 }}</h6>
+                        <div class="col">
+                            {% if picture.global_score == 0 %}
+                            <span class="badge rouge-fonce little"><i>pas de note</i></span>
+                            {% else %}
+                            <span class="badge rouge-fonce little">note : {{ picture.global_score }} ( <i
+                                    class="fa fa-comment-o" aria-hidden="true"></i> {{picture.review_set.count}}
+                                )</span>
+                            {% endif %}
                         </div>
-                        <div class="col-md-2">
-                            <span class="badge badge-secondary">{{ picture.global_score }}</span>
+                        <div class="col">
+                            {% if contest %}
+                            {% if picture.contest_picture %}
+                            <button class="btn btn-secondary btn-sm" disabled>Déjà déposée</button>
+                            {% else %}
+                            <p><a class="btn btn-secondary btn-sm"
+                                    href="{% url 'contest:add_picture_to_contest' pk_contest=contest pk_picture=picture.id %}"
+                                    role="button">Déposer photo &raquo;</a></p>
+                            {% endif %}
+                            {% else %}
+                            <p><a class="btn rouge-fonce btn-sm" href="{{ picture.get_absolute_url }}" role="button"><i
+                                        class="fa fa-eye"></i> voir</a></p>
+                            {% endif %}
                         </div>
-                        <div class="col-md-4">
-                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
-                            </a>
+                        <div class="col">
+                            <span class="text-right little">le {{ picture.upload_date|date:"d-m-Y" }}</span>
                         </div>
                     </div>
+
+                </div>
+                <div class="item">
                     <p class="card-text">{{ picture.description|truncatewords:15 }} </p>
-
-
-                    {% if contest %}
-                    {% if picture.contest_picture %}
-                    <button class="btn btn-secondary btn-sm" disabled>Déjà déposé</a>
-                        {% else %}
-                        <p><a class="btn btn-secondary btn-sm"
-                                href="{% url 'contest:add_picture_to_contest' pk_contest=contest pk_picture=picture.id %}"
-                                role="button">Déposer photo &raquo;</a></p>
-                        {% endif %}
-                        {% else %}
-                        <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button">Voir
-                                photo &raquo;</a></p>
-                        {% endif %}
                 </div>
             </div>
         </div>

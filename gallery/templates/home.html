@@ -16,9 +16,11 @@
       <h2>Bienvenue {% if user.is_authenticated %}
         <strong>{{ user.username }}</strong> {% endif %} sur PhotoSite ! Ici vous pouvez...
       </h2>
-      <h4>Visualiser les photos déposées par les membres</h4>
-      <h4>Proposer une critique constructive</h4>
-      <h4>Participer et voter à des concours</h4>
+      <ul>
+      <li><h4>Visualiser les photos déposées par les membres</h4></li>
+      <li><h4>Proposer une critique constructive</h4></li>
+      <li><h4>Participer et voter à des concours</h4></li>
+    </ul>
       {% if not user.is_authenticated %}
 
       <p>Vous n'êtes pas connecté</p>
@@ -30,16 +32,21 @@
 
   <!-- Dernières photos -->
   <div class="container">
-    <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Photos les plus récentes</a></h5>
+    <div class="row">
+      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Photos les plus récentes</a></h5>
+    </div>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
     {% endwith %}
-  </div>
 
+  </div>
+  <br>
   <!-- Vos photos -->
   {% if user.is_authenticated %}
   <div class="container">
-    <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'user' %}">Vos photos</a></h5>
+    <div class="row">
+      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'user' %}">Vos photos</a></h5>
+    </div>
     {% if user_pictures %}
     {% with user_pictures as pictures %}
     {% include 'little_gallery.html' %}
@@ -54,11 +61,13 @@
 
   <!-- Dernières critiques -->
   <div class="container">
-    <h5> <a class="nav-link" href="{%  url 'review:list' %}">Dernières critiques</a></h5>
+    <div class="row">
+      <h5> <a class="nav-link" href="{%  url 'review:list' %}">Dernières critiques</a></h5>
+    </div>
     <div class="row">
       {% for review in last_reviews %}
       <div class="col-md-2">
-        <div class="card">
+        <div class="card border-0">
           <div class="item">
             <a href="{{ review.get_absolute_url }}" alt="{{ review.picture.title }}">
               <img class="card-img-top mx-auto" alt="photo" src="{{ review.picture.file_name.url }}"
@@ -67,7 +76,9 @@
           </div>
 
           <div class="item text-center">
-            <span class="badge badge-secondary">{{ review.calculated_score }} par {{ review.user }}</span>
+            <h5>
+              <span class="badge rouge-fonce">{{ review.calculated_score }} par {{ review.user }}</span>
+            </h5>
           </div>
         </div>
       </div>
@@ -82,9 +93,10 @@
     <h5>Concours récents</h5>
     <ul>
       {% for contest in contests %}
-      <li><a href ="{% url 'contest:detail' contest.id %}">{{ contest }}</a> <span class="badge badge-secondary">{{contest.pictures.all|length }} photos</span></li>
+      <li><h5><a href="{% url 'contest:detail' contest.id %}">{{ contest }}</a> <span
+          class="badge badge-dark">{{contest.pictures.all|length }} photos</span></h5></li>
       {% endfor %}
-      <li><a href ="{% url 'contest:list' %}">autres...</a></li>
+      <li><h5><a href="{% url 'contest:list' %}">autres...</a></h5></li>
     </ul>
   </div>
 

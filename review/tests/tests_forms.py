@@ -6,8 +6,8 @@ from django.test import SimpleTestCase
 from review.forms import ReviewForm
 
 
-class CreateReviewFormTests(SimpleTestCase):
-    """ test create review's form """
+class ReviewFormTests(SimpleTestCase):
+    """ test review's form """
 
     def test_review_forms_not_all_score(self):
         """ test missing score """

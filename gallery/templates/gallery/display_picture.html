@@ -4,64 +4,73 @@
 {% block title %} {{ picture.title }} {% endblock %}
 
 {% block content %}
-<div class="jumbotron">
+<!-- <div class="jumbotron">
     <div class="container">
         <h2>{{ picture.title }}</h2>
     </div>
-</div>
-
+</div> -->
+<br>
+<br>
+<br>
+<br>
 <div class="container">
-    <div class="row">
-        <div class="card box-shadow mx-auto">
-            <div class="item">
-                <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
-                    data-holder-rendered="true">
-                <!-- <img src="#" class="img-responsive"
-                    style="width: 100%; float: left; margin-right: 10px;" /> -->
+    <!-- <div class="row"> -->
+    <div class="card box-shadow mx-auto border-0">
+        <div class="title">
+            <div class="row mb-2">
+                <div class="col">
+                    <h4 class=" rouge-fonce">{{ picture.title }}, postée par <a
+                        href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                        {{ picture.user }}</a>, (le {{ picture.upload_date }})
+                    </h4>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-5">
-                        <h6>
-                            {% if picture.global_score > 0 %}
-                            note moyenne: {{ picture.global_score|floatformat:2 }}
-                            {% else %}
-                            Pas de note actuellement
-                            {% endif %}
-                        </h6>
-                    </div>
-                    <div class="col-md-2">
-                        {% if noted_by_user %}
-                            <a class="btn btn-secondary btn-sm" href="{% url 'review:review_update' pk=noted_by_user.0.id %}"
-                                    role="button">Modifier votre critique &raquo;</a>
-                            {% elif picture.user == user %}
-                            <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
-                                {% else %}
-                                <a class="btn btn-secondary btn-sm" href="{% url 'review:review_create' picture.id %}"
-                                    role="button">Donner son avis &raquo;</a>
-                                {% endif %}
-                    </div>
-                    <div class="col-md-5">
-                        <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                            <h6 class="text-right">par {{ picture.user }}</h6>
-                        </a>
-                    </div>
+        </div>
+        <div class="item">
+            <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
+                data-holder-rendered="true">
+            <!-- <img src="#" class="img-responsive"
+                    style="width: 100%; float: left; margin-right: 10px;" /> -->
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-5">
+                    <span>
+                        {% if picture.global_score > 0 %}
+                        note moyenne: {{ picture.global_score|floatformat:2 }}
+                        {% else %}
+                        Pas de note actuellement
+                        {% endif %}
+                    </span>
                 </div>
-                <div class="row mb-2">
-                    <p class="card-text"><strong>Description: </strong><br>{{ picture.description }} </p>
+                <div class="col-md-2">
+                    {% if noted_by_user %}
+                    <a class="btn btn-secondary btn-sm" href="{% url 'review:review_update' pk=noted_by_user.0.id %}"
+                        role="button">Modifier votre
+                        critique &raquo;</a>
+                    {% elif picture.user == user %}
+                    <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
+                        {% else %}
+                        <a class="btn btn-secondary btn-sm" href="{% url 'review:review_create' picture.id %}"
+                            role="button">Donner son avis &raquo;</a>
+                        {% endif %}
                 </div>
-                <div class="row mb-4">
-                    <p class="card-text"><strong>Technique: </strong><br>{{ picture.description }} </p>
-                </div>
-
+            </div>
+            <div class="row mb-2">
+                <p class="card-text"><strong>Description: </strong><br>{{ picture.description }} </p>
+            </div>
+            <div class="row mb-4">
+                <p class="card-text"><strong>Technique: </strong><br>{{ picture.description }} </p>
             </div>
 
         </div>
-        {% if reviews %}
 
-        {% include 'review/reviews_list.html' %}
+    </div>
+    {% if reviews %}
+
+    {% include 'review/reviews_list.html' %}
 
     {% endif %}
-    </div>
+    <!-- </div> -->
 </div>
 {% endblock %}

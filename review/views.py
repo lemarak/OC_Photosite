@@ -52,7 +52,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         review = form.save(commit=False)
         user = self.request.user
         review.user = user
-        picture = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        picture = get_object_or_404(Picture, pk=self.kwargs['pk_picture'])
         review.picture = picture
         # calculate note
         review.calculated_score = Review.objects.calculate_note_review(review)
@@ -60,14 +60,14 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         picture.global_score = Review.objects.update_note_reviews(
             picture)
         picture.save()
-        comment = "La critique est bien enregistrée."
-        url = "%s?comment=%s" % (
-            reverse('review:detail', args=[review.id]), comment)
+        ok = "save"
+        url = "%s?ok=%s" % (
+            reverse('review:detail', args=[review.id]), ok)
         return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):
         context = super(ReviewCreate, self).get_context_data(**kwargs)
-        context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk_picture'])
         return context
 
 
@@ -86,9 +86,9 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
         review.picture.global_score = Review.objects.update_note_reviews(
             review.picture)
         review.picture.save()
-        comment = "La critique est bien enregistrée."
-        url = "%s?comment=%s" % (
-            reverse('review:detail', args=[review.id]), comment)
+        ok = "save"
+        url = "%s?ok=%s" % (
+            reverse('review:detail', args=[review.id]), ok)
         return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):
