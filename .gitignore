@@ -1,6 +1,6 @@
+production.py
+.env
 .vscode/
 staticfiles/
 htmlcov/
 __pycache__/
-production.py
-.env
