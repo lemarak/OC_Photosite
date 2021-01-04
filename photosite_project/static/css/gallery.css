@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'quicksand';
+    src: url('../fonts/Quicksand/Quicksand-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .picture-gallery {
     height: auto;
     width: auto;
@@ -15,4 +22,33 @@
 {
     height: 50px;
     border-top: solid 1px black;
+}
+
+span
+{
+    color:darkred;
+}
+
+p,i
+{
+    font-size:0.95em;
+}
+
+a {
+    color:darkslategrey;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #3D3D3D;
+    font-family:Helvetica, sans-serif;
+}
+
+.rouge-fonce
+{
+    color:darkred;
+}
+
+card
+{
+    border-color:white;
 }
