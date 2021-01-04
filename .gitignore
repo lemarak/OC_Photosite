@@ -2,3 +2,5 @@
 staticfiles/
 htmlcov/
 __pycache__/
+production.py
+.env
