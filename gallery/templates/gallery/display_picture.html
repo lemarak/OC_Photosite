@@ -20,8 +20,8 @@
             <div class="row mb-2">
                 <div class="col">
                     <h4 class=" rouge-fonce">{{ picture.title }}, postée par <a
-                        href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                        {{ picture.user }}</a>, (le {{ picture.upload_date }})
+                            href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                            {{ picture.user }}</a>, (le {{ picture.upload_date }})
                     </h4>
                 </div>
             </div>
@@ -56,13 +56,102 @@
                         {% endif %}
                 </div>
             </div>
-            <div class="row mb-2">
-                <p class="card-text"><strong>Description: </strong><br>{{ picture.description }} </p>
-            </div>
-            <div class="row mb-4">
-                <p class="card-text"><strong>Technique: </strong><br>{{ picture.description }} </p>
-            </div>
+            <table class="table table-bordered table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> <strong>Description </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {{ picture.description }} </td>
+                    </tr>
+                </tbody>
 
+            </table>
+
+            <table class="table table-bordered table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> <strong>Technique </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {{ picture.technical }} </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> <strong>Appareil </strong> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> {{ picture.camera }} </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="col">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> <strong>Objectif </strong> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> {{ picture.lens }} </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="col">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> <strong>Lieu </strong> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> {{ picture.place }} </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <table class="table table-bordered table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> <strong>Catégories </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                {% for category in picture.categories.all %}
+                                <div class="col">
+                                    <h4><a href="{% url 'gallery:pictures_list' action='category' pk=category.id %}"
+                                            class="badge badge-pill badge-secondary text-white">{{ category }} </a></h4>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
@@ -72,5 +161,6 @@
 
     {% endif %}
     <!-- </div> -->
+    <br><br>
 </div>
 {% endblock %}

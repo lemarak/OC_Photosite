@@ -13,10 +13,13 @@
 
 
 <div class="container">
-    {% for category in categories %}
     <div class="row">
-        <a href="{% url 'gallery:pictures_list' action='category' pk=category.id %}"><h5>{{ category }}</h5></a>
+        {% for category in categories %}
+        <div class="col">
+            <h3><a href="{% url 'gallery:pictures_list' action='category' pk=category.id %}"
+                    class="badge badge-pill badge-secondary text-white">{{ category }} </a></h3>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
