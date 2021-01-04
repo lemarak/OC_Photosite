@@ -33,7 +33,7 @@
   <!-- Dernières photos -->
   <div class="container">
     <div class="row">
-      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}">Photos les plus récentes</a></h5>
+      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}"><strong>Photos les plus récentes</strong></a></h5>
     </div>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
@@ -45,7 +45,7 @@
   {% if user.is_authenticated %}
   <div class="container">
     <div class="row">
-      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'user' %}">Vos photos</a></h5>
+      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'user' %}"><strong>Vos photos</strong></a></h5>
     </div>
     {% if user_pictures %}
     {% with user_pictures as pictures %}

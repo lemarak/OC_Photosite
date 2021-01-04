@@ -35,13 +35,13 @@
         <div class="card-body">
             <div class="row mb-4">
                 <div class="col-md-5">
-                    <span>
+                    <strong class="rouge-fonce">
                         {% if picture.global_score > 0 %}
                         note moyenne: {{ picture.global_score|floatformat:2 }}
                         {% else %}
                         Pas de note actuellement
                         {% endif %}
-                    </span>
+                    </strong>
                 </div>
                 <div class="col-md-2">
                     {% if noted_by_user %}

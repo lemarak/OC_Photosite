@@ -1,9 +1,9 @@
     <div class="row">
         {% for picture in pictures %}
-        <div class="col-md-2">
+        <div class="col-md-4">
             <div class="card border-0">
                 <div class="title">
-                    <span>{{ picture.title|truncatechars:15 }}</span>
+                    <span>{{ picture.title|truncatechars:30 }}</span>
                 </div>
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}" alt="{{ picture.title }}">
