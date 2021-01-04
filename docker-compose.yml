@@ -1,6 +1,5 @@
-version: '3.8'
+version: "3.8"
 services:
-
   nginx:
     build: ./nginx
     ports:
@@ -15,10 +14,10 @@ services:
     command: gunicorn photosite_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/PhotoSite
-      - /static:/photosite_project/static
-      - /media:/photosite_project/media
-    ports:
-      - 8000:8000
+      - static:/photosite_project/static
+      - media:/photosite_project/media
+    # ports:
+    #   - 8000:8000
     expose:
       - 8000
     depends_on:
