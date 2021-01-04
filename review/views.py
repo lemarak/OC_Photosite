@@ -52,7 +52,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         review = form.save(commit=False)
         user = self.request.user
         review.user = user
-        picture = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        picture = get_object_or_404(Picture, pk=self.kwargs['pk_picture'])
         review.picture = picture
         # calculate note
         review.calculated_score = Review.objects.calculate_note_review(review)
@@ -67,7 +67,7 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ReviewCreate, self).get_context_data(**kwargs)
-        context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk'])
+        context['picture'] = get_object_or_404(Picture, pk=self.kwargs['pk_picture'])
         return context
 
 

@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 
-from contest.models import Contest
+from contest.models import Contest, ContestPicture
 from gallery.models import Picture
 
 
@@ -47,7 +47,7 @@ class BaseViewTestCase(TestCase):
         )
         cls.picture.save()
 
-        # create contests
+        # create contests vote
         cls.contest = Contest(
             title='contest_vote',
             theme='contest_theme_vote',
@@ -65,6 +65,13 @@ class BaseViewTestCase(TestCase):
         )
         cls.contest.save()
 
+        # add picture to contest
+        cls.contest_picture = ContestPicture(
+            picture=cls.picture,
+            contest=cls.contest
+        )
+        cls.contest_picture.save()
+
         # user login
         cls.client_login = Client(HTTP_REFERER=reverse('gallery:home'))
         cls.logged_in = cls.client_login.login(
@@ -72,6 +79,7 @@ class BaseViewTestCase(TestCase):
 
 
 class ContestViewTests(BaseViewTestCase):
+
     """  Test contest view """
 
     def test_contest_list(self):
@@ -80,3 +88,38 @@ class ContestViewTests(BaseViewTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.context['contests']) == 1)
+
+    def test_contest_detail(self):
+        """ test display contest detail """
+        url = reverse('contest:detail', args=[self.contest.id])
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.context['contest_pictures']) == 1)
+        self.assertInHTML("contest_vote", html)
+
+    def test_user_vote(self):
+        """ test a user's vote """
+        url = reverse('contest:user_vote', args=[self.contest_picture.id])
+        response = self.client_login.get(url)
+        self.assertEqual(response.status_code, 302)
+
+        url = reverse('contest:detail', args=[self.contest.id])
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("1 vote", html)
+
+    def test_user_depot(self):
+        """ test the upload of a photo by a user """
+        url = reverse('contest:add_picture_to_contest', args=[
+                      self.contest.id, self.picture.id])
+        response = self.client_login.get(url)
+        self.assertEqual(response.status_code, 302)
+
+        url = "%s?for_contest=%s" % (reverse('gallery:pictures_list', args=[
+            'user']), self.contest.id)
+        response = self.client_login.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("""<button class="btn btn-secondary btn-sm" disabled>Déjà déposée</button>""", html)

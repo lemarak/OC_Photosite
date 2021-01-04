@@ -52,6 +52,7 @@ class BaseViewTestCase(TestCase):
             score_technical=4,
             score_picture=4,
             score_global=4,
+            comment_intention="test",
             picture=cls.picture,
             user=cls.user
         )
@@ -93,12 +94,13 @@ class ReviewViewTests(BaseViewTestCase):
                 "score_technical": 4,
                 "score_picture": 4,
                 "score_global": 4,
-                "comment_intention":"test_create_1"
+                "comment_intention": "test_create_1"
             }
         )
         self.assertEqual(response.status_code, 302)
         id_review = Review.objects.get(comment_intention='test_create_1').id
-        self.assertEqual(response["Location"], "/review/detail/%s?ok=save" % id_review)
+        self.assertEqual(response["Location"],
+                         "/review/detail/%s?ok=save" % id_review)
 
     def test_post_success_score_review_ok(self):
         """ test calculated score review after validation """
@@ -110,7 +112,7 @@ class ReviewViewTests(BaseViewTestCase):
                 "score_technical": 4,
                 "score_picture": 2,
                 "score_global": 2,
-                "comment_intention":"test_create_2"
+                "comment_intention": "test_create_2"
             }
         )
         id_review = Review.objects.get(comment_intention='test_create_2').id
@@ -120,3 +122,40 @@ class ReviewViewTests(BaseViewTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertInHTML("Note moyenne de la revue : 3,0", html)
+
+    def test_post_success_for_update(self):
+        """ test form review update validation """
+        id_review = self.review.id
+        url = reverse('review:review_update', args=[id_review])
+        response = self.client_login.post(
+            url, data={
+                "score_intention": 4,
+                "score_technical": 4,
+                "score_picture": 4,
+                "score_global": 4,
+                "comment_intention": "test_update"
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"],
+                         "/review/detail/%s?ok=save" % id_review)
+
+    def test_post_success_score_review_ok_after_update(self):
+        """ test calculated score review after update validation """
+        id_review = self.review.id
+        url = reverse('review:review_update', args=[id_review])
+        response = self.client_login.post(
+            url, data={
+                "score_intention": 2,
+                "score_technical": 2,
+                "score_picture": 2,
+                "score_global": 2,
+                "comment_intention": "test_update"
+            }
+        )
+        url = reverse('review:detail', args=[id_review])
+        response = self.client.get(url)
+        html = response.content.decode('utf8')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("Note moyenne de la revue : 2,0", html)

@@ -8,7 +8,7 @@
     </div>
     {% endif %}
 
-    <!-- Order by -->
+    <!-- Links Order by -->
     <div class="row mb-4">
         <div class="col-8"></div>
         <div class="col-4">
@@ -60,7 +60,7 @@
 
                     {% if contest %}
                     {% if picture.contest_picture %}
-                    <button class="btn btn-secondary btn-sm" disabled>Déjà déposé</a>
+                    <button class="btn btn-secondary btn-sm" disabled>Déjà déposée</button>
                         {% else %}
                         <p><a class="btn btn-secondary btn-sm"
                                 href="{% url 'contest:add_picture_to_contest' pk_contest=contest pk_picture=picture.id %}"

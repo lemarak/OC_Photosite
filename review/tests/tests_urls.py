@@ -20,13 +20,13 @@ class ReviewUrlTests(SimpleTestCase):
         url = reverse('review:review_create', args=[1234])
         self.assertEqual(url, '/review/create/1234')
 
-    # def test_url_update_review_form(self):
-    #     """test the update review form url."""
-    #     url = reverse('review_update', args=[1234])
-    #     self.assertEqual(url, '/review/update/1234')
+    def test_url_update_review_form(self):
+        """test the update review form url."""
+        url = reverse('review:review_update', args=[1234])
+        self.assertEqual(url, '/review/update/1234')
 
-    # def test_url_delete_review(self):
-    #     """test the update review form url."""
-    #     url = reverse('review_delete', args=[1234])
-    #     self.assertEqual(url, '/review/delete/1234')
+    def test_url_delete_review(self):
+        """test the delete review form url."""
+        url = reverse('review:review_delete', args=[1234])
+        self.assertEqual(url, '/review/delete/1234')
     
