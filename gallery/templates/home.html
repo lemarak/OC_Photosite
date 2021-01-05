@@ -17,10 +17,16 @@
         <strong>{{ user.username }}</strong> {% endif %} sur PhotoSite ! Ici vous pouvez...
       </h2>
       <ul>
-      <li><h4>Visualiser les photos déposées par les membres</h4></li>
-      <li><h4>Proposer une critique constructive</h4></li>
-      <li><h4>Participer et voter à des concours</h4></li>
-    </ul>
+        <li>
+          <h4>Visualiser les photos déposées par les membres</h4>
+        </li>
+        <li>
+          <h4>Proposer une critique constructive</h4>
+        </li>
+        <li>
+          <h4>Participer et voter à des concours</h4>
+        </li>
+      </ul>
       {% if not user.is_authenticated %}
 
       <p>Vous n'êtes pas connecté</p>
@@ -33,7 +39,7 @@
   <!-- Dernières photos -->
   <div class="container">
     <div class="row">
-      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'last' %}"><strong>Photos les plus récentes</strong></a></h5>
+      <h5> <a href="{% url 'gallery:pictures_list' 'last' %}"><strong>Photos les plus récentes</strong></a></h5>
     </div>
     {% with last_pictures as pictures %}
     {% include 'little_gallery.html' %}
@@ -45,7 +51,7 @@
   {% if user.is_authenticated %}
   <div class="container">
     <div class="row">
-      <h5> <a class="nav-link" href="{% url 'gallery:pictures_list' 'user' %}"><strong>Vos photos</strong></a></h5>
+      <h5> <a href="{% url 'gallery:pictures_list' 'user' %}"><strong>Vos photos</strong></a></h5>
     </div>
     {% if user_pictures %}
     {% with user_pictures as pictures %}
@@ -61,8 +67,8 @@
 
   <!-- Dernières critiques -->
   <div class="container">
-    <div class="row">
-      <h5> <a class="nav-link" href="{%  url 'review:list' %}">Dernières critiques</a></h5>
+    <div class="row mb-2">
+      <h5> <a href="{%  url 'review:list' %}"><strong>Dernières critiques</strong></a></h5>
     </div>
     <div class="row">
       {% for review in last_reviews %}
@@ -90,13 +96,19 @@
   <!-- Derniers concours -->
 
   <div class="container">
-    <h5>Concours récents</h5>
+    <div class="row mb-2">
+      <h5> <a href="{%  url 'contest:list' %}"><strong>Concours récents</strong></a></h5>
+    </div>
     <ul>
       {% for contest in contests %}
-      <li><h5><a href="{% url 'contest:detail' contest.id %}">{{ contest }}</a> <span
-          class="badge badge-dark">{{contest.pictures.all|length }} photos</span></h5></li>
+      <li>
+        <h5><a href="{% url 'contest:detail' contest.id %}">{{ contest }}</a> <span
+            class="badge badge-dark">{{contest.pictures.all|length }} photos</span></h5>
+      </li>
       {% endfor %}
-      <li><h5><a href="{% url 'contest:list' %}">autres...</a></h5></li>
+      <li>
+        <h5><a href="{% url 'contest:list' %}">tous les concours...</a></h5>
+      </li>
     </ul>
   </div>
 

@@ -65,7 +65,7 @@
                     </a>
                 </div>
                 <div class="item">
-                    <div class="row mb-2">
+                    <div class="row mb-2 mt-2">
                         <div class="col">
                             {% if picture.global_score == 0 %}
                             <span class="badge rouge-fonce little"><i>pas de note</i></span>
@@ -75,12 +75,6 @@
                                 )</span>
                             {% endif %}
                         </div>
-
-                        <div class="col text-right">
-                            <span class="little">le {{ picture.upload_date|date:"d-m-Y" }}</span>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
                         <div class="col text-center">
                             {% if contest %}
                             {% if picture.contest_picture %}
@@ -91,9 +85,12 @@
                                     role="button">Déposer photo &raquo;</a></p>
                             {% endif %}
                             {% else %}
-                            <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}" role="button"><i
-                                        class="fa fa-eye"></i> voir</a></p>
+                            <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}"
+                                    role="button"><i class="fa fa-eye"></i> voir</a></p>
                             {% endif %}
+                        </div>
+                        <div class="col text-right">
+                            <span class="little">le {{ picture.upload_date|date:"d/m/Y" }}</span>
                         </div>
                     </div>
 

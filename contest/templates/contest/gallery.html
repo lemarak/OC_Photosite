@@ -3,17 +3,15 @@
         {% for contest_picture in contest_pictures %}
         {% with picture=contest_picture.picture %}
         <div class="col-md-4">
-            <div class="card mb-4 box-shadow">
-                <div class="card-title">
+            <div class="card mb-4 border-0">
+                <div class="title">
                     <div class="row">
-                        <div class="col-md-6">
-                            <h6>{{ picture.title|truncatechars:18 }}</h6>
-                        </div>
-
-                        <div class="col-md-6">
-                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
-                            </a>
+                        <div class="col">
+                            <p class=" rouge-fonce"><strong>{{ picture.title|truncatechars:20 }}, postée par <a
+                                        href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                        {{ picture.user }}</a>
+                                </strong>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -25,10 +23,11 @@
                             style="width: 100%; float: left; margin-right: 10px;" /> -->
                     </a>
                 </div>
-                <div class="card-body">
+                <div class="item">
                     {% if contest.vote_open %}
-                    <div class="row">
-                        <h6>
+                    <div class="row mt-2">
+                        <div class="col">
+                        <h6 class="rouge-fonce">
                             {% if contest_picture.score_contest > 0 %}
                             {{ contest_picture.score_contest }} vote{{ contest_picture.score_contest|pluralize }}
                             {% else %}
@@ -36,14 +35,16 @@
                             {% endif %}
                         </h6>
                     </div>
+                    </div>
                     {% endif %}
-                    <p class="card-text">{{ picture.description|truncatewords:12 }} </p>
 
-                    {% if contest.vote_open %}
-                    {% if contest_picture.vote_user %}
-                    <button class="btn btn-secondary btn-sm" disabled>Déjà voté</a>
-                        {% elif picture.user == user %}
-                        <button class="btn btn-secondary btn-sm" disabled>Votre photo</a>
+                    <div class="row mt-2">
+                        <div class="col text-center">
+                            {% if contest.vote_open %}
+                            {% if contest_picture.vote_user %}
+                            <button class="btn btn-secondary btn-sm" disabled>Déjà voté</a> </button>
+                            {% elif picture.user == user %}
+                            <button class="btn btn-secondary btn-sm" disabled>Votre photo</a> </button>
                             {% else %}
                             <p><a class="btn btn-secondary btn-sm"
                                     href="{% url 'contest:user_vote' contest_picture.id  %}" role="button">Voter
@@ -54,6 +55,8 @@
                                     role="button">Voir
                                     photo &raquo;</a></p>
                             {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,15 +64,15 @@
         {% endfor %}
     </div>
     <div class="row">
-    {% if request.GET.order_by %}
+        {% if request.GET.order_by %}
         {% with "&order_by="|add:request.GET.order_by as order_by %}
-            {% include 'pagination.html' %}
+        {% include 'pagination.html' %}
         {% endwith %}
-    {% else %}
+        {% else %}
         {% with "" as order_by %}
-            {% include 'pagination.html' %}
+        {% include 'pagination.html' %}
         {% endwith %}
-    {% endif %}
+        {% endif %}
     </div>
 
 

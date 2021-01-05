@@ -21,7 +21,7 @@
                         <div class="col">
                             <h4 class=" rouge-fonce">{{ picture.title }}, postée par <a
                                     href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                    {{ picture.user }}</a> le {{ picture.upload_date|date:"d-m-Y" }}
+                                    {{ picture.user }}</a> le {{ picture.upload_date|date:"d/m/Y" }}
                             </h4>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                     <div class="row mb-2">
                         <div class="col">
                             <span class="badge rouge-fonce grand">notée {{ review.calculated_score }} par
-                                {{review.user|truncatechars:12 }}, le {{ review.review_date|date:"d-m-Y" }}
+                                {{review.user|truncatechars:12 }}, le {{ review.review_date|date:"d/m/Y" }}
                             </span>
                         </div>
 

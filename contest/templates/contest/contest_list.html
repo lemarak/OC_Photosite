@@ -12,33 +12,87 @@
 
 <!-- Concours avec dépot de photos -->
 <div class="container">
-    <h5> Concours ouvert au dépot de photo</a></h5>
-    {% with contest_deposit as contests %}
-    {% for contest in contests %}
-    <a href="{{ contest.get_absolute_url }}" alt="{{ contest }}"><h5>{{ contest }}</h5></a>
-    
-    {% endfor %}
-    {% endwith %}
+    <h4 class="rouge-fonce">Concours ouvert au dépot de photo</h4>
+    <div class="row mb-3">
+        {% with contest_deposit as contests %}
+        {% for contest in contests %}
+        <div class="col-md-4">
+            <div class="card mb-2 border-0">
+                <div class="item">
+                    <h5><a href="{{ contest.get_absolute_url }}">{{ contest }}</a></h5>
+                </div>
+                <div class="item">
+                    <a href="{{ contest.get_absolute_url }}">
+                        <img class="card-img-top mx-auto" alt="photo" src="{{ contest.contest_image.url }}"
+                            data-holder-rendered="true">
+                    </a>
+                </div>
+                <div class="item">
+                    <div class="row">
+                        <div class="col-6">
+                            <span class="badge rouge-fonce little">début dépot :
+                                {{ contest.date_begin_upload|date:"d/m/Y" }}</p>
+                        </div>
+                        <div class="col-6">
+                            <span class="badge rouge-fonce little">fin dépot :
+                                {{ contest.date_end_upload|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endwith %}
+    </div>
 </div>
 
-<!-- Concours avec dépot de photos -->
+<!-- Concours avec votes -->
 <div class="container">
-    <h5> Concours ouvert au dépot de photo</a></h5>
-    {% with contest_vote as contests %}
-    {% for contest in contests %}
-    <a href="{{ contest.get_absolute_url }}" alt="{{ contest }}"><h5>{{ contest }}</h5></a>
-    {% endfor %}
-    {% endwith %}
+    <h4 class="rouge-fonce"> Concours ouvert au dépot de photo</h4>
+    <div class="row mb-3">
+        {% with contest_vote as contests %}
+        {% for contest in contests %}
+        <div class="col-md-4">
+            <div class="card mb-2 border-0">
+                <div class="item">
+                    <h5><a href="{{ contest.get_absolute_url }}">{{ contest }}</a></h5>
+                </div>
+                <div class="item">
+                    <a href="{{ contest.get_absolute_url }}">
+                        <img class="card-img-top mx-auto" alt="photo" src="{{ contest.contest_image.url }}"
+                            data-holder-rendered="true">
+                    </a>
+                </div>
+                <div class="item">
+                    <div class="row">
+                        <div class="col-6">
+                            <span class="badge rouge-fonce little">début vote :
+                                {{ contest.date_begin_vote|date:"d/m/Y" }}</p>
+                        </div>
+                        <div class="col-6">
+                            <span class="badge rouge-fonce little">fin vote :
+                                {{ contest.date_end_vote|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endwith %}
+    </div>
 </div>
 
-<!-- Concours avec dépot de photos -->
+<!-- Concours archivés -->
 <div class="container">
-    <h5> Concours archivés</a></h5>
-    {% with contest_archived as contests %}
-    {% for contest in contests %}
-    <a href="{{ contest.get_absolute_url }}" alt="{{ contest }}"><h5>{{ contest }}</h5></a>
-    {% endfor %}
-    {% endwith %}
+    <h4 class="rouge-fonce"> Concours archivés</h4>
+    <div class="row mb-3">
+        {% with contest_archived as contests %}
+        {% for contest in contests %}
+        <h5><a href="{{ contest.get_absolute_url }}" alt="{{ contest }}">
+                <h5>{{ contest }}
+            </a></h5>
+        {% endfor %}
+        {% endwith %}
+    </div>
 </div>
-
 {% endblock %}

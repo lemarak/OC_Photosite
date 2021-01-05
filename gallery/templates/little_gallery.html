@@ -6,11 +6,9 @@
                     <span>{{ picture.title|truncatechars:30 }}</span>
                 </div>
                 <div class="item">
-                    <a href="{{ picture.get_absolute_url }}" alt="{{ picture.title }}">
+                    <a href="{{ picture.get_absolute_url }}">
                         <img class="card-img-top mx-auto" alt="photo" src="{{ picture.file_name.url }}"
                             data-holder-rendered="true">
-                        <!-- <img src="#" class="img-responsive"
-                            style="width: 100%; float: left; margin-right: 10px;" /> -->
                     </a>
                 </div>
             </div>
