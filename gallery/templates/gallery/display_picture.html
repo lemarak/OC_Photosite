@@ -21,7 +21,7 @@
                 <div class="col">
                     <h4 class=" rouge-fonce">{{ picture.title }}, postée par <a
                             href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                            {{ picture.user }}</a>, (le {{ picture.upload_date }})
+                            {{ picture.user }}</a> le {{ picture.upload_date|date:"d-m-Y" }}
                     </h4>
                 </div>
             </div>

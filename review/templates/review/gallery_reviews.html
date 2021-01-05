@@ -16,7 +16,21 @@
     <div class="row">
         {% for review in reviews %}
         <div class="col-md-4">
-            <div class="card mb-4 box-shadow">
+            <div class="card mb-4 box-shadow border-0">
+
+                <div class="title">
+                    <div class="row">
+                        <div class="col">
+                            <p class=" rouge-fonce"><strong>{{ review.picture.title|truncatechars:12 }}, postée par <a
+                                        href="{% url 'gallery:pictures_list' action='user' pk=review.picture.user.id %}">
+                                        {{ review.picture.user }}</a>
+                                </strong>
+                                <i>(note moy. : {{ review.picture.global_score }})</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="item">
                     <a href="{{ review.picture.get_absolute_url }}">
                         <img class="card-img-top rounded mx-auto" alt="{{ review.picture.title }}"
@@ -25,53 +39,56 @@
                             style="width: 100%; float: left; margin-right: 10px;" /> -->
                     </a>
                 </div>
-                <div class="card-body">
-                    <div class="row">
+
+                <div class="card-text">
+                    <div class="row mb-2">
                         <div class="col">
-                            <h6>{{ review.picture.title|truncatechars:18 }}</h6>
-                        </div>
-                        <div class="col">
-                            <span class="badge badge-secondary">score : {{ review.calculated_score }}</span>
+                            <span class="badge rouge-fonce little">notée {{ review.calculated_score }} par
+                                {{review.user|truncatechars:12 }}, le {{ review.review_date|date:"d-m-Y" }}
+                            </span>
                         </div>
                     </div>
-                    <div class="row text-center">
-                        <p><a class="btn btn-secondary btn-sm" href="{{ review.get_absolute_url }}" role="button">Voir
-                                critique &raquo;</a></p>
+                </div>
+
+                <div class="item">
+                    <table class="table table-bordered table-sm table-responsive-md">
+                        <tr class="table-secondary little">
+                            <td style="width: 25%" class="text-center"> <strong>intention </strong> </td>
+                            <td style="width: 25%" class="text-center"> <strong>technique </strong> </td>
+                            <td style="width: 25%" class="text-center"> <strong>rendu </strong> </td>
+                            <td style="width: 25%" class="text-center"> <strong>globale </strong> </td>
+                        </tr>
+                            <tr>
+                                <td class="text-center"><strong> {{ review.score_intention }} </strong></td>
+                                <td class="text-center"><strong> {{ review.score_technical }} </strong></td>
+                                <td class="text-center"><strong> {{ review.score_picture }} </strong></td>
+                                <td class="text-center"><strong> {{ review.score_global }} </strong></td>
+                            </tr>
+
+                    </table>
 
 
+                    <div class="row mb-4 justify-content-center">
+                        <h4><a class="btn btn-secondary btn-sm" href="{{ review.get_absolute_url }}" role="button"> Voir
+                                la critique
+                                &raquo;</a></h4>
                     </div>
-                    <div class="row">
-                        <p>le {{ review.review_date|date:"d-m-Y" }}</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <span class="badge badge-info">int: {{ review.score_intention }}</span>
-                        </div>
-                        <div class="col-md-3">
-                            <span class="badge badge-info">tec: {{ review.score_technical }}</span>
-                        </div>
-                        <div class="col-md-3">
-                            <span class="badge badge-info">ren: {{ review.score_picture }}</span>
-                        </div>
-                        <div class="col-md-3">
-                            <span class="badge badge-info">glo: {{ review.score_global }}</span>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     <div class="row">
-    {% if request.GET.order_by %}
+        {% if request.GET.order_by %}
         {% with "&order_by="|add:request.GET.order_by as order_by %}
-            {% include 'pagination.html' %}
+        {% include 'pagination.html' %}
         {% endwith %}
-    {% else %}
+        {% else %}
         {% with "" as order_by %}
-            {% include 'pagination.html' %}
+        {% include 'pagination.html' %}
         {% endwith %}
-    {% endif %}
+        {% endif %}
     </div>
 
 

@@ -4,81 +4,102 @@
 {% block title %} Critique de {{ picture.title }} {% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-    <div class="container">
-        <h2>{{ picture.title }} par {{ picture.user }}</h2>
 
-        <h4>Critique de {{ review.user }}</h4>
-        {% if request.GET.ok %}
-            <h6>La critique est bien enregistrée</h6>
-        {% endif %}
-    </div>
-</div>
+<br>
+<br>
+<br>
+<br>
+
 
 <div class="container">
     <div class="row mb-2">
         <!-- picture -->
         <div class="col-md-8">
-            <div class="card box-shadow mx-auto">
+            <div class="card box-shadow mx-auto border-0">
+                <div class="title">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <h4 class=" rouge-fonce">{{ picture.title }}, postée par <a
+                                    href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                    {{ picture.user }}</a> le {{ picture.upload_date|date:"d-m-Y" }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="item">
                     <a href="{{ picture.get_absolute_url }}"><img class="card-img-top rounded mx-auto" alt="photo"
                             src="{{ picture.file_name.url }}" data-holder-rendered="true"></a>
                     <!-- <img src="#" class="img-responsive"
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
                 </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-8 text_left">
-                            <h6 class="card-text">{{ picture.title }} ({{ picture.global_score|floatformat:2 }}) (par
-                                <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                    {{ picture.user }}</a>)
-                            </h6>
+
+                <div class="card-text">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <span class="badge rouge-fonce grand">notée {{ review.calculated_score }} par
+                                {{review.user|truncatechars:12 }}, le {{ review.review_date|date:"d-m-Y" }}
+                            </span>
                         </div>
-                        <div class="col-md-4">
 
-                            <h6 class="text-right">Critique de {{ review.user }}</h6>
-
+                    </div>
+                </div>
+                <div class="card-text">
+                    <div class="col">
+                        <div class="row mb-2">
+                            <p class="card-text"><strong>Description : </strong>{{ picture.description }} </p>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        <p class="card-text"><strong>Description : </strong>{{ picture.description }} </p>
-                    </div>
-                    <div class="row mb-2">
-                        <p class="card-text"><strong>Technique : </strong>{{ picture.description }} </p>
+                    <div class="col">
+                        <div class="row mb-2">
+                            <p class="card-text"><strong>Technique : </strong>{{ picture.description }} </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-
+            <br><br>
             <div class="row">
-                <p><strong>Note moyenne de la revue : {{ review.calculated_score }}</strong></p>
+                {% if request.GET.ok %}
+                <h6 class="rouge-fonce">La critique est bien enregistrée</h6>
+                {% endif %}
+                <h4 class="rouge-fonce">Critique de {{ review.user }}</h4>
+            </div>
+            <div class="row">
+                <p class="rouge-fonce"><strong>Note moyenne de la revue : {{ review.calculated_score }}</strong></p>
             </div>
 
-            
+
             <div class="row">
-                <p><strong>Note intention : {{ review.score_intention }}</strong> <br> {{ review.comment_intention }}
-                </p>
+                <p><strong class="rouge-fonce">Note intention : {{ review.score_intention }}</strong> <br>
+                    {{ review.comment_intention }}</p>
             </div>
             <div class="row">
-                <p><strong>Note technique : {{ review.score_technical }}</strong> <br> {{ review.comment_technical }}
-                </p>
+                <p><strong class="rouge-fonce">Note technique : {{ review.score_technical }}</strong><br>
+                    {{ review.comment_technical }} </p>
             </div>
             <div class="row">
-                <p><strong>Note rendu image : {{ review.score_picture }}</strong> <br> {{ review.comment_picture }}</p>
+                <p><strong class="rouge-fonce">Note rendu image : {{ review.score_picture }}</strong> <br>
+                    {{ review.comment_picture }}</p>
             </div>
-            <div class="row">
-                <p><strong>Note globale : {{ review.score_global }}</strong> <br> {{ review.comment_global }}</p>
+            <div class="row mb-2">
+                <p><strong class="rouge-fonce">Note globale : {{ review.score_global }}</strong> <br>
+                    {{ review.comment_global }}</p>
             </div>
             {% if review.user == user %}
             <div class="row">
-                <p><a class="btn btn-secondary btn-sm" href="{% url 'review:review_update' pk=review.pk %}" role="button">Modifier
-                        critique &raquo;</a></p>
-            </div>
-            <div class="row">
-                <p><a class="btn btn-secondary btn-sm" href="{% url 'review:review_delete' pk=review.pk %}" role="button">Supprimer
-                        critique &raquo;</a></p>
+                <div class="col">
+                    <p><a class="btn btn-secondary btn-sm" href="{% url 'review:review_update' pk=review.pk %}"
+                            role="button">Modifier
+                            critique &raquo;</a></p>
+                </div>
+                <div class="col">
+                    <p><a class="btn btn-secondary btn-sm" href="{% url 'review:review_delete' pk=review.pk %}"
+                            role="button">Supprimer
+                            critique &raquo;</a></p>
+                </div>
             </div>
             {% endif %}
         </div>
