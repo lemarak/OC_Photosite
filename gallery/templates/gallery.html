@@ -70,7 +70,7 @@
                             {% if picture.global_score == 0 %}
                             <span class="badge rouge-fonce little"><i>pas de note</i></span>
                             {% else %}
-                            <span class="badge rouge-fonce little">note : {{ picture.global_score }} ( <i
+                            <span class="badge rouge-fonce little">note : {{ picture.global_score|floatformat:2 }} ( <i
                                     class="fa fa-comment-o" aria-hidden="true"></i> {{picture.review_set.count}}
                                 )</span>
                             {% endif %}

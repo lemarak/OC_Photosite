@@ -5,40 +5,44 @@
 
 {% block content %}
 <div class="jumbotron h-25">
-        <div class="container">
-            <br>
-            <h5>Merci de prendre le temps de critiquer cette photo<br>
-                La critique doit être constructive, vous pouvez argumenter chaque note que vous attribuez.</h5>
-        </div>
+    <div class="container">
+        <br>
+        <h5>Merci de prendre le temps de critiquer cette photo<br>
+            La critique doit être constructive, vous pouvez argumenter chaque note que vous attribuez.</h5>
+    </div>
 </div>
 
 <div class="container">
     <div class="row mb-2">
         <!-- picture -->
         <div class="col-md-7">
-            <div class="card box-shadow mx-auto">
+            <div class="card border-0 mx-auto">
+                <div class="title">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <h4 class=" rouge-fonce">{{ picture.title }}, postée par <a
+                                    href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
+                                    {{ picture.user }}</a> le {{ picture.upload_date|date:"d/m/Y" }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
                 <div class="item">
                     <img class="card-img-top rounded mx-auto" alt="photo" src="{{ picture.file_name.url }}"
                         data-holder-rendered="true">
                     <!-- <img src="#" class="img-responsive"
                     style="width: 100%; float: left; margin-right: 10px;" /> -->
                 </div>
-                <div class="card-body">
+                <div class="item">
                     <div class="row mb-2">
-                        <div class="col-md-5">
-                            <h5>{{ picture.title }}</h5>
-                        </div>
-                        <div class="col-md-5">
-                            <a href="{% url 'gallery:pictures_list' action='user' pk=picture.user.id %}">
-                                <h6 class="text-right">par {{ picture.user|truncatechars:20 }}</h6>
-                            </a>
+                        <div class="col">
+                            <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <p class="card-text"><strong>Description: </strong>{{ picture.description }} </p>
-                    </div>
-                    <div class="row mb-2">
-                        <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                        <div class="col">
+                            <p class="card-text"><strong>Technique: </strong>{{ picture.description }} </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,8 +54,13 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button class="btn btn-secondary btn-sm" type="submit">Envoyer...</button>
+                {% if review.pk %}
+                <a class="btn btn-danger btn-sm" href="{% url 'review:review_delete' pk=review.pk %}"
+                    role="button">Supprimer
+                    critique</a>
+                {% endif %}
             </form>
         </div>
     </div>
 </div>
-    {% endblock %}
+{% endblock %}

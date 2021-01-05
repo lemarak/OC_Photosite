@@ -100,7 +100,7 @@ class ReviewViewTests(BaseViewTestCase):
         self.assertEqual(response.status_code, 302)
         id_review = Review.objects.get(comment_intention='test_create_1').id
         self.assertEqual(response["Location"],
-                         "/review/detail/%s?ok=save" % id_review)
+                         "/review/detail/%s" % id_review)
 
     def test_post_success_score_review_ok(self):
         """ test calculated score review after validation """
@@ -138,7 +138,7 @@ class ReviewViewTests(BaseViewTestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"],
-                         "/review/detail/%s?ok=save" % id_review)
+                         "/review/detail/%s" % id_review)
 
     def test_post_success_score_review_ok_after_update(self):
         """ test calculated score review after update validation """

@@ -41,11 +41,11 @@ class PictureDisplayView(DetailView):
         context = super().get_context_data(**kwargs)
         picture = context['picture']
         reviews = Review.objects.filter(picture=picture)
-        # pour corriger bug si delete review (score ne se met pas à jour)
-        # trouver autre solution
-        picture.global_score = Review.objects.update_note_reviews(
-            picture)
-        picture.save()
+        # # pour corriger bug si delete review (score ne se met pas à jour)
+        # # trouver autre solution
+        # picture.global_score = Review.objects.update_note_reviews(
+        #     picture)
+        # picture.save()
 
         context['reviews'] = reviews
         if self.request.user.is_authenticated:

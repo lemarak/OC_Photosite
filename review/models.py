@@ -2,6 +2,8 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django.db.models.signals import pre_save, post_save, post_delete
+from django.dispatch import receiver
 
 
 # Review
@@ -75,3 +77,29 @@ class Review(models.Model):
     class Meta:
         """ Meta for ordering """
         ordering = ['-review_date']
+
+
+# method for updating review note
+@receiver(pre_save, sender=Review)
+def update_review_note(sender, instance, **kwargs):
+    """ save review note """
+    instance.calculated_score = Review.objects.calculate_note_review(instance)
+
+
+# method for updating picture note
+@receiver(post_save, sender=Review)
+def update_picture_note(sender, instance, **kwargs):
+    """ save picture note """
+    instance.picture.global_score = Review.objects.update_note_reviews(
+        instance.picture)
+    instance.picture.save()
+    print('*****coucou*****')
+
+
+# method for updating picture note when review deleted
+@receiver(post_delete, sender=Review)
+def update_picture_note_when_delete(sender, instance, **kwargs):
+    """ save picture note """
+    instance.picture.global_score = Review.objects.update_note_reviews(
+        instance.picture)
+    instance.picture.save()

@@ -17,7 +17,7 @@
         {% for category in categories %}
         <div class="col">
             <h3><a href="{% url 'gallery:pictures_list' action='category' pk=category.id %}"
-                    class="badge badge-pill badge-secondary text-white">{{ category }} </a></h3>
+                    class="badge badge-pill badge-secondary text-white">{{ category }} ({{ category.picture_set.count}}) </a></h3>
         </div>
         {% endfor %}
     </div>

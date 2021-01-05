@@ -93,7 +93,7 @@ class GalleryViewTestCase(BaseViewTestCase):
         html = response.content.decode('utf8')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.context['categories']) == 5)
-        self.assertInHTML("category_test_1", html)
+        self.assertInHTML("category_test_1 (1)", html)
 
     def test_gallery_user(self):
         """ test gallery user pictures """
@@ -181,7 +181,7 @@ class GalleryViewTestCase(BaseViewTestCase):
         response = self.client_login.post(
             url, data={
                 "title": 'test_upload',
-                "file_name":self.file_picture,
+                "file_name": self.file_picture,
                 "description": 'description_upload',
                 "camera": 'camera',
                 "lens": 'lens',
@@ -193,10 +193,3 @@ class GalleryViewTestCase(BaseViewTestCase):
             }
         )
         self.assertEqual(response.status_code, 200)
-        # id_picture = Picture.objects.get(title='test_upload').id
-        # url = reverse('gallery:picture_detail', args=[id_picture])
-        # response = self.client.get(url)
-        # html = response.content.decode('utf8')
-
-        # self.assertEqual(response.status_code, 200)
-        # self.assertInHTML("Pas de nate actuellement", html)
