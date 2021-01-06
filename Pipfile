@@ -19,6 +19,8 @@ django-coverage-plugin = "*"
 gunicorn = "*"
 python-dotenv = "*"
 django-heroku = "*"
+selenium = "*"
+webdriver-manager = "*"
 
 [requires]
 python_version = "3.8"

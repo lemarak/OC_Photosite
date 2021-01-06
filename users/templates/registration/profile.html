@@ -3,11 +3,13 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="jumbotron bg-secondary">
+<div class="jumbotron">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
                     <h2>Profil {{ user.username }} - {{ user.email }}</h2>
+                    <h5> <a href="{% url 'gallery:pictures_list' 'user' %}"><strong>Vos photos</strong></a></h5>
+                    <br>
                     <form method="post">
                         {% csrf_token %}
                         {{ form|crispy }}
