@@ -53,12 +53,18 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
+                <div class="row">
+                    <div class="col">
                 <button class="btn btn-secondary btn-sm" type="submit">Envoyer...</button>
+            </div>
                 {% if review.pk %}
+                <div class="col">
                 <a class="btn btn-danger btn-sm" href="{% url 'review:review_delete' pk=review.pk %}"
                     role="button">Supprimer
                     critique</a>
+                </div>
                 {% endif %}
+            </div>
             </form>
         </div>
     </div>

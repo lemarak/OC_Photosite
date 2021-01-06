@@ -93,7 +93,6 @@ def update_picture_note(sender, instance, **kwargs):
     instance.picture.global_score = Review.objects.update_note_reviews(
         instance.picture)
     instance.picture.save()
-    print('*****coucou*****')
 
 
 # method for updating picture note when review deleted

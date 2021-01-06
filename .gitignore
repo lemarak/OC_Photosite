@@ -1,5 +1,4 @@
 production.py
-.env
 .vscode/
 staticfiles/
 htmlcov/
