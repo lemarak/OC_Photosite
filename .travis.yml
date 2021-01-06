@@ -14,7 +14,7 @@ install:
   - pipenv install
 
 
-env: DJANGO_SETTINGS_MODULE=photosite.settings.travis
+env: DJANGO_SETTINGS_MODULE=photosite_project.settings.travis
 
 services:
   - postgresql
