@@ -50,11 +50,9 @@ class BaseModelTestCase(TestCase):
             picture=cls.picture,
             user=cls.user
         )
-        cls.review.calculated_score = Review.objects.calculate_note_review(
-            cls.review)
+
         cls.review.save()
-        cls.picture.global_score = Review.objects.update_note_reviews(
-            cls.picture)
+
         cls.picture.save()
 
 
@@ -62,7 +60,39 @@ class ReviewModelTestCase(BaseModelTestCase):
     """Class to test the creation of reviews."""
 
     def test_create_review(self):
-        """test creation."""
+        """test review creation."""
         self.assertEqual(self.review.comment_intention, "comment_intention")
-        self.assertEqual(self.review.calculated_score, 4.5)
-        self.assertEqual(self.picture.global_score, 4.5)
+
+    def test_calculate_note_review(self):
+        """ unit test for calculate_note_review """
+        result = Review.objects.calculate_note_review(self.review)
+        self.assertEqual(result, 4.5)
+
+    def test_update_note_reviews(self):
+        """ unit test for calculate_note_review """
+        result = Review.objects.update_note_reviews(
+            self.review.picture)
+        self.assertEqual(result, 4.5)
+
+    def test_calculate_note_review_after_update(self):
+        """ unit test for update_note_reviews """
+        self.review.score_picture = 4
+        self.review.score_global = 4
+        self.review.save()
+        self.assertEqual(self.review.calculated_score, 4)
+
+    def test_update_note_reviews_after_update(self):
+        """ unit test for update_note_reviews """
+        self.review.score_picture = 3
+        self.review.score_global = 3
+        self.review.save()
+        self.assertEqual(self.picture.global_score, 3.5)
+
+    def test_update_review(self):
+        """test update creation."""
+        self.review.score_picture = 4
+        self.review.score_global = 4
+        self.review.save()
+        self.assertEqual(self.review.comment_intention, "comment_intention")
+        self.assertEqual(self.review.calculated_score, 4)
+        self.assertEqual(self.picture.global_score, 4)

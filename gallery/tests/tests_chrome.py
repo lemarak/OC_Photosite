@@ -1,6 +1,7 @@
 """functional tests using selenium and LiveServerTestCase."""
 import time
 import os
+from datetime import date
 
 from django.test import LiveServerTestCase
 from django.contrib.auth import get_user_model
@@ -19,7 +20,7 @@ class GalleryFunctionalTest(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.options = Options()
-        # cls.options.add_argument("--headless")
+        cls.options.add_argument("--headless")
         cls.browser = Chrome(ChromeDriverManager().install(),
                              options=cls.options)
         cls.browser.implicitly_wait(3)
@@ -82,9 +83,9 @@ class GalleryFunctionalTest(LiveServerTestCase):
         html = self.browser.page_source
         self.assertInHTML("""
                     <h4 class=" rouge-fonce">Titre photo, postée par <a href="/pictures/user/%s">
-                            test_login</a> le 06/01/2021
+                            test_login</a> le %s
                     </h4>
-                        """ % self.user.id,
+                        """ % (self.user.id, date.today().strftime('%d/%m/%Y')),
                           html)
 
     def test_add_picture_and_display(self):
@@ -97,7 +98,7 @@ class GalleryFunctionalTest(LiveServerTestCase):
         time.sleep(0.5)
 
         # see picture
-        self.browser.implicitly_wait(3)
+        self.browser.implicitly_wait(1.5)
         self.browser.get("%s%s" %
                          (str(self.live_server_url), '/pictures/last'))
         time.sleep(0.5)
@@ -106,8 +107,8 @@ class GalleryFunctionalTest(LiveServerTestCase):
         html = self.browser.page_source
         self.assertInHTML("""
                     <h4 class=" rouge-fonce">Titre photo, postée par <a href="/pictures/user/%s">
-                            test_login</a> le 06/01/2021
+                            test_login</a> le %s
                     </h4>
-                        """ % self.user.id,
+                        """ % (self.user.id, date.today().strftime('%d/%m/%Y')),
                           html)
         self.browser.quit()

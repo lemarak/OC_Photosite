@@ -10,10 +10,10 @@ from django.dispatch import receiver
 class ReviewManager(models.Manager):
     """Methods associated with the Review model (calculate note)"""
 
-    def calculate_note_review(self, review):
+    def calculate_note_review(self, instance):
         """ calculate the average score for a review """
-        note_review = (review.score_intention + review.score_technical +
-                       review.score_picture + review.score_global) / 4
+        note_review = (instance.score_intention + instance.score_technical +
+                       instance.score_picture + instance.score_global) / 4
         return note_review
 
     def update_note_reviews(self, picture):
