@@ -25,7 +25,7 @@
                                         href="{% url 'gallery:pictures_list' action='user' pk=review.picture.user.id %}">
                                         {{ review.picture.user }}</a>
                                 </strong>
-                                <i>(note moy. : {{ review.picture.global_score }})</i>
+                                <i>(note moy. : {{ review.picture.global_score|floatformat:2 }})</i>
                             </p>
                         </div>
                     </div>
