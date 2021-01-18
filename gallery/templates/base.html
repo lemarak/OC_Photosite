@@ -68,24 +68,24 @@
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'gallery:image_upload' %}"
-                        role="button">Déposer photo</a>
+                        role="button"> Déposer photo </a>
                 </li>
                 <li>
                     <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'logout' %}"
-                        role="button">Déconnexion</a>
+                        role="button"> Déconnexion </a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'profile' user.id  %}"
-                        role="button">{{ user }}</a>
+                        role="button"> {{ user }} </a>
                 </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'login' %}"
-                        role="button">Connexion</a>
+                        role="button"> Connexion </a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary my-2 my-sm-0" href="{% url 'signup' %}"
-                        role="button">Inscription</a>
+                        role="button"> Inscription </a>
                 </li>
 
                 {% endif %}

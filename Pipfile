@@ -21,6 +21,7 @@ python-dotenv = "*"
 django-heroku = "*"
 selenium = "*"
 webdriver-manager = "*"
+django-taggit = "*"
 
 [requires]
 python_version = "3.8"

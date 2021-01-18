@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td> {{ picture.description }} </td>
+                        <td> {{ picture.description|linebreaks }} </td>
                     </tr>
                 </tbody>
 
@@ -78,7 +78,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td> {{ picture.technical }} </td>
+                        <td> {{ picture.technical|linebreaks }} </td>
                     </tr>
                 </tbody>
 
@@ -152,6 +152,30 @@
                     </tr>
                 </tbody>
             </table>
+
+            <table class="table table-bordered table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> <strong>Tags </strong> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                {% for tag in picture.tags.all %}
+                                <div class="col">
+                                    <h5><a href="{% url 'gallery:pictures_list' action='tag' tag_slug=tag.slug %}"
+                                            class="badge badge-pill badge-dark text-white"> {{ tag.name }} </a>
+                                    </h5>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
 
     </div>

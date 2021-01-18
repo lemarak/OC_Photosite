@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from users.models import CustomUser
+from taggit.managers import TaggableManager
 
 
 class Category(models.Model):
@@ -46,6 +47,7 @@ class Picture(models.Model):
         verbose_name="Date de téléchargement", auto_now_add=True)
     categories = models.ManyToManyField(
         Category)
+    tags = TaggableManager()
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
 

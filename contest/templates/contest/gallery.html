@@ -41,15 +41,15 @@
                     <div class="row mt-2">
                         <div class="col text-center">
                             {% if contest.vote_open %}
-                            {% if contest_picture.vote_user %}
-                            <button class="btn btn-secondary btn-sm" disabled>Déjà voté</a> </button>
-                            {% elif picture.user == user %}
-                            <button class="btn btn-secondary btn-sm" disabled>Votre photo</a> </button>
-                            {% else %}
-                            <p><a class="btn btn-secondary btn-sm"
+                                {% if contest_picture.vote_user %}
+                                <button class="btn btn-secondary btn-sm" disabled>Déjà voté</a> </button>
+                                {% elif picture.user == user %}
+                                <button class="btn btn-secondary btn-sm" disabled>Votre photo</a> </button>
+                                {% else %}
+                                <p><a class="btn btn-secondary btn-sm"
                                     href="{% url 'contest:user_vote' contest_picture.id  %}" role="button">Voter
                                     &raquo;</a></p>
-                            {% endif %}
+                                {% endif %}
                             {% else %}
                             <p><a class="btn btn-secondary btn-sm" href="{{ picture.get_absolute_url }}"
                                     role="button">Voir

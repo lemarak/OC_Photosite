@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # third app
     'crispy_forms',
+    'taggit',
 
     # local
     'gallery.apps.GalleryConfig',

@@ -1,10 +1,11 @@
 """  views for app gallery """
 
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views.generic import DetailView, ListView
 from django.contrib.auth import get_user_model
 from django.db.models import Exists, OuterRef
 
+from taggit.models import Tag
 from review.models import Review
 from contest.models import ContestPicture, Contest
 from .forms import PictureForm
@@ -34,18 +35,13 @@ class PictureDisplayView(DetailView):
     """
     model = Picture
     context_object_name = 'picture'
-    template_name = 'gallery/display_picture.html'
+    template_name = 'gallery/detail.html'
 
     def get_context_data(self, **kwargs):
         """add reviews in global context."""
         context = super().get_context_data(**kwargs)
         picture = context['picture']
         reviews = Review.objects.filter(picture=picture)
-        # # pour corriger bug si delete review (score ne se met pas à jour)
-        # # trouver autre solution
-        # picture.global_score = Review.objects.update_note_reviews(
-        #     picture)
-        # picture.save()
 
         context['reviews'] = reviews
         if self.request.user.is_authenticated:
@@ -97,6 +93,12 @@ class GalleryListView(ListView):
             pictures = Picture.objects.filter(
                 categories=Category.objects.get(pk=self.kwargs['pk'])
             ).order_by(order_by)
+        elif self.kwargs['action'] == 'tag':
+            # tag
+            tag = get_object_or_404(Tag, slug=self.kwargs['tag_slug'])
+            pictures = Picture.objects.filter(
+                tags__in=[tag]
+            )
         return pictures
 
     def get_context_data(self, **kwargs):
@@ -126,6 +128,10 @@ class GalleryListView(ListView):
             context['title'] = 'Photos de %s' % (
                 Category.objects.get(pk=self.kwargs['pk']))
             context['category_id'] = self.kwargs['pk']
+        elif self.kwargs['action'] == 'tag':
+            context['title'] = 'Photos avec le tag %s' % (
+                get_object_or_404(Tag, slug=self.kwargs['tag_slug']).name)
+            
         return context
 
 

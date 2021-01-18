@@ -7,7 +7,7 @@ from .views import (home_view,
                     picture_upload_view,
                     GalleryListView,
                     PictureDisplayView,
-                     CategoryListView,
+                    CategoryListView,
                     )
 
 app_name = 'gallery'
@@ -15,6 +15,8 @@ app_name = 'gallery'
 urlpatterns = [
     path('', home_view, name='home'),
     path('pictures/<str:action>/<int:pk>',
+         GalleryListView.as_view(), name='pictures_list'),
+    path('pictures/<str:action>/<slug:tag_slug>',
          GalleryListView.as_view(), name='pictures_list'),
     path('pictures/<str:action>',
          GalleryListView.as_view(), name='pictures_list'),
